@@ -92,26 +92,26 @@ ui <- fluidPage(
     condition = "input.page == 1",
     p("Clinical trials are important studies that gather evidence which is used 
       then to decide which healthcare options are available to everyone in the future. 
-      Most of these trials will have measurements missing from participants, like 
-      pieces missing from a puzzle. Researcher are asking for patients to help them 
-      'fill the gaps' of these puzzle. This is where you could add and make a 
-      difference."),
+      Most of these trials will have measurements missing from participants, just like 
+      pieces missing from a puzzle."),
+    p("Researchers are asking if patients to help them 'fill the gaps' of these 
+      puzzles, and this is where you can make a difference."),
     strong("Objective of this step: "),
-    p("Take your judgements/opinions/thoughts, as a patient, on what you 
-      think the gaps should be for specific clinical trial."),
-    p("This activity should take TODO minutes."),
+    p("As a patient, we want to take your judgements/ opinions/ thoughts on what you 
+      think the gaps should be for specific clinical trial. This activity should 
+      take 30 - 60 minutes."),
     p("Before you start, if you want a refresher on any of these topics see these links below."),
     tags$ul(
       tags$li(
-        "The video introducing missing data: ",
-        tags$a(href = "https://www.youtube.com/watch?v=grgZzN-MTE8", "Watch Video")
+        "A short video introducing missing data: ",
+        tags$a(href = "https://www.youtube.com/watch?v=DLBVXCru8cI", "Watch Video")
       ),
       tags$li(
-        "A document of common questions and answers: ",
+        "A document of frequently asked questions: ",
         tags$a(href = "https://365abdn-my.sharepoint.com/:w:/g/personal/r01sg22_abdn_ac_uk/EelFYSIsmh9GrRXXs7WRHboBTwS5SONH-tJQNSLGE8-pWA?email=alan.fleming%40abdn.ac.uk&e=FPcw4T", "View Document")
       )
     ),
-    p("If you would like to have any support when completing, contact s.greenwood.22@abdn.ac.uk"),
+    p("If you would like to have any support when completing, contact ", tags$a(href = "mailto:s.greenwood.22@abdn.ac.uk?subject=Question%20-%20rethinking%20missing%20data%20with%20patients", "s.greenwood.22@abdn.ac.uk")),
     p("Click next to get started.")
   ),
   conditionalPanel(
@@ -124,7 +124,7 @@ ui <- fluidPage(
     accordion_panel(
       title = "What is the clinical trial?",
       icon = bsicons::bs_icon("patch-question"),
-      em("Traditionally, dentists have encouraged both patients at low risk and patients at high risk of developing dental disease to attend their dental practices for regular 6-month 'check-ups'. There is, however, little evidence available for either patients or dentists to use when deciding on the best dental recall interval (i.e. time between dental check-ups) for maintaining oral health. In this study, we wanted to find out, for adult patients who regularly attend the dentist, what interval of time between dental check-ups maintains optimum oral health and represents value for money.")
+      em("Traditionally, dentists have encouraged both patients at low or high risk of developing dental disease to attend their dental practices for regular 6-month 'check-ups'. There is, however, little evidence available for either patients or dentists to use when deciding on the best dental recall interval (i.e. time between dental check-ups) for maintaining oral health. In this study, they wanted to find out, for adult patients who regularly attend the dentist, what interval of time between dental check-ups maintains optimum oral health and represents value for money.")
     ),
     accordion_panel(
       title = "Who are the participants in the trial?",
@@ -139,7 +139,7 @@ ui <- fluidPage(
         tags$ul(
           tags$li("Every 2 years (24-months) (if considered at low risk by their dentist)"),
           tags$li("Every 6 months"),
-          tags$li("Or risk-based, ('an individualised, recall interval based on the patient's risk of dental disease.')")
+          tags$li("Or risk-based, (which they said was 'an individualised, recall interval based on the patient's risk of dental disease.')")
         ),
         "Note: In this exercise we are going to focus on just those assigned to 6-month and risk-based recall, who were typically older with worse scores."
       ),
@@ -148,10 +148,10 @@ ui <- fluidPage(
         title = "What are the missing measurements we are interested in today?",
         icon = bsicons::bs_icon("puzzle"),
         div(
-            p("Many measurements were taken from participants in this trial. This exercise focuses on just one."),
+            p("Many measurements were taken from participants in this clinical trial. This exercise focuses on just one, which was asking them about a specific symptom over the last 12 months."),
           tags$ul(
             tags$li(strong("Question:"), "Have you had painful aching in your mouth?"),
-            tags$li(strong("Answer options:"), "a number from 0 to 4"),
+            tags$li(strong("Answer options:"), "the patient answered by selecting a number from below"),
           ),
           tags$table(
             class = "table table-bordered table-striped",
@@ -174,7 +174,7 @@ ui <- fluidPage(
               )
             )
           ),
-          "This question was in a questionaire measuring patients' oral health symptoms over the past 12 months. The participants completed it at home and returned them to the researcher using a pre-paid envelope. They did this every year for 4 years.",
+          "They patients answered this questions, alongside many others. They completed this questionnaire it at home and returned them to the researcher using a pre-paid envelope. They did this every year for 4 years.",
           p(strong("Note:"), "we are going to focus on the missing answers to this question just at Year 4"),
         )
     ),

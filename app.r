@@ -90,6 +90,7 @@ ui <- fluidPage(
   ),
   conditionalPanel(
     condition = "input.page == 1",
+    p("Introduction", style = "font-size: 24px; font-weight: bold;"),
     p("Clinical trials are important studies that gather evidence which is used 
       then to decide which healthcare options are available to everyone in the future. 
       Most of these trials will have measurements missing from participants, just like 
@@ -116,6 +117,9 @@ ui <- fluidPage(
   ),
   conditionalPanel(
     condition = "input.page == 2",
+    p("Background", style = "font-size: 24px; font-weight: bold;"),
+    p("Here is some information to give you a bit of context about the puzzle we are looking to fill together."),
+    
     accordion(
     id = "clinical_trial_acc",
     open = c("What is the clinical trial?"),
@@ -124,12 +128,12 @@ ui <- fluidPage(
     accordion_panel(
       title = "What is the clinical trial?",
       icon = bsicons::bs_icon("patch-question"),
-      em("Traditionally, dentists have encouraged both patients at low or high risk of developing dental disease to attend their dental practices for regular 6-month 'check-ups'. There is, however, little evidence available for either patients or dentists to use when deciding on the best dental recall interval (i.e. time between dental check-ups) for maintaining oral health. In this study, they wanted to find out, for adult patients who regularly attend the dentist, what interval of time between dental check-ups maintains optimum oral health and represents value for money.")
+      div("Traditionally, dentists have encouraged both patients at risk of developing dental disease to attend their dental practices for regular 6-month 'check-ups'. There is, however, little evidence available for either patients or dentists to use when deciding on the best dental recall interval (i.e. time between dental check-ups) for maintaining oral health. In this study, they wanted to find out, for adult patients who regularly attend the dentist, what interval of time between dental check-ups maintains optimum oral health and represents value for money.")
     ),
     accordion_panel(
       title = "Who are the participants in the trial?",
       icon = bsicons::bs_icon("person-circle"),
-      em("A total of 2372 adults aged 18 years and over who regularly attended 51 different dental practices across Scotland, Northern Ireland, England and Wales were involved. Patients aged 18 years or over who received all or part of their care as NHS patients.")
+      div("A total of 2372 adults aged 18 years and over who regularly attended 51 different dental practices across Scotland, Northern Ireland, England and Wales were involved. Patients aged 18 years or over who received all or part of their care as NHS patients.")
     ),
     accordion_panel(
       title = "What was the intervention?",
@@ -137,11 +141,12 @@ ui <- fluidPage(
       div(
         "The intervention was how often a patient saw their dentist for a check-up. This was just a dental check-up and excluded any other treatments like scale and polish. Participants were randomly split into groups with each one assigned the dental check-up time of either:",
         tags$ul(
-          tags$li("Every 2 years (24-months) (if considered at low risk by their dentist)"),
-          tags$li("Every 6 months"),
-          tags$li("Or risk-based, (which they said was 'an individualised, recall interval based on the patient's risk of dental disease.')")
+          tags$li("Every ", strong("2 years "), ", if considered at low risk by their dentist"),
+          tags$li("Every ", strong("6 months")),
+          tags$li("Or ", strong("risk-based"), "which they said was ", em("'an individualised, recall interval based on the patient's risk of dental disease.'"))
         ),
-        "Note: In this exercise we are going to focus on just those assigned to 6-month and risk-based recall, who were typically older with worse scores."
+        p(""),
+        p(strong("Note:"), "In this exercise we are going to focus on just those assigned to 6-month and risk-based recall, who were typically older with worse scores."),
       ),
     ),
     accordion_panel(
@@ -151,7 +156,7 @@ ui <- fluidPage(
             p("Many measurements were taken from participants in this clinical trial. This exercise focuses on just one, which was asking them about a specific symptom over the last 12 months."),
           tags$ul(
             tags$li(strong("Question:"), "Have you had painful aching in your mouth?"),
-            tags$li(strong("Answer options:"), "the patient answered by selecting a number from below"),
+            tags$li(strong("Answer:"), "the patient answered by selecting a number from below"),
           ),
           tags$table(
             class = "table table-bordered table-striped",
@@ -174,7 +179,9 @@ ui <- fluidPage(
               )
             )
           ),
-          "They patients answered this questions, alongside many others. They completed this questionnaire it at home and returned them to the researcher using a pre-paid envelope. They did this every year for 4 years.",
+          "This question was asked in a questionnaire, which patients completed once a year. ",
+          "It was completed at home and returned to the researchers using a pre-paid envelope. They did this every year for 4 years.",
+          p(""),
           p(strong("Note:"), "we are going to focus on the missing answers to this question just at Year 4"),
         )
     ),
@@ -182,164 +189,160 @@ ui <- fluidPage(
         title = "How many pieces were missing?",
         icon = bsicons::bs_icon("search"),
         div(
-          p(strong("How many were missing?"), "From all the participants there were between 233 to 237 participants missing an answer to this question. Split into the two recall arms it looked like this."),
+          p(strong("How many were missing?"), "There were 438 patients missing an answer to this question. Split into the two groups it looked like this."),
           tags$table(
             class = "table table-bordered table-striped",
             tags$thead(
               tags$tr(
-                tags$th("(Currently Figure 6 data)"),
+                tags$th("Number of patients"),
                 tags$th("6-months"),
-                tags$th("Risk-based recall")
+                tags$th("Risk-based recall"),
+                tags$th("Total")
               )
             ),
             tags$tbody(
               tags$tr(
-                tags$td("How many are in the group"),
+                tags$td("In each group"),
+                tags$td("863 (100%)"),
                 tags$td("861 (100%)"),
-                tags$td("863 (100%)")
+                tags$td("1724")
               ),
               tags$tr(
-                tags$td("Missing the answer to Q1 in their questionaire at Year 4"),
-                tags$td("237 (27.5%)"),
-                tags$td("233 (27.0%)")
+                tags$td("Missing an answer"),
+                tags$td("217 (25.1%)"),
+                tags$td("221 (27.0%)"),
+                tags$td("438")
               )
             )
           )
         )
     ),
     accordion_panel(
-        title = "How many pieces were missing?",
+        title = "Who are the participants with missing measurements?",
         icon = bsicons::bs_icon("person-circle"),
         div(
-          p("Limited information is available on those who did not complete that question. We can only search for clues. This is why we are doing this exercise! More information will be given before you do the exercise, but for now here are the numbers of participants with missing pieces."),
-          p("One clue is to look at those who are marked as withdrawing from the study."),
-          tags$table(
-            class = "table table-bordered table-striped",
-            tags$thead(
-              tags$tr(
-                tags$th(""),
-                tags$th("6-months"),
-                tags$th("Risk-based recall")
-              )
-            ),
-            tags$body(
-              tags$tr(
-                tags$td("Number in the group"),
-                tags$td("861 (100%)"),
-                tags$td("863 (100%)")
-              ),
-              tags$tr(
-                tags$td("Missing the answer to Q1 in their questionaire at Year 4"),
-                tags$td("237 (27.5%)"),
-                tags$td("233 (27.0%)"),
-              ),
-              tags$tr(
-                tags$td("Just missed out this question but did other questions"),
-                tags$td("TODO"),
-                tags$td("TODO")
-              ),
-              tags$tr(
-                tags$td("Didn't return the questionaire at all"),
-                tags$td("TODO"),
-                tags$td("TODO")
-              ),
-              tags$tr(
-                tags$td("Reasons why: -- -- "),
-                tags$td("TODO"),
-                tags$td("TODO")
-              )
-            )
-          )
-
+          p("Limited information is available about the patient who did not answer that question. We can only search for clues. This is why we are doing this exercise! More information will be given before you do the exercise. "),
+          
         )
     ),
+    accordion_panel(
+      title="What do we need to 'fill the gaps'?",
+      icon = bsicons::bs_icon("question-circle"),
+      div(
+        p("We want to get a general sense of how they could have answered that question 4 years after they started the study. To get that overall picture we will focus on estimating the 'average'. This value can be anything between 0 to 4 and represents the typical response from this group")
+      )
+    ),
+    accordion_panel(
+      title = "Remember",
+      icon = bsicons::bs_icon("lightbulb"),
+      div(
+        p(strong("Remember:"), "If you're not feeling sure about knowledge on this that is a good thing. Counter to what you might think, we want to capture that",em("uncertainty"),"in your judgements. Your judgement is not being used to accurately represent one patient's medical condition, it is about getting a general sense about all of those patients with missing measurements, and what their results might have been.")
+      )
+    ),
+    accordion_panel(
+      title = "Next step",
+      icon = bsicons::bs_icon("person-circle"),
+      div(
+        p(strong("Remember:"), "If you're not feeling sure about knowledge on this that is a good thing. Counter to what you might think, we want to capture that",em("uncertainty"),"in your judgements. Your judgement is not being used to accurately represent one patient's medical condition, it is about getting a general sense about all of those patients with missing measurements, and what their results might have been.")
+      ),
+      
+      div(
+        p("We are going to look at one group at a time."),
+        tags$ul(
+          tags$li("First, the 217 patients in the 6 month group"),
+          tags$li("Second, the 221 patients in the risk-recall group"),
+          tags$li("Then, you will download your responses!"),
+        ),
+      )
+    )
   )
   ),
   conditionalPanel(
     condition = "input.page == 3",
-    p("We are going to focus on those participants with the missing measurements for this question below"),
-    accordion(
-      id = "question-explanations",
-      open = c("The missing puzzle pieces"),
-      multiple = FALSE,  # Close other panels when one is opened
-      accordion_panel(
-        title = "The missing puzzle pieces",
-        icon = bsicons::bs_icon("puzzle"),
-        div(
-          p("Many measurements were taken from participants in this trial. This exercise focuses on just one."),
-          tags$ul(
-            tags$li(strong("Question:"), "Have you had painful aching in your mouth?"),
-            tags$li(strong("Answer options:"), "a number from 0 to 4"),
-          ),
-          tags$table(
-            class = "table table-bordered table-striped",
-            tags$thead(
-              tags$tr(
-                tags$th("0"),
-                tags$th("1"),
-                tags$th("2"),
-                tags$th("3"),
-                tags$th("4")
-              )
-            ),
-            tags$tbody(
-              tags$tr(
-                tags$td("never"),
-                tags$td("hardly ever"),
-                tags$td("occasionally"),
-                tags$td("fairly often"),
-                tags$td("very often")
-              )
-            )
-          ),
-          "This question was in a questionaire measuring patients' oral health symptoms over the past 12 months. The participants completed it at home and returned them to the researcher using a pre-paid envelope. They did this every year for 4 years.",
-          p(strong("Note:"), "we are going to focus on the missing answers to this question just at Year 4"),
-        )
-      ),
-      accordion_panel(
-        title="Why we want the 'average'",
-        icon = bsicons::bs_icon("question-circle"),
-        div(
-          p("We want to get a general sense of how they could have answered that question 4 years after they started the study. To get that overall picture we will focus on estimating the 'average'. This value can be anything between 0 to 4 and represents the typical response from this group")
-        )
-      ),
-      accordion_panel(
-        title = "Remember",
-        icon = bsicons::bs_icon("lightbulb"),
-        div(
-          p(strong("Remember:"), "If you're not feeling sure about knowledge on this that is a good thing. Counter to what you might think, we want to capture that",em("uncertainty"),"in your judgements. Your judgement is not being used to accurately represent one patient's medical condition, it is about getting a general sense about all of those patients with missing measurements, and what their results might have been.")
-        )
-      ),
-      accordion_panel(
-        title = "Participants we are focusing on",
-        icon = bsicons::bs_icon("person-circle"),
-        div(
-          p("Next we are going to look at each treatment arm. Focusing on the 237 participants in the 6-month group first, then the 233 in the risk-recall arm."),
-          tags$table(
-            class = "table table-bordered table-striped",
-            tags$thead(
-              tags$tr(
-                tags$th("(Currently Figure 6 data)"),
-                tags$th("6-months"),
-                tags$th("Risk-based recall")
-              )
-            ),
-            tags$tbody(
-              tags$tr(
-                tags$td("How many are in the group"),
-                tags$td("861 (100%)"),
-                tags$td("863 (100%)")
-              ),
-              tags$tr(
-                tags$td("Missing the answer to Q1 in their questionaire at Year 4"),
-                tags$td("237 (27.5%)"),
-                tags$td("233 (27.0%)")
-              )
-            )
-          )
-        )
-      )
-    ),
+    p("Page to be deleted", style = "font-size: 24px; font-weight: bold;"),
+    # p("We are going to focus on those participants with the missing measurements for this question below"),
+    # accordion(
+    #   id = "question-explanations",
+    #   open = c("The missing puzzle pieces"),
+    #   multiple = FALSE,  # Close other panels when one is opened
+      # accordion_panel(
+      #   title = "The missing puzzle pieces",
+      #   icon = bsicons::bs_icon("puzzle"),
+      #   div(
+      #     p("Many measurements were taken from participants in this trial. This exercise focuses on just one."),
+      #     tags$ul(
+      #       tags$li(strong("Question:"), "Have you had painful aching in your mouth?"),
+      #       tags$li(strong("Answer options:"), "a number from 0 to 4"),
+      #     ),
+      #     tags$table(
+      #       class = "table table-bordered table-striped",
+      #       tags$thead(
+      #         tags$tr(
+      #           tags$th("0"),
+      #           tags$th("1"),
+      #           tags$th("2"),
+      #           tags$th("3"),
+      #           tags$th("4")
+      #         )
+      #       ),
+      #       tags$tbody(
+      #         tags$tr(
+      #           tags$td("never"),
+      #           tags$td("hardly ever"),
+      #           tags$td("occasionally"),
+      #           tags$td("fairly often"),
+      #           tags$td("very often")
+      #         )
+      #       )
+      #     ),
+      #     "This question was in a questionaire measuring patients' oral health symptoms over the past 12 months. The participants completed it at home and returned them to the researcher using a pre-paid envelope. They did this every year for 4 years.",
+      #     p(strong("Note:"), "we are going to focus on the missing answers to this question just at Year 4"),
+      #   )
+      # ),
+  #     accordion_panel(
+  #       title="What do we need to 'fill the gaps'?",
+  #       icon = bsicons::bs_icon("question-circle"),
+  #       div(
+  #         p("We want to get a general sense of how they could have answered that question 4 years after they started the study. To get that overall picture we will focus on estimating the 'average'. This value can be anything between 0 to 4 and represents the typical response from this group")
+  #       )
+  #     ),
+  #     accordion_panel(
+  #       title = "Remember",
+  #       icon = bsicons::bs_icon("lightbulb"),
+  #       div(
+  #         p(strong("Remember:"), "If you're not feeling sure about knowledge on this that is a good thing. Counter to what you might think, we want to capture that",em("uncertainty"),"in your judgements. Your judgement is not being used to accurately represent one patient's medical condition, it is about getting a general sense about all of those patients with missing measurements, and what their results might have been.")
+  #       )
+  #     ),
+  #     accordion_panel(
+  #       title = "Participants we are focusing on",
+  #       icon = bsicons::bs_icon("person-circle"),
+  #       div(
+  #         p("Next we are going to look at each treatment arm. Focusing on the 237 participants in the 6-month group first, then the 233 in the risk-recall arm."),
+  #         tags$table(
+  #           class = "table table-bordered table-striped",
+  #           tags$thead(
+  #             tags$tr(
+  #               tags$th("(Currently Figure 6 data)"),
+  #               tags$th("6-months"),
+  #               tags$th("Risk-based recall")
+  #             )
+  #           ),
+  #           tags$tbody(
+  #             tags$tr(
+  #               tags$td("How many are in the group"),
+  #               tags$td("861 (100%)"),
+  #               tags$td("863 (100%)")
+  #             ),
+  #             tags$tr(
+  #               tags$td("Missing the answer to Q1 in their questionaire at Year 4"),
+  #               tags$td("237 (27.5%)"),
+  #               tags$td("233 (27.0%)")
+  #             )
+  #           )
+  #         )
+  #       )
+  #     )
+    # ),
   ),
   conditionalPanel(
     condition = "input.page == 4",
@@ -703,25 +706,52 @@ ui <- fluidPage(
 
   conditionalPanel(
     condition = "input.page == 5",
-
-    p("If you’ve not done so, please download your results.
-
-    Then please send your results when completed to contact xxxxx@xxxxx."),
+    p("Last step", style = "font-size: 24px; font-weight: bold;"),
+    p("If you’ve not done so yet, please download your results."),
+    div(downloadButton("export", "Download Results")),
+    hr(),
+    p("Then please send this downloaded file to ", 
+      tags$a(href = "mailto:s.greenwood.22@abdn.ac.uk?subje
+             ct=My%20Results%20-%20rethinking%20missing%20data%
+             20with%20patients", 
+             "s.greenwood.22@abdn.ac.uk")), 
+    p("That is the end of this exercise! Next part is the consensus meeting."),
     strong("Where are your results going?"),
+    p("Other patients are completing the same exercise. They will be sending
+      their judgements to the research team, who will combine them to discuss 
+      in the consensus meeting"),
     tags$figure(
       class="centerFigure",
       tags$img(
         src="datagoing.png",
-        width=600,
+        width=400,
         alt="Example image"
       ),
     ),
-    a(href = "mailto:xxxxx@xxxxx", "Send results to xxxxx@xxxxx"),
-    hr(),
+        hr(),
     strong("Additional note:"),
-    p("We want to thank all the patient and public involvement contributors who helped create this website, as well as the programmer Alan Fleming for his programming help! Background on the tool can be found in LINK . A contact for questions is Sophie Greenwood and Beatriz Goulao, who can be contacted via email: beatriz.goulao@abdn.ac.uk / s.greenwood.22@abdn.ac.uk. This tool was created using funding from the Medical Research Council’s (MRC) Trials Methodology Research Partnership (TMRP) Doctoral Training Partnership (DTP), grant number MR/W006049/1."),
+    p("We want to thank all the patient and public involvement contributors who 
+      helped create this website, as well as the Alan Fleming for his 
+      programming help!"),
+    p("If you want to find out more about the research consider"),
+    tags$ul(
+      tags$li("Website of the research page",tags$a(href = "https://www.abdn.ac.uk/ace/what-we-do/research/projects-a-z/rethinking-missing-data-with-patients-365", "here" )),
+      tags$li("Contact Beatriz Goulao via:", 
+                tags$a(href = "mailto:beatriz.goulao@abdn.ac.uk?subject=
+                Question%20-%20rethinking%20missing%20data%
+                20with%20patients", "email")),
+    ),
+    strong("Funding:"),
+    p("This website was created using funding from the Medical Research 
+      Council’s (MRC) Trials Methodology Research Partnership (TMRP) 
+      Doctoral Training Partnership (DTP), grant number MR/W006049/1."),
     strong("References:"),
-    p("Note that this tool was made in reference to SHELF… ref.")
+    p("we'd like to note a series of resources that were fundamental in the 
+    creation of this tool. "),
+    tags$ul(
+      tags$li("SHELF", em("add reference details")),
+      tags$li("Mason et al. paper", em("add reference details")),
+    ),
   ),
   div(
     style="display: flex; justify-content: space-between;",
@@ -741,6 +771,11 @@ ui <- fluidPage(
   hr(),
   p("MIA Tool (Missing Information Analyser)"),
 )
+
+
+
+
+
 
 server <- function(input, output, session) {
   page <- reactiveVal(1)
@@ -922,7 +957,7 @@ server <- function(input, output, session) {
   
   output$export = downloadHandler(
     filename = function() {
-      paste0("slider_values_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".pdf")
+      paste0("My_results_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".pdf")
     },
     content = function(file) {
       pdf(file, width = 10, height = 14)
@@ -931,6 +966,10 @@ server <- function(input, output, session) {
       
       # 6-month recall responses
       text(0.5, 0.85, "Group 1: 6-month recall", font = 2, cex = 1.2)
+      
+      # text(0.3, 0.8, "Thank you for completing the exercise! These are the 
+      #      judgements / opinion / thoughts on the questions below. Please send 
+      #      this document to s.greenwood.22@abdn.ac.uk.", cex = 1)
       
       text(0.3, 0.8, "Question", cex = 1)
       text(0.7, 0.8, "Your Response", cex = 1)

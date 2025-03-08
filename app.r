@@ -181,7 +181,7 @@ ui <- fluidPage(
       ),
       tags$li(
         "A document of frequently asked questions: ",
-        tags$a(href = "https://365abdn-my.sharepoint.com/:w:/g/personal/r01sg22_abdn_ac_uk/EelFYSIsmh9GrRXXs7WRHboBTwS5SONH-tJQNSLGE8-pWA?email=alan.fleming%40abdn.ac.uk&e=FPcw4T", "View Document")
+        tags$a(href = "FAQs.pdf", "View Document", download="FAQS.pdf")
       )
     ),
     p("If you would like to have any support when completing, contact ", tags$a(href = "mailto:s.greenwood.22@abdn.ac.uk?subject=Question%20-%20rethinking%20missing%20data%20with%20patients", "s.greenwood.22@abdn.ac.uk")),

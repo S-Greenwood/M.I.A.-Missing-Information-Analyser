@@ -6,6 +6,78 @@ ui <- fluidPage(
   theme = bs_theme(version = 5),
   useShinyjs(),
   title = "Rethinking missing data with patients",
+  tags$style(HTML("
+  #question1fSummary .irs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  #question1fSummary .irs-line {
+    background-color: transparent; /* Make the unfilled part transparent */
+  }
+
+   .redbar .irs-bar {
+    background-color: red; 
+          height: 3px;
+  }
+
+  .bluebar .irs-bar {
+    background-color: blue;
+          height: 3px;
+  }
+
+  .greenbar .irs-bar {
+    background-color: green;
+          height: 3px;
+  }
+
+  .orangebar .irs-bar {
+    background-color: orange;
+          height: 3px;
+  }
+
+  .purplebar .irs-bar {
+    background-color: purple;
+          height: 3px;
+  }
+
+  .pinkbar .irs-bar {
+    background-color: pink; 
+      height: 3px;
+  }
+
+  .pinkbar .irs-line {
+    background-color: red !important;
+    height: 3px;
+  }
+
+  #question1fSummary .irs-handle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: red; /* Match the handle color to the filled part */
+    top: -4px;
+  }
+
+  #question1fSummary .irs-handle.state_pressed,
+  #question1fSummary .irs-handle:hover {
+    background-color: darkred; /* Darken the handle color on hover/press */
+  }
+
+  #question1fSummary .irs-min,
+  #question1fSummary .irs-max {
+    display: none;
+  }
+
+  #question1fSummary .irs-from,
+  #question1fSummary .irs-to,
+  #question1fSummary .irs-single {
+    display: none;
+  }
+")),
+
   tags$script(HTML("
     document.addEventListener('DOMContentLoaded', function() {
       const updateSliderRelationships = function() {
@@ -259,93 +331,6 @@ ui <- fluidPage(
   ),
   conditionalPanel(
     condition = "input.page == 3",
-    p("Page to be deleted", style = "font-size: 24px; font-weight: bold;"),
-    # p("We are going to focus on those participants with the missing measurements for this question below"),
-    # accordion(
-    #   id = "question-explanations",
-    #   open = c("The missing puzzle pieces"),
-    #   multiple = FALSE,  # Close other panels when one is opened
-      # accordion_panel(
-      #   title = "The missing puzzle pieces",
-      #   icon = bsicons::bs_icon("puzzle"),
-      #   div(
-      #     p("Many measurements were taken from participants in this trial. This exercise focuses on just one."),
-      #     tags$ul(
-      #       tags$li(strong("Question:"), "Have you had painful aching in your mouth?"),
-      #       tags$li(strong("Answer options:"), "a number from 0 to 4"),
-      #     ),
-      #     tags$table(
-      #       class = "table table-bordered table-striped",
-      #       tags$thead(
-      #         tags$tr(
-      #           tags$th("0"),
-      #           tags$th("1"),
-      #           tags$th("2"),
-      #           tags$th("3"),
-      #           tags$th("4")
-      #         )
-      #       ),
-      #       tags$tbody(
-      #         tags$tr(
-      #           tags$td("never"),
-      #           tags$td("hardly ever"),
-      #           tags$td("occasionally"),
-      #           tags$td("fairly often"),
-      #           tags$td("very often")
-      #         )
-      #       )
-      #     ),
-      #     "This question was in a questionaire measuring patients' oral health symptoms over the past 12 months. The participants completed it at home and returned them to the researcher using a pre-paid envelope. They did this every year for 4 years.",
-      #     p(strong("Note:"), "we are going to focus on the missing answers to this question just at Year 4"),
-      #   )
-      # ),
-  #     accordion_panel(
-  #       title="What do we need to 'fill the gaps'?",
-  #       icon = bsicons::bs_icon("question-circle"),
-  #       div(
-  #         p("We want to get a general sense of how they could have answered that question 4 years after they started the study. To get that overall picture we will focus on estimating the 'average'. This value can be anything between 0 to 4 and represents the typical response from this group")
-  #       )
-  #     ),
-  #     accordion_panel(
-  #       title = "Remember",
-  #       icon = bsicons::bs_icon("lightbulb"),
-  #       div(
-  #         p(strong("Remember:"), "If you're not feeling sure about knowledge on this that is a good thing. Counter to what you might think, we want to capture that",em("uncertainty"),"in your judgements. Your judgement is not being used to accurately represent one patient's medical condition, it is about getting a general sense about all of those patients with missing measurements, and what their results might have been.")
-  #       )
-  #     ),
-  #     accordion_panel(
-  #       title = "Participants we are focusing on",
-  #       icon = bsicons::bs_icon("person-circle"),
-  #       div(
-  #         p("Next we are going to look at each treatment arm. Focusing on the 237 participants in the 6-month group first, then the 233 in the risk-recall arm."),
-  #         tags$table(
-  #           class = "table table-bordered table-striped",
-  #           tags$thead(
-  #             tags$tr(
-  #               tags$th("(Currently Figure 6 data)"),
-  #               tags$th("6-months"),
-  #               tags$th("Risk-based recall")
-  #             )
-  #           ),
-  #           tags$tbody(
-  #             tags$tr(
-  #               tags$td("How many are in the group"),
-  #               tags$td("861 (100%)"),
-  #               tags$td("863 (100%)")
-  #             ),
-  #             tags$tr(
-  #               tags$td("Missing the answer to Q1 in their questionaire at Year 4"),
-  #               tags$td("237 (27.5%)"),
-  #               tags$td("233 (27.0%)")
-  #             )
-  #           )
-  #         )
-  #       )
-  #     )
-    # ),
-  ),
-  conditionalPanel(
-    condition = "input.page == 4",
     p(strong("Group 1:"), "6-month recall"),
     p("We are first going to focus on the 861 participants who were going back to see the dentist every 6-months. We want to estimate the responses of those 237 (27.5%) whose responses were missing."),
     accordion(
@@ -610,23 +595,20 @@ ui <- fluidPage(
     br(),
     p("Now we are going to estimate the 237 (27.5%) whose responses were missing. We want to get a general sense of how they could have answered to that question 4 years after they started the study. To get that overall picture we will focus on estimating the 'average'. This value can be anything between 0 to 4 and represents what the typical response from these 237 overall."),
     navset_card_tab(
-      nav_panel("Question 1a", 
+      nav_panel("Q1 A-C", 
         div(
           div(strong("Question 1a: "), p("Thinking about the overall average response from these participants, based on your judgement. What is the LOWEST possible value the average could be? (L = lower plausible limit)")),
           sliderInput("question1aSlider", label = NULL, min = 0, max = 4, value = 0, step = 0.1),
           uiOutput("question1aValue") # Display the selected value
-        )
-      ),
-      nav_panel("Question 1b", 
+        ),
+
         div(
           div(strong("Question 1b: "), p("Thinking about the overall average response from these participants, based on your judgement. What is the HIGHEST possible value the average could be? (U = upper plausible limit)")),
           sliderInput("question1bSlider", label = NULL, min = 0, max = 4, value = 4, step = 0.1),
           uiOutput("question1bValue"), # Display the selected value
           p("Reflection: Based on the answer you've given, you think that the average participant response to the questionnaire ranged from "),
           uiOutput("reflection1ab") # Display the reflection with values
-        )
-      ),
-      nav_panel("Question 1c", 
+        ),
         div(
           div(strong("Question 1c:"), p("Now you have you highest and lowest value, where in between these values splits the score, where it is equally likely that the average is above and below that value? Note that it doesn't have to sit in the middle! A value closer to right this means you think that then average of these 237 participants are likely to be is likely to be a higher score, which is a worse outcome")),
           uiOutput("question1cRange"), # Show current range from 1a and 1b
@@ -641,25 +623,21 @@ ui <- fluidPage(
           )
         )
       ),
-      nav_panel("Question 1d", 
+      nav_panel("Q1 D-F", 
         div(
           p("We're now going to split our group of 237 participant in half. One half have better (lower) scores, and the other have worse (higher) scores for the 6-months group."),
           div(strong("Question 1d:"), "For the half of the 237 participant with lower (better) scores move the scale to draw a line on the left where you think it is equally likely that the average is above and below that value? (remember it doesn't need to be in the middle!)"),
           uiOutput("question1dRange"), # Show current range from 1a and 1c
           sliderInput("question1dSlider", label = NULL, min = 0, max = 4, value = 1, step = 0.1),
           uiOutput("question1dValue") # Display the selected value
-        )
-      ),
-      nav_panel("Question 1e", 
+        ),
         div(
           div(strong("Question 1e:"), "For the half of the 237 participant with higher (worse) scores move the scale to draw a line on the left where you think it is equally likely that the average is above and below that value? (remember it doesn't need to be in the middle!)"),
           uiOutput("question1eRange"), # Show current range from 1c and 1b
           sliderInput("question1eSlider", label = NULL, min = 0, max = 4, value = 3, step = 0.1),
           uiOutput("question1eValue"), # Display the selected value
           div(strong("Reflection:"), "You have given your judgement about the average missing score for those 237 participants through 5 numbers. We now have a plot that is split into four segments, where it is equally likely that the average value of those 237 participants could be in each segment. It's normal for them not to be equally sized, often the middle two segments are much smaller!")
-        )
-      ),
-      nav_panel("Question 1f", 
+        ),
         div(
           div(strong("Question 1f:"), "Do you have any reasons, or rationale you want to write about your judgement above?"),
           uiOutput("question1fSummary"), # Show summary of previous answers
@@ -667,7 +645,7 @@ ui <- fluidPage(
           p("Remember, we want to capture that uncertainty in your judgements, and we are asking your judgement to get a general sense about those patients with missing measurements, and what their results might have been. So we have one last reflection to help you with your response.")
         )
       ),
-      nav_panel("Question 1g", 
+      nav_panel("Q1 G", 
         div(
           div(strong("Question 1g:"), "Lastly, lets now compare your judgements on the average of the 237 participants who did not answer against the average of the 624 participants who did answer the question."),
           tags$table(
@@ -705,9 +683,9 @@ ui <- fluidPage(
   ),
 
   conditionalPanel(
-    condition = "input.page == 5",
+    condition = "input.page == 4",
     p("Last step", style = "font-size: 24px; font-weight: bold;"),
-    p("If you’ve not done so yet, please download your results."),
+    p("If you've not done so yet, please download your results."),
     div(downloadButton("export", "Download Results")),
     hr(),
     p("Then please send this downloaded file to ", 
@@ -743,7 +721,7 @@ ui <- fluidPage(
     ),
     strong("Funding:"),
     p("This website was created using funding from the Medical Research 
-      Council’s (MRC) Trials Methodology Research Partnership (TMRP) 
+      Council's (MRC) Trials Methodology Research Partnership (TMRP) 
       Doctoral Training Partnership (DTP), grant number MR/W006049/1."),
     strong("References:"),
     p("we'd like to note a series of resources that were fundamental in the 
@@ -764,18 +742,13 @@ ui <- fluidPage(
       actionButton("prevBtn", "Previous"),
     ),
     conditionalPanel(
-      condition = "input.page < 5",
+      condition = "input.page < 4",
       actionButton("nextBtn", "Next")
     ),
   ),
   hr(),
   p("MIA Tool (Missing Information Analyser)"),
 )
-
-
-
-
-
 
 server <- function(input, output, session) {
   page <- reactiveVal(1)
@@ -857,6 +830,63 @@ server <- function(input, output, session) {
         tags$li("Median value (equally likely to be above/below): ", strong(responses$q1c)),
         tags$li("Lower half median: ", strong(responses$q1d)),
         tags$li("Upper half median: ", strong(responses$q1e))
+      ),
+      
+      div(
+        style = "position: relative; height: 120px; margin-top: 30px;",
+       
+        
+        # Slider for q1a 
+        div(
+          style = "position: absolute; top: 0px; left: 0; width: 100%; z-index: 5;",
+          class = "redbar",
+          sliderInput("q1aVisual", label="",
+                     min = 0, max = 4, value = responses$q1a, step = 0.1, ticks = FALSE)
+        ),
+        
+        # Slider for q1d 
+        div(
+          style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 4;",
+          class = "bluebar",
+          sliderInput("q1dVisual", label="",
+                     min = 0, max = 4, value = responses$q1d, step = 0.1, ticks = FALSE)
+        ),
+        
+        # Slider for q1c
+        div(
+          style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 3;",
+          class = "greenbar",
+          sliderInput("q1cVisual", label="",
+                     min = 0, max = 4, value = responses$q1c, step = 0.1, ticks = FALSE)
+        ),
+        
+        # Slider for q1e
+        div(
+          style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 2;",
+          class = "orangebar",
+          sliderInput("q1eVisual", label="",
+                     min = 0, max = 4, value = responses$q1e, step = 0.1, ticks = FALSE)
+        ),
+        
+        # Slider for q1b 
+        div(
+          style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 1;",
+          class = "pinkbar",
+          sliderInput("q1bVisual", label="",
+                     min = 0, max = 4, value = responses$q1b, step = 0.1, ticks = FALSE)
+        )
+      ),
+      
+      div(
+        style = "margin-top: 50px;",
+        p("Legend:"),
+        tags$ul(
+          tags$li(tags$span("L", style = "color: blue; font-weight: bold;"), " - Lowest possible average (", strong(responses$q1a), ")"),
+          tags$li(tags$span("Q1", style = "color: green; font-weight: bold;"), " - Lower quartile (", strong(responses$q1d), ")"),
+          tags$li(tags$span("M", style = "color: red; font-weight: bold;"), " - Median value (", strong(responses$q1c), ")"),
+          tags$li(tags$span("Q3", style = "color: green; font-weight: bold;"), " - Upper quartile (", strong(responses$q1e), ")"),
+          tags$li(tags$span("U", style = "color: blue; font-weight: bold;"), " - Highest possible average (", strong(responses$q1b), ")")
+        )
       )
     )
   })
@@ -1007,6 +1037,22 @@ server <- function(input, output, session) {
       dev.off()
     }
   )
+  
+  observe({
+    updateSliderInput(session, "q1aVisual", value = responses$q1a)
+    updateSliderInput(session, "q1bVisual", value = responses$q1b)
+    updateSliderInput(session, "q1cVisual", value = responses$q1c)
+    updateSliderInput(session, "q1dVisual", value = responses$q1d)
+    updateSliderInput(session, "q1eVisual", value = responses$q1e)
+  })
+  
+  observe({
+    shinyjs::disable("q1aVisual")
+    shinyjs::disable("q1bVisual")
+    shinyjs::disable("q1cVisual")
+    shinyjs::disable("q1dVisual")
+    shinyjs::disable("q1eVisual")
+  })
 }
 
 shinyApp(ui, server)

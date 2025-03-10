@@ -2,173 +2,39 @@ library(shiny)
 library(bslib)
 library(shinyjs)
 
+#### UI code ####
 ui <- fluidPage(
   theme = bs_theme(version = 5),
   useShinyjs(),
   title = "Rethinking missing data with patients",
-  tags$style(HTML("
-  #question1fSummary .irs {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
-
-  #question1fSummary .irs-line {
-    background-color: transparent; /* Make the unfilled part transparent */
-  }
-
-   .redbar .irs-bar {
-    background-color: red; 
-          height: 3px;
-  }
-
-  .bluebar .irs-bar {
-    background-color: blue;
-          height: 3px;
-  }
-
-  .greenbar .irs-bar {
-    background-color: green;
-          height: 3px;
-  }
-
-  .orangebar .irs-bar {
-    background-color: orange;
-          height: 3px;
-  }
-
-  .purplebar .irs-bar {
-    background-color: purple;
-          height: 3px;
-  }
-
-  .pinkbar .irs-bar {
-    background-color: pink; 
-      height: 3px;
-  }
-
-  .pinkbar .irs-line {
-    background-color: red !important;
-    height: 3px;
-  }
-
-  #question1fSummary .irs-handle {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background-color: red; /* Match the handle color to the filled part */
-    top: -4px;
-  }
-
-  #question1fSummary .irs-handle.state_pressed,
-  #question1fSummary .irs-handle:hover {
-    background-color: darkred; /* Darken the handle color on hover/press */
-  }
-
-  #question1fSummary .irs-min,
-  #question1fSummary .irs-max {
-    display: none;
-  }
-
-  #question1fSummary .irs-from,
-  #question1fSummary .irs-to,
-  #question1fSummary .irs-single {
-    display: none;
-  }
-")),
-
-  tags$script(HTML("
-    document.addEventListener('DOMContentLoaded', function() {
-      const updateSliderRelationships = function() {
-        const sliders = {
-          a: $('#question1aSlider'),
-          b: $('#question1bSlider'),
-          c: $('#question1cSlider'),
-          d: $('#question1dSlider'),
-          e: $('#question1eSlider'),
-          gNo: $('#question1gNoSlider'),
-          gYes: $('#question1gYesSlider')
-        };
-        
-        $(document).on('change', '.js-range-slider', function(e) {
-          const sliderId = $(this).attr('id');
-          
-          if (sliderId === 'question1aSlider') {
-            if (parseFloat(sliders.a.val()) >= parseFloat(sliders.c.val())) {
-              sliders.c.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) + 0.1 });
-            }
-            if (parseFloat(sliders.c.val()) >= parseFloat(sliders.b.val())) {
-              sliders.b.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) + 0.1 });
-            }
-            
-            if (parseFloat(sliders.a.val()) > parseFloat(sliders.d.val())) {
-              sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) });
-            }
-            
-            sliders.gNo.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
-          }
-          else if (sliderId === 'question1bSlider') {
-            if (parseFloat(sliders.b.val()) <= parseFloat(sliders.c.val())) {
-              sliders.c.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) - 0.1 });
-            }
-            if (parseFloat(sliders.c.val()) <= parseFloat(sliders.a.val())) {
-              sliders.a.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) - 0.1 });
-            }
-            
-            if (parseFloat(sliders.b.val()) < parseFloat(sliders.e.val())) {
-              sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) });
-            }
-          }
-          else if (sliderId === 'question1cSlider') {
-            if (parseFloat(sliders.c.val()) <= parseFloat(sliders.a.val())) {
-              sliders.a.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) - 0.1 });
-            }
-            if (parseFloat(sliders.c.val()) >= parseFloat(sliders.b.val())) {
-              sliders.b.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) + 0.1 });
-            }
-            
-            sliders.gNo.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
-          }
-          else if (sliderId === 'question1dSlider') {
-            if (parseFloat(sliders.d.val()) < parseFloat(sliders.a.val())) {
-              sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) });
-            }
-            if (parseFloat(sliders.d.val()) > parseFloat(sliders.c.val())) {
-              sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
-            }
-          }
-          else if (sliderId === 'question1eSlider') {
-            if (parseFloat(sliders.e.val()) < parseFloat(sliders.c.val())) {
-              sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
-            }
-            if (parseFloat(sliders.e.val()) > parseFloat(sliders.b.val())) {
-              sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) });
-            }
-          }
-        });
-      };
-      
-      updateSliderRelationships();
-    });
-  ")),
-  div(
+  
+  
+ div(
     style="display:none;",
     textInput("page", "", value = "1"),
   ),
+  
+  
+  #### Header ####
   div(
+    hr(),
     h1("Rethinking missing data with patients"),
     hr(),
   ),
+  
+  # Text on each page
+  
+  # Page 1 - text ####
+  
   conditionalPanel(
     condition = "input.page == 1",
     p("Introduction", style = "font-size: 24px; font-weight: bold;"),
-    p("Clinical trials are important studies that gather evidence which is used 
-      then to decide which healthcare options are available to everyone in the future. 
-      Most of these trials will have measurements missing from participants, just like 
-      pieces missing from a puzzle."),
-    p("Researchers are asking if patients to help them 'fill the gaps' of these 
-      puzzles, and this is where you can make a difference."),
+    p("Clinical trials are important studies that gather evidence about 
+    healthcare interventions. This evidence is then used to decide which 
+    healthcare options are available to everyone in the future. Most of these 
+    clinical trials will have missing measurements from patients. 
+    Researchers are asking patients to help them decide what to do about
+    these missing measurements. This is where you come in!"),
     strong("Objective of this step: "),
     p("As a patient, we want to take your judgements/ opinions/ thoughts on what you 
       think the gaps should be for specific clinical trial. This activity should 
@@ -184,22 +50,27 @@ ui <- fluidPage(
         tags$a(href = "FAQs.pdf", "View Document", download="FAQS.pdf")
       )
     ),
-    p("If you would like to have any support when completing, contact ", tags$a(href = "mailto:s.greenwood.22@abdn.ac.uk?subject=Question%20-%20rethinking%20missing%20data%20with%20patients", "s.greenwood.22@abdn.ac.uk")),
+    p("If you would like to have any support please contact ", tags$a(href = "mailto:s.greenwood.22@abdn.ac.uk?subject=Question%20-%20rethinking%20missing%20data%20with%20patients", "s.greenwood.22@abdn.ac.uk")),
     p("Click next to get started.")
   ),
+  
+  # Page 2 - text ####
+  
   conditionalPanel(
     condition = "input.page == 2",
     p("Background", style = "font-size: 24px; font-weight: bold;"),
-    p("Here is some information to give you a bit of context about the puzzle we are looking to fill together."),
+    p("Here is some information to give you a bit of context about the clinical 
+      trial 'puzzle' we are looking to fill together. Click on each question to 
+      see the answer."),
     
     accordion(
     id = "clinical_trial_acc",
-    open = c("What is the clinical trial?"),
+    open = NULL,
     multiple = FALSE,  # Close other panels when one is opened
     
     accordion_panel(
       title = "What is the clinical trial?",
-      icon = bsicons::bs_icon("patch-question"),
+      icon = bsicons::bs_icon("question-circle"),
       div("Traditionally, dentists have encouraged both patients at risk of developing dental disease to attend their dental practices for regular 6-month 'check-ups'. There is, however, little evidence available for either patients or dentists to use when deciding on the best dental recall interval (i.e. time between dental check-ups) for maintaining oral health. In this study, they wanted to find out, for adult patients who regularly attend the dentist, what interval of time between dental check-ups maintains optimum oral health and represents value for money.")
     ),
     accordion_panel(
@@ -291,9 +162,11 @@ ui <- fluidPage(
     ),
     accordion_panel(
         title = "Who are the participants with missing measurements?",
-        icon = bsicons::bs_icon("person-circle"),
+        icon = bsicons::bs_icon("person-vcard"),
         div(
-          p("Limited information is available about the patient who did not answer that question. We can only search for clues. This is why we are doing this exercise! More information will be given before you do the exercise. "),
+          p("Limited information is available about the patient who did not 
+            answer that question. We can only search for clues. This is why we 
+            are doing this exercise!"),
           
         )
     ),
@@ -301,98 +174,120 @@ ui <- fluidPage(
       title="What do we need to 'fill the gaps'?",
       icon = bsicons::bs_icon("question-circle"),
       div(
-        p("We want to get a general sense of how they could have answered that question 4 years after they started the study. To get that overall picture we will focus on estimating the 'average'. This value can be anything between 0 to 4 and represents the typical response from this group")
+        p("We want to get a general sense of how they could have answered that 
+          question 4 years after they started the study. To get that overall 
+          picture we will focus on estimating the 'average'. This value can be 
+          anything between 0 to 4 and represents the typical response from this 
+          group")
       )
     ),
     accordion_panel(
-      title = "Remember",
-      icon = bsicons::bs_icon("lightbulb"),
+      title = "What if I am not sure?",
+      icon = bsicons::bs_icon("person-raised-hand"),
       div(
-        p(strong("Remember:"), "If you're not feeling sure about knowledge on this that is a good thing. Counter to what you might think, we want to capture that",em("uncertainty"),"in your judgements. Your judgement is not being used to accurately represent one patient's medical condition, it is about getting a general sense about all of those patients with missing measurements, and what their results might have been.")
+        p(strong("Remember:"), "If you're not feeling sure this that is a good 
+          thing! Counter to what you might think, we want to capture 
+          that",em("uncertainty"),"in your judgements. Your judgement is not 
+          being used to accurately represent one patient's medical condition, 
+          it is about getting a general sense about all of those patients with 
+          missing measurements, and what their results might have been.")
       )
     ),
     accordion_panel(
       title = "Next step",
-      icon = bsicons::bs_icon("person-circle"),
-      div(
-        p(strong("Remember:"), "If you're not feeling sure about knowledge on this that is a good thing. Counter to what you might think, we want to capture that",em("uncertainty"),"in your judgements. Your judgement is not being used to accurately represent one patient's medical condition, it is about getting a general sense about all of those patients with missing measurements, and what their results might have been.")
-      ),
-      
+      icon = bsicons::bs_icon("arrow-right-square"),
       div(
         p("We are going to look at one group at a time."),
         tags$ul(
           tags$li("First, the 217 patients in the 6 month group"),
           tags$li("Second, the 221 patients in the risk-recall group"),
-          tags$li("Then, you will download your responses!"),
+          tags$li("Then, you will download your responses, email them and you're done!"),
         ),
       )
-    )
+    ),
+    div( hr()),
   )
   ),
+  
+  
+  # Page 3 - text ####
+  
+  
   conditionalPanel(
     condition = "input.page == 3",
-    p(strong("Group 1:"), "6-month recall"),
-    p("We are first going to focus on the 861 participants who were going back to see the dentist every 6-months. We want to estimate the responses of those 237 (27.5%) whose responses were missing."),
+    p("Group 1: 6-month recall", style = "font-size: 24px; font-weight: bold;"),
+    #p("We are first going to focus on the 861 participants who were going back to see the dentist every 6-months. We want to estimate the responses of those 237 (27.5%) whose responses were missing."),
     accordion(
       id = "q1-accordion",
-      open = c("The missing puzzle pieces"),
+      open = NULL,
       multiple = FALSE,
       accordion_panel(
-        title = "How many of the participant in this group missed a response to the question?",
+        title = "How many patients were missing their measurement?",
         icon = bsicons::bs_icon("search"),
-        p("Of the 861 participants on the 6-month, 237 (27.5%) missed a response to this question at year 4."),
+        p("Of the 863 patients in Group 1 (6-months), 217 (25.1%) missed a 
+          response to this question at year 4."),
         tags$table(
           class = "table table-bordered table-striped",
           tags$thead(
             tags$tr(
-              tags$th("(Currently Figure 6 data)"),
+              tags$th("Number of patients"),
               tags$th("6-months")
             )
           ),
           tags$tbody(
             tags$tr(
-              tags$td("How many are in the group"),
-              tags$td("861 (100%)")
+              tags$td("Total number in group"),
+              tags$td("863 (100%)")
             ),
             tags$tr(
-              tags$td("Missing the answer to Q1 in their questionaire at Year 4"),
-              tags$td("237 (27.5%)")
+              tags$td("Missing an answer"),
+              tags$td("217 (25.1%)")
             )
           )
         )
       ),
       accordion_panel(
-        title="What is the profile of these missing participants?",
+        title="What is the profile of these patients?",
         icon = bsicons::bs_icon("person-circle"),
-        p("Here is a table showing some information about the patient with missing data. On the right you can see also the information about those without, to allow you to compare if you want to!"),
+        p("Here is a table showing some background information about the patients with 
+          missing data, compared to those without missing data."),
+        div(
+          p("Summary of what the tables shows:"),
+          tags$ul(
+            tags$li("..."),
+            tags$li("..."),
+            tags$li("..."),
+          ),
+        ),
+        
         tags$table(
           class = "table table-bordered table-striped",
           tags$thead(
             tags$tr(
               tags$th(""),
-              tags$th("Participants with a missing answer?"),
-              tags$th("Participants with no missing answer?"),
+              tags$th("Patients with a missing answer?"),
+              tags$th("Patients with no missing answer?"),
               tags$th("Total - Table 6 - data")
             )
           ),
           tags$tbody(
             tags$tr(
-              tags$td("How many of them? (%)"),
-              tags$td("TODO"),
-              tags$td("TODO"),
+              tags$td("How many patients? (%)"),
+              tags$td("217 (25.14%)"),
+              tags$td("646 (74.86%)"),
               tags$td("863 (100%)")
             ),
             tags$tr(
-              tags$td("Did they complete this question at the start?"),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("803 (93%)")
+              tags$td("Did they complete this questionnaire at the start?"),
+              tags$td("187 (21.67%)"),
+              tags$td("616 (71.38%)"),
+              tags$td("803 (93.05%)")
             ),
             tags$tr(
-              tags$td("Age (years) - the mean"),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("50.1 years")
+              tags$td("Mean Age (years)"),
+              tags$td("45.1"),
+              tags$td("51.7"),
+              tags$td("48.4")
             ),
             tags$tr(
               tags$td("Gender")
@@ -403,9 +298,9 @@ ui <- fluidPage(
                   tags$li("Male")
                 )
               ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("366 (42.4%)")
+              tags$td("95 (11.01%)"),
+              tags$td("271 (31.4%)"),
+              tags$td("366 (42.41%)")
             ),
             tags$tr(
               tags$td(
@@ -413,71 +308,18 @@ ui <- fluidPage(
                   tags$li("Female")
                 )
               ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("491 (56.9%)")
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("Missing")
-                )
-              ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("6 (0.7%)")
+              tags$td("116 (13.44%)"),
+              tags$td("375 (43.45%)"),
+              tags$td("491 (56.89%)")
             ),
             tags$tr(
               tags$td("Smoked in last 12 months"),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("130 (15.1%)")
+              tags$td("48 (5.56%)"),
+              tags$td("82 (9.5%)"),
+              tags$td("130 (15.06%)")
             ),
             tags$tr(
-              tags$td("Time since previous visit to dentist"),
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("< 1 year")
-                )
-              ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("741 (85.9%)")
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("1-2 years")
-                )
-              ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("51 (5.9%)")
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("> 2 years")
-                )
-              ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("0 (0%)")
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("Missing")
-                )
-              ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("71 (8.2%)")
-            ),
-            tags$tr(
-              tags$td("Patient status, n (%)"),
+              tags$td("What care do they normally have?"),
             ),
             tags$tr(
               tags$td(
@@ -485,9 +327,9 @@ ui <- fluidPage(
                   tags$li("NHS")
                 )
               ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("677 (78.4%)")
+              tags$td("148 (17.15%)"),
+              tags$td("529 (61.3%)"),
+              tags$td("677 (78.45%)")
             ),
             tags$tr(
               tags$td(
@@ -495,9 +337,9 @@ ui <- fluidPage(
                   tags$li("Private")
                 )
               ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("32 (3.7%)")
+              tags$td("10 (1.16%)"),
+              tags$td("22 (2.55%)"),
+              tags$td("32 (3.71%)")
             ),
             tags$tr(
               tags$td(
@@ -505,22 +347,12 @@ ui <- fluidPage(
                   tags$li("Combination")
                 )
               ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("56 (6.5%)")
+              tags$td("18 (2.09%)"),
+              tags$td("38 (4.4%)"),
+              tags$td("56 (6.49%)")
             ),
             tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("Missing")
-                )
-              ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("71 (8.2%)")
-            ),
-            tags$tr(
-              tags$td("Type of toothbrush, n (%)"),
+              tags$td("Type of toothbrush"),
             ),
             tags$tr(
               tags$td(
@@ -528,9 +360,9 @@ ui <- fluidPage(
                   tags$li("Manual")
                 )
               ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("496 (57.5%)")
+              tags$td("115 (13.33%)"),
+              tags$td("381 (44.15%)"),
+              tags$td("496 (57.47%)")
             ),
             tags$tr(
               tags$td(
@@ -538,31 +370,16 @@ ui <- fluidPage(
                   tags$li("Electric")
                 )
               ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("298 (34.5%)")
+              tags$td("67 (7.76%)"),
+              tags$td("231 (26.77%)"),
+              tags$td("298 (34.53%)")
             ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("Missing")
-                )
-              ),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("69 (8%)")
-            ),
-            tags$tr(
-              tags$td("Regular attender to dentist?"),
-              tags$td("TODO"),
-              tags$td("TODO"),
-              tags$td("735 (85.2%)")
-            )
+            
           ),
         )
       ),
       accordion_panel(
-        title = "Remember: their missing puzzle piece",
+        title = "What were they missing?",
         icon = bsicons::bs_icon("lightbulb"),
         p("These participants did not answer this question at Year 4:"),
         tags$ul(
@@ -593,9 +410,16 @@ ui <- fluidPage(
       )
     ),
     br(),
-    p("Now we are going to estimate the 237 (27.5%) whose responses were missing. We want to get a general sense of how they could have answered to that question 4 years after they started the study. To get that overall picture we will focus on estimating the 'average'. This value can be anything between 0 to 4 and represents what the typical response from these 237 overall."),
+    p("Activity: 'Fill in the gaps'", style = "font-size: 18px; font-weight: bold;"),
+    
+    p("Now we are going to estimate the 217 patients whose responses were missing.
+      We want to get a general sense of how they could have answered that question, 
+      on average, 4 years into the trial."),
+    p("This activity will be completed in ", strong("3 steps"),". Be sure to complete each one 
+      before clicking 'Next'"),
+      
     navset_card_tab(
-      nav_panel("Q1 A-C", 
+      nav_panel("Step 1", 
         div(
           div(strong("Question 1a: "), p("Thinking about the overall average response from these participants, based on your judgement. What is the LOWEST possible value the average could be? (L = lower plausible limit)")),
           sliderInput("question1aSlider", label = NULL, min = 0, max = 4, value = 0, step = 0.1),
@@ -623,7 +447,7 @@ ui <- fluidPage(
           )
         )
       ),
-      nav_panel("Q1 D-F", 
+      nav_panel("Step 2", 
         div(
           p("We're now going to split our group of 237 participant in half. One half have better (lower) scores, and the other have worse (higher) scores for the 6-months group."),
           div(strong("Question 1d:"), "For the half of the 237 participant with lower (better) scores move the scale to draw a line on the left where you think it is equally likely that the average is above and below that value? (remember it doesn't need to be in the middle!)"),
@@ -645,7 +469,7 @@ ui <- fluidPage(
           p("Remember, we want to capture that uncertainty in your judgements, and we are asking your judgement to get a general sense about those patients with missing measurements, and what their results might have been. So we have one last reflection to help you with your response.")
         )
       ),
-      nav_panel("Q1 G", 
+      nav_panel("Step 3", 
         div(
           div(strong("Question 1g:"), "Lastly, lets now compare your judgements on the average of the 237 participants who did not answer against the average of the 624 participants who did answer the question."),
           tags$table(
@@ -682,19 +506,23 @@ ui <- fluidPage(
     )
   ),
 
+ 
+ 
+  # Page 5 - text ####
+ 
   conditionalPanel(
     condition = "input.page == 4",
-    p("Last step", style = "font-size: 24px; font-weight: bold;"),
-    p("If you've not done so yet, please download your results."),
-    div(downloadButton("export", "Download Results")),
-    hr(),
-    p("Then please send this downloaded file to ", 
+    p("Send your results", style = "font-size: 24px; font-weight: bold;"),
+    p("That is the end of this exercise! If you've not done so yet, please 
+    download your results. Then please send this downloaded file to ", 
       tags$a(href = "mailto:s.greenwood.22@abdn.ac.uk?subje
              ct=My%20Results%20-%20rethinking%20missing%20data%
              20with%20patients", 
-             "s.greenwood.22@abdn.ac.uk")), 
-    p("That is the end of this exercise! Next part is the consensus meeting."),
-    strong("Where are your results going?"),
+             "s.greenwood.22@abdn.ac.uk")),
+        div(downloadButton("export", "Download Results")),
+    hr(),
+    
+    strong("What happens now?"),
     p("Other patients are completing the same exercise. They will be sending
       their judgements to the research team, who will combine them to discuss 
       in the consensus meeting"),
@@ -731,6 +559,9 @@ ui <- fluidPage(
       tags$li("Mason et al. paper", em("add reference details")),
     ),
   ),
+  
+  #### Footer ####
+  
   div(
     style="display: flex; justify-content: space-between;",
     conditionalPanel(
@@ -739,16 +570,245 @@ ui <- fluidPage(
     ),
     conditionalPanel(
       condition = "input.page > 1",
-      actionButton("prevBtn", "Previous"),
+      actionButton("prevBtn", "Previous", style = "background-color: #003366; 
+                   color: white; font-size: 18px; padding: 10px 20px; 
+                   border-radius: 5px;"),
     ),
     conditionalPanel(
       condition = "input.page < 4",
-      actionButton("nextBtn", "Next")
+      actionButton("nextBtn", "Next", style = "background-color: #003366; 
+                   color: white; font-size: 18px; padding: 10px 20px; 
+                   border-radius: 5px;"),
     ),
   ),
+  
+  
   hr(),
-  p("MIA Tool (Missing Information Analyser)"),
+  p("MIA Tool (Missing Information Analyser)", style = "font-style: italic; color: grey"),
+  
+  
+  
+  
+  #### Formatting #####
+  
+  # Force the panels to be collapsed
+  tags$script(HTML("
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('.accordion-button').forEach(function(button) {
+            button.classList.add('collapsed'); // Ensure all buttons start collapsed
+          });
+          document.querySelectorAll('.accordion-collapse').forEach(function(panel) {
+            panel.classList.remove('show'); // Ensure all panels are collapsed
+          });
+        });
+      ")
+  ),
+
+
+  # HTML code to style the accordion bars
+  tags$head(
+    tags$style(HTML("
+      .accordion-button {
+        background-color: #003366 !important;  /* dark blue for all panels */
+        color: white !important; 
+        
+      }
+      
+      .accordion-item {
+        border: 2px solid #4CAF50 !important; /* green border */
+      }
+      
+      .accordion-button:not(.collapsed) {
+        background-color: #388E3C !important; /* green for open panel */
+        color: white !important;
+      }
+    "))
+  ),
+  
+  # HTML code to style the navigation bars 
+  tags$head(
+    tags$style(HTML("
+      .nav-link {
+        background-color: #003366 !important; /* dark blue for tab header*/
+        color: white !important; 
+        font-weight: bold;
+        border-radius: 5px;
+        margin: 2px;
+      }
+
+      .nav-link.active {
+        background-color: #4CAF50 !important; /* green for open tab */
+        color: white !important;
+        font-weight: bold;
+      }
+
+      .card {
+        border: 2px solid #003366 !important; /* border around the card */
+      }
+    "))
+  ),
+  
+  
+  
+  # HTML code for coloured graphic
+  
+  tags$style(HTML("
+  #question1fSummary .irs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  #question1fSummary .irs-line {
+    background-color: transparent; /* Make the unfilled part transparent */
+  }
+
+   .redbar .irs-bar {
+    background-color: red; 
+          height: 3px;
+  }
+
+  .bluebar .irs-bar {
+    background-color: blue;
+          height: 3px;
+  }
+
+  .greenbar .irs-bar {
+    background-color: green;
+          height: 3px;
+  }
+
+  .orangebar .irs-bar {
+    background-color: orange;
+          height: 3px;
+  }
+
+  .purplebar .irs-bar {
+    background-color: purple;
+          height: 3px;
+  }
+
+  .pinkbar .irs-bar {
+    background-color: pink; 
+      height: 3px;
+  }
+
+  .pinkbar .irs-line {
+    background-color: red !important;
+    height: 3px;
+  }
+
+  #question1fSummary .irs-handle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: red; /* Match the handle color to the filled part */
+    top: -4px;
+  }
+
+  #question1fSummary .irs-handle.state_pressed,
+  #question1fSummary .irs-handle:hover {
+    background-color: darkred; /* Darken the handle color on hover/press */
+  }
+
+  #question1fSummary .irs-min,
+  #question1fSummary .irs-max {
+    display: none;
+  }
+
+  #question1fSummary .irs-from,
+  #question1fSummary .irs-to,
+  #question1fSummary .irs-single {
+    display: none;
+  }
+  ")),
+  
+  
+  # Slider formatting
+  
+  tags$script(HTML("
+    document.addEventListener('DOMContentLoaded', function() {
+      const updateSliderRelationships = function() {
+        const sliders = {
+          a: $('#question1aSlider'),
+          b: $('#question1bSlider'),
+          c: $('#question1cSlider'),
+          d: $('#question1dSlider'),
+          e: $('#question1eSlider'),
+          gNo: $('#question1gNoSlider'),
+          gYes: $('#question1gYesSlider')
+        };
+        
+        $(document).on('change', '.js-range-slider', function(e) {
+          const sliderId = $(this).attr('id');
+          
+          if (sliderId === 'question1aSlider') {
+            if (parseFloat(sliders.a.val()) >= parseFloat(sliders.c.val())) {
+              sliders.c.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) + 0.1 });
+            }
+            if (parseFloat(sliders.c.val()) >= parseFloat(sliders.b.val())) {
+              sliders.b.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) + 0.1 });
+            }
+            
+            if (parseFloat(sliders.a.val()) > parseFloat(sliders.d.val())) {
+              sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) });
+            }
+            
+            sliders.gNo.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
+          }
+          else if (sliderId === 'question1bSlider') {
+            if (parseFloat(sliders.b.val()) <= parseFloat(sliders.c.val())) {
+              sliders.c.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) - 0.1 });
+            }
+            if (parseFloat(sliders.c.val()) <= parseFloat(sliders.a.val())) {
+              sliders.a.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) - 0.1 });
+            }
+            
+            if (parseFloat(sliders.b.val()) < parseFloat(sliders.e.val())) {
+              sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) });
+            }
+          }
+          else if (sliderId === 'question1cSlider') {
+            if (parseFloat(sliders.c.val()) <= parseFloat(sliders.a.val())) {
+              sliders.a.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) - 0.1 });
+            }
+            if (parseFloat(sliders.c.val()) >= parseFloat(sliders.b.val())) {
+              sliders.b.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) + 0.1 });
+            }
+            
+            sliders.gNo.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
+          }
+          else if (sliderId === 'question1dSlider') {
+            if (parseFloat(sliders.d.val()) < parseFloat(sliders.a.val())) {
+              sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) });
+            }
+            if (parseFloat(sliders.d.val()) > parseFloat(sliders.c.val())) {
+              sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
+            }
+          }
+          else if (sliderId === 'question1eSlider') {
+            if (parseFloat(sliders.e.val()) < parseFloat(sliders.c.val())) {
+              sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
+            }
+            if (parseFloat(sliders.e.val()) > parseFloat(sliders.b.val())) {
+              sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) });
+            }
+          }
+        });
+      };
+      
+      updateSliderRelationships();
+    });
+  ")),
+  
+  
+  
+  
 )
+
+
+#### Server code ####
 
 server <- function(input, output, session) {
   page <- reactiveVal(1)
@@ -1054,5 +1114,7 @@ server <- function(input, output, session) {
     shinyjs::disable("q1eVisual")
   })
 }
+
+#### Run the app ####
 
 shinyApp(ui, server)

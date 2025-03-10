@@ -892,47 +892,49 @@ server <- function(input, output, session) {
       
       div(
         style = "position: relative; height: 120px; margin-top: 30px;",
-       
-        
-        # Slider for q1a 
-        div(
-          style = "position: absolute; top: 0px; left: 0; width: 100%; z-index: 5;",
-          class = "redbar",
-          sliderInput("q1aVisual", label="",
-                     min = 0, max = 4, value = responses$q1a, step = 0.1, ticks = FALSE)
-        ),
-        
-        # Slider for q1d 
-        div(
-          style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 4;",
-          class = "bluebar",
-          sliderInput("q1dVisual", label="",
-                     min = 0, max = 4, value = responses$q1d, step = 0.1, ticks = FALSE)
-        ),
-        
-        # Slider for q1c
-        div(
-          style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 3;",
-          class = "greenbar",
-          sliderInput("q1cVisual", label="",
-                     min = 0, max = 4, value = responses$q1c, step = 0.1, ticks = FALSE)
-        ),
-        
-        # Slider for q1e
-        div(
-          style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 2;",
-          class = "orangebar",
-          sliderInput("q1eVisual", label="",
-                     min = 0, max = 4, value = responses$q1e, step = 0.1, ticks = FALSE)
-        ),
-        
-        # Slider for q1b 
-        div(
-          style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 1;",
-          class = "pinkbar",
-          sliderInput("q1bVisual", label="",
-                     min = 0, max = 4, value = responses$q1b, step = 0.1, ticks = FALSE)
-        )
+
+         # Horizontal graph with distribution
+         plotlyOutput("HorizontalDistr")
+      #   
+      #   # Slider for q1a 
+      #   div(
+      #     style = "position: absolute; top: 0px; left: 0; width: 100%; z-index: 5;",
+      #     class = "redbar",
+      #     sliderInput("q1aVisual", label="",
+      #                min = 0, max = 4, value = responses$q1a, step = 0.1, ticks = FALSE)
+      #   ),
+      #   
+      #   # Slider for q1d 
+      #   div(
+      #     style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 4;",
+      #     class = "bluebar",
+      #     sliderInput("q1dVisual", label="",
+      #                min = 0, max = 4, value = responses$q1d, step = 0.1, ticks = FALSE)
+      #   ),
+      #   
+      #   # Slider for q1c
+      #   div(
+      #     style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 3;",
+      #     class = "greenbar",
+      #     sliderInput("q1cVisual", label="",
+      #                min = 0, max = 4, value = responses$q1c, step = 0.1, ticks = FALSE)
+      #   ),
+      #   
+      #   # Slider for q1e
+      #   div(
+      #     style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 2;",
+      #     class = "orangebar",
+      #     sliderInput("q1eVisual", label="",
+      #                min = 0, max = 4, value = responses$q1e, step = 0.1, ticks = FALSE)
+      #   ),
+      #   
+      #   # Slider for q1b 
+      #   div(
+      #     style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 1;",
+      #     class = "pinkbar",
+      #     sliderInput("q1bVisual", label="",
+      #                min = 0, max = 4, value = responses$q1b, step = 0.1, ticks = FALSE)
+      #   )
       ),
       
       div(
@@ -1057,6 +1059,70 @@ server <- function(input, output, session) {
                       value = (responses$q1b + responses$q1c)/2 # Keep value in range
     )
   )     
+  
+  # Plot the horizontal line chart with horizontal lines at each value
+  output$HorizontalDistr <- renderPlotly({
+    
+    # Values to plot: Min, Q1, Median, Q3, Max
+    x1 = c(0, responses$q1a)
+    y1 = c(1, 1)
+    
+    x2 = c(responses$q1a, responses$q1d)
+    y2 = c(1, 1)
+    
+    x3 = c(responses$q1d, responses$q1c)
+    y3 = c(1, 1)
+    
+    x4 = c(responses$q1c, responses$q1e)
+    y4 = c(1, 1)
+    
+    x5 = c(responses$q1e, responses$q1b)
+    y5 = c(1, 1)
+    
+    x6 = c(responses$q1b, 4)
+    y6 = c(1, 1)
+    
+    # Create the plot: horizontal lines at each metric
+    plot_ly(hoverinfo='skip') %>%
+      # Horizontal blocs
+      add_trace(x=x1, y=y1, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      add_trace(x=x2, y=y2, type = 'scatter', mode="lines", line = list(color = "#4477AA", width = 50)) %>%
+      add_trace(x=x3, y=y3, type = 'scatter', mode="lines", line = list(color = "#AA3377", width = 50)) %>%
+      add_trace(x=x4, y=y4, type = 'scatter', mode="lines", line = list(color = "#228833", width = 50)) %>%
+      add_trace(x=x5, y=y5, type = 'scatter', mode="lines", line = list(color = "#DDAA33", width = 50)) %>%
+      add_trace(x=x6, y=y6, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      
+      # Vertical black lines between blocs and markers
+      add_trace(x=rep(responses$q1a,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1d,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1c,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1e,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1b,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      
+      # Markers with text inside
+      add_trace(x=responses$q1a, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1d, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1c, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1e, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1b, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      
+      layout(
+        #title = "Distribution Metrics as Horizontal Lines",
+        xaxis = list(#title = "Your estimated distribution", 
+          tickvals = seq(0,4,0.1), 
+          ticktext = c("<b>never: 0</b>", "", "0.2", "", "0.4", "", "0.6", "", "0.8", "",
+                       "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
+                       "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
+                       "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
+                       "<b>very often: 4</b>"), 
+          range = c(0, 4), 
+          zeroline = FALSE,
+          tickangle= 330),
+        yaxis = list(range=c(0, 1.5),
+                     showticklabels = FALSE),
+        showlegend = FALSE
+      )
+  })
   
   observeEvent(input$nextBtn, {
     if (page() == 3) {

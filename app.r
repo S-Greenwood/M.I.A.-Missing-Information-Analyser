@@ -726,83 +726,81 @@ ui <- fluidPage(
   
   
   # Slider formatting
-  
-  tags$script(HTML("
-    document.addEventListener('DOMContentLoaded', function() {
-      const updateSliderRelationships = function() {
-        const sliders = {
-          a: $('#question1aSlider'),
-          b: $('#question1bSlider'),
-          c: $('#question1cSlider'),
-          d: $('#question1dSlider'),
-          e: $('#question1eSlider'),
-          gNo: $('#question1gNoSlider'),
-          gYes: $('#question1gYesSlider')
-        };
-        
-        $(document).on('change', '.js-range-slider', function(e) {
-          const sliderId = $(this).attr('id');
-          
-          if (sliderId === 'question1aSlider') {
-            if (parseFloat(sliders.a.val()) >= parseFloat(sliders.c.val())) {
-              sliders.c.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) + 0.1 });
-            }
-            if (parseFloat(sliders.c.val()) >= parseFloat(sliders.b.val())) {
-              sliders.b.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) + 0.1 });
-            }
-            
-            if (parseFloat(sliders.a.val()) > parseFloat(sliders.d.val())) {
-              sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) });
-            }
-            
-            sliders.gNo.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
-          }
-          else if (sliderId === 'question1bSlider') {
-            if (parseFloat(sliders.b.val()) <= parseFloat(sliders.c.val())) {
-              sliders.c.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) - 0.1 });
-            }
-            if (parseFloat(sliders.c.val()) <= parseFloat(sliders.a.val())) {
-              sliders.a.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) - 0.1 });
-            }
-            
-            if (parseFloat(sliders.b.val()) < parseFloat(sliders.e.val())) {
-              sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) });
-            }
-          }
-          else if (sliderId === 'question1cSlider') {
-            if (parseFloat(sliders.c.val()) <= parseFloat(sliders.a.val())) {
-              sliders.a.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) - 0.1 });
-            }
-            if (parseFloat(sliders.c.val()) >= parseFloat(sliders.b.val())) {
-              sliders.b.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) + 0.1 });
-            }
-            
-            sliders.gNo.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
-          }
-          else if (sliderId === 'question1dSlider') {
-            if (parseFloat(sliders.d.val()) < parseFloat(sliders.a.val())) {
-              sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) });
-            }
-            if (parseFloat(sliders.d.val()) > parseFloat(sliders.c.val())) {
-              sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
-            }
-          }
-          else if (sliderId === 'question1eSlider') {
-            if (parseFloat(sliders.e.val()) < parseFloat(sliders.c.val())) {
-              sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
-            }
-            if (parseFloat(sliders.e.val()) > parseFloat(sliders.b.val())) {
-              sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) });
-            }
-          }
-        });
-      };
-      
-      updateSliderRelationships();
-    });
-  ")),
-  
-  
+  # 
+  # tags$script(HTML("
+  #   document.addEventListener('DOMContentLoaded', function() {
+  #     const updateSliderRelationships = function() {
+  #       const sliders = {
+  #         a: $('#question1aSlider'),
+  #         b: $('#question1bSlider'),
+  #         c: $('#question1cSlider'),
+  #         d: $('#question1dSlider'),
+  #         e: $('#question1eSlider'),
+  #         gNo: $('#question1gNoSlider'),
+  #         gYes: $('#question1gYesSlider')
+  #       };
+  #       
+  #       $(document).on('change', '.js-range-slider', function(e) {
+  #         const sliderId = $(this).attr('id');
+  #         
+  #         if (sliderId === 'question1aSlider') {
+  #           if (parseFloat(sliders.a.val()) >= parseFloat(sliders.c.val())) {
+  #             sliders.c.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) + 0.1 });
+  #           }
+  #           if (parseFloat(sliders.c.val()) >= parseFloat(sliders.b.val())) {
+  #             sliders.b.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) + 0.1 });
+  #           }
+  #           
+  #           if (parseFloat(sliders.a.val()) > parseFloat(sliders.d.val())) {
+  #             sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) });
+  #           }
+  #           
+  #           sliders.gNo.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
+  #         }
+  #         else if (sliderId === 'question1bSlider') {
+  #           if (parseFloat(sliders.b.val()) <= parseFloat(sliders.c.val())) {
+  #             sliders.c.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) - 0.1 });
+  #           }
+  #           if (parseFloat(sliders.c.val()) <= parseFloat(sliders.a.val())) {
+  #             sliders.a.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) - 0.1 });
+  #           }
+  #           
+  #           if (parseFloat(sliders.b.val()) < parseFloat(sliders.e.val())) {
+  #             sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) });
+  #           }
+  #         }
+  #         else if (sliderId === 'question1cSlider') {
+  #           if (parseFloat(sliders.c.val()) <= parseFloat(sliders.a.val())) {
+  #             sliders.a.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) - 0.1 });
+  #           }
+  #           if (parseFloat(sliders.c.val()) >= parseFloat(sliders.b.val())) {
+  #             sliders.b.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) + 0.1 });
+  #           }
+  #           
+  #           sliders.gNo.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
+  #         }
+  #         else if (sliderId === 'question1dSlider') {
+  #           if (parseFloat(sliders.d.val()) < parseFloat(sliders.a.val())) {
+  #             sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.a.val()) });
+  #           }
+  #           if (parseFloat(sliders.d.val()) > parseFloat(sliders.c.val())) {
+  #             sliders.d.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
+  #           }
+  #         }
+  #         else if (sliderId === 'question1eSlider') {
+  #           if (parseFloat(sliders.e.val()) < parseFloat(sliders.c.val())) {
+  #             sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.c.val()) });
+  #           }
+  #           if (parseFloat(sliders.e.val()) > parseFloat(sliders.b.val())) {
+  #             sliders.e.data('ionRangeSlider').update({ from: parseFloat(sliders.b.val()) });
+  #           }
+  #         }
+  #       });
+  #     };
+  #     
+  #     updateSliderRelationships();
+  #   });
+  # ")),
   
   
 )
@@ -966,72 +964,99 @@ server <- function(input, output, session) {
                 "</strong> the participants who did not return their questionnaire. (Based on the median value)"))
   })
   
-  observeEvent(input$page, {
-    if (input$page == 4) {
-      median_val <- round((responses$q1a + responses$q1b) / 2, 1)
-      updateSliderInput(session, "question1cSlider", value = median_val)
-      
-      lower_quartile <- round((responses$q1a + median_val) / 2, 1)
-      updateSliderInput(session, "question1dSlider", value = lower_quartile)
-      
-      upper_quartile <- round((median_val + responses$q1b) / 2, 1)
-      updateSliderInput(session, "question1eSlider", value = upper_quartile)
-      
-      updateSliderInput(session, "question1gNoSlider", value = median_val)
-    }
-  })
+  # observeEvent(input$page, {
+  #   if (input$page == 4) {
+  #     median_val <- round((responses$q1a + responses$q1b) / 2, 1)
+  #     updateSliderInput(session, "question1cSlider", value = median_val)
+  #     
+  #     lower_quartile <- round((responses$q1a + median_val) / 2, 1)
+  #     updateSliderInput(session, "question1dSlider", value = lower_quartile)
+  #     
+  #     upper_quartile <- round((median_val + responses$q1b) / 2, 1)
+  #     updateSliderInput(session, "question1eSlider", value = upper_quartile)
+  #     
+  #     updateSliderInput(session, "question1gNoSlider", value = median_val)
+  #   }
+  # })
+  # 
+  # observeEvent(input$question1aSlider, {
+  #   if (input$question1aSlider >= input$question1cSlider) {
+  #     updateSliderInput(session, "question1cSlider", value = input$question1aSlider + 0.1)
+  #   }
+  #   if (input$question1aSlider > input$question1dSlider) {
+  #     updateSliderInput(session, "question1dSlider", value = input$question1aSlider)
+  #   }
+  # })
+  # 
+  # observeEvent(input$question1bSlider, {
+  #   if (input$question1bSlider <= input$question1cSlider) {
+  #     updateSliderInput(session, "question1cSlider", value = input$question1bSlider - 0.1)
+  #   }
+  #   if (input$question1bSlider < input$question1eSlider) {
+  #     updateSliderInput(session, "question1eSlider", value = input$question1bSlider)
+  #   }
+  # })
+  # 
+  # observeEvent(input$question1cSlider, {
+  #   if (input$question1cSlider <= input$question1aSlider) {
+  #     updateSliderInput(session, "question1aSlider", value = input$question1cSlider - 0.1)
+  #   }
+  #   if (input$question1cSlider >= input$question1bSlider) {
+  #     updateSliderInput(session, "question1bSlider", value = input$question1cSlider + 0.1)
+  #   }
+  #   if (input$question1cSlider < input$question1dSlider) {
+  #     updateSliderInput(session, "question1dSlider", value = input$question1cSlider)
+  #   }
+  #   if (input$question1cSlider > input$question1eSlider) {
+  #     updateSliderInput(session, "question1eSlider", value = input$question1cSlider)
+  #   }
+  #   updateSliderInput(session, "question1gNoSlider", value = input$question1cSlider)
+  # })
+  # 
+  # observeEvent(input$question1dSlider, {
+  #   if (input$question1dSlider < input$question1aSlider) {
+  #     updateSliderInput(session, "question1dSlider", value = input$question1aSlider)
+  #   }
+  #   if (input$question1dSlider > input$question1cSlider) {
+  #     updateSliderInput(session, "question1dSlider", value = input$question1cSlider)
+  #   }
+  # })
+  # 
+  # observeEvent(input$question1eSlider, {
+  #   if (input$question1eSlider < input$question1cSlider) {
+  #     updateSliderInput(session, "question1eSlider", value = input$question1cSlider)
+  #   }
+  #   if (input$question1eSlider > input$question1bSlider) {
+  #     updateSliderInput(session, "question1eSlider", value = input$question1bSlider)
+  #   }
+  # })
   
-  observeEvent(input$question1aSlider, {
-    if (input$question1aSlider >= input$question1cSlider) {
-      updateSliderInput(session, "question1cSlider", value = input$question1aSlider + 0.1)
-    }
-    if (input$question1aSlider > input$question1dSlider) {
-      updateSliderInput(session, "question1dSlider", value = input$question1aSlider)
-    }
-  })
+  # Observe changes in slider1a or slider1b and update slider1c (Median slider based on Min and Max)
+  observe(
+    updateSliderInput(session, "question1cSlider",
+                      min = responses$q1a,
+                      max = responses$q1b,
+                      value = (responses$q1a + responses$q1b)/2 # Keep value in range
+    )
+  )
   
-  observeEvent(input$question1bSlider, {
-    if (input$question1bSlider <= input$question1cSlider) {
-      updateSliderInput(session, "question1cSlider", value = input$question1bSlider - 0.1)
-    }
-    if (input$question1bSlider < input$question1eSlider) {
-      updateSliderInput(session, "question1eSlider", value = input$question1bSlider)
-    }
-  })
+  # Observe changes in slider1a or slider1c and update slider1d (Q1 slider based on Min and Median)
+  observe(
+    updateSliderInput(session, "question1dSlider",
+                      min = responses$q1a,
+                      max = responses$q1c,
+                      value = (responses$q1a + responses$q1c)/2 # Keep value in range
+    )
+  )  
   
-  observeEvent(input$question1cSlider, {
-    if (input$question1cSlider <= input$question1aSlider) {
-      updateSliderInput(session, "question1aSlider", value = input$question1cSlider - 0.1)
-    }
-    if (input$question1cSlider >= input$question1bSlider) {
-      updateSliderInput(session, "question1bSlider", value = input$question1cSlider + 0.1)
-    }
-    if (input$question1cSlider < input$question1dSlider) {
-      updateSliderInput(session, "question1dSlider", value = input$question1cSlider)
-    }
-    if (input$question1cSlider > input$question1eSlider) {
-      updateSliderInput(session, "question1eSlider", value = input$question1cSlider)
-    }
-    updateSliderInput(session, "question1gNoSlider", value = input$question1cSlider)
-  })
-  
-  observeEvent(input$question1dSlider, {
-    if (input$question1dSlider < input$question1aSlider) {
-      updateSliderInput(session, "question1dSlider", value = input$question1aSlider)
-    }
-    if (input$question1dSlider > input$question1cSlider) {
-      updateSliderInput(session, "question1dSlider", value = input$question1cSlider)
-    }
-  })
-  
-  observeEvent(input$question1eSlider, {
-    if (input$question1eSlider < input$question1cSlider) {
-      updateSliderInput(session, "question1eSlider", value = input$question1cSlider)
-    }
-    if (input$question1eSlider > input$question1bSlider) {
-      updateSliderInput(session, "question1eSlider", value = input$question1bSlider)
-    }
-  })
+  # Observe changes in slider1b or slider1c and update slider1d (Q3 slider based on Max and Median)
+  observe(
+    updateSliderInput(session, "question1eSlider",
+                      min = responses$q1c,
+                      max = responses$q1b,
+                      value = (responses$q1b + responses$q1c)/2 # Keep value in range
+    )
+  )     
   
   observeEvent(input$nextBtn, {
     if (page() < total_pages) {

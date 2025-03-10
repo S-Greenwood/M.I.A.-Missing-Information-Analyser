@@ -570,13 +570,13 @@ ui <- fluidPage(
     ),
     conditionalPanel(
       condition = "input.page > 1",
-      actionButton("prevBtn", "Previous", style = "background-color: #003366; 
+      actionButton("prevBtn", "Previous", style = "background-color: #1d4675; 
                    color: white; font-size: 18px; padding: 10px 20px; 
                    border-radius: 5px;"),
     ),
     conditionalPanel(
       condition = "input.page < 4",
-      actionButton("nextBtn", "Next", style = "background-color: #003366; 
+      actionButton("nextBtn", "Next", style = "background-color: #1d4675; 
                    color: white; font-size: 18px; padding: 10px 20px; 
                    border-radius: 5px;"),
     ),
@@ -609,7 +609,7 @@ ui <- fluidPage(
   tags$head(
     tags$style(HTML("
       .accordion-button {
-        background-color: #003366 !important;  /* dark blue for all panels */
+        background-color: #1d4675 !important;  /* dark blue for all panels */
         color: white !important; 
         
       }
@@ -629,7 +629,7 @@ ui <- fluidPage(
   tags$head(
     tags$style(HTML("
       .nav-link {
-        background-color: #003366 !important; /* dark blue for tab header*/
+        background-color: #1d4675 !important; /* dark blue for tab header*/
         color: white !important; 
         font-weight: bold;
         border-radius: 5px;
@@ -643,7 +643,7 @@ ui <- fluidPage(
       }
 
       .card {
-        border: 2px solid #003366 !important; /* border around the card */
+        border: 2px solid #1d4675 !important; /* border around the card */
       }
     "))
   ),
@@ -1059,6 +1059,24 @@ server <- function(input, output, session) {
   )     
   
   observeEvent(input$nextBtn, {
+    if (page() == 3) {
+      showModal(
+        modalDialog(
+          title = "Confirmation",
+          "Have you completed all 3 steps?",
+          footer = tagList(
+            modalButton("No"),
+            actionButton("confirmNext", "Yes")
+          )
+        )
+      )
+    } else if (page() < total_pages) {
+      page(page() + 1)
+    }
+  })
+  
+  observeEvent(input$confirmNext, {
+    removeModal()
     if (page() < total_pages) {
       page(page() + 1)
     }

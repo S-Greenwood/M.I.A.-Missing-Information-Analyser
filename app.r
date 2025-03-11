@@ -1,6 +1,9 @@
 library(shiny)
 library(bslib)
 library(shinyjs)
+library(plotly)
+library(palmerpenguins)
+library(dplyr)
 
 #### UI code ####
 ui <- fluidPage(
@@ -462,9 +465,13 @@ ui <- fluidPage(
           uiOutput("question1eValue"), # Display the selected value
           div(strong("Reflection:"), "You have given your judgement about the average missing score for those 237 participants through 5 numbers. We now have a plot that is split into four segments, where it is equally likely that the average value of those 237 participants could be in each segment. It's normal for them not to be equally sized, often the middle two segments are much smaller!")
         ),
+        
         div(
           div(strong("Question 1f:"), "Do you have any reasons, or rationale you want to write about your judgement above?"),
           uiOutput("question1fSummary"), # Show summary of previous answers
+          br(),
+          br(),
+          br(),
           textAreaInput("question1fTextArea", label = NULL, placeholder = "Write your reasons here"),
           p("Remember, we want to capture that uncertainty in your judgements, and we are asking your judgement to get a general sense about those patients with missing measurements, and what their results might have been. So we have one last reflection to help you with your response.")
         )
@@ -500,7 +507,8 @@ ui <- fluidPage(
               )
             )
           ),
-          p("If you're not happy with your response feel free to edit the scale above of your judgment. This will update your original answers to Q1a – 1e.")
+          p("If you're not happy with your response, go back to Q1c and take
+            another look at your answer!")
         )
       )
     )

@@ -74,32 +74,50 @@ ui <- fluidPage(
     accordion_panel(
       title = "What is the clinical trial?",
       icon = bsicons::bs_icon("question-circle"),
-      div("Traditionally, dentists have encouraged both patients at risk of developing dental disease to attend their dental practices for regular 6-month 'check-ups'. There is, however, little evidence available for either patients or dentists to use when deciding on the best dental recall interval (i.e. time between dental check-ups) for maintaining oral health. In this study, they wanted to find out, for adult patients who regularly attend the dentist, what interval of time between dental check-ups maintains optimum oral health and represents value for money.")
+      div("Traditionally, dentists have encouraged both patients at low risk and 
+          patients at high risk of developing dental disease to attend their dental 
+          practices for regular 6-month ‘check-ups’. There is, however, little 
+          evidence available for either patients or dentists to use when deciding 
+          on the best dental recall interval (i.e. time between dental check-ups) 
+          for maintaining oral health. In this study, we wanted to find out, for 
+          adult patients who regularly attend the dentist, what interval of time 
+          between dental check-ups maintains optimum oral health and represents 
+          value for money")
     ),
     accordion_panel(
       title = "Who are the participants in the trial?",
       icon = bsicons::bs_icon("person-circle"),
-      div("A total of 2372 adults aged 18 years and over who regularly attended 51 different dental practices across Scotland, Northern Ireland, England and Wales were involved. Patients aged 18 years or over who received all or part of their care as NHS patients.")
+      div("A total of 2372 adults aged 18 years and over who regularly attended 
+          51 different dental practices across Scotland, Northern Ireland, 
+          England and Wales were involved. These patients received all or part 
+          of their care as NHS patients.")
     ),
     accordion_panel(
       title = "What was the intervention?",
       icon = bsicons::bs_icon("prescription2"),
       div(
-        "The intervention was how often a patient saw their dentist for a check-up. This was just a dental check-up and excluded any other treatments like scale and polish. Participants were randomly split into groups with each one assigned the dental check-up time of either:",
+        "The intervention was how often a patient saw their dentist for a check-
+        up. This was just a dental check-up and excluded any other treatments 
+        like scale and polish. Participants were randomly split into groups with 
+        each one assigned the dental check-up time of either:",
         tags$ul(
           tags$li("Every ", strong("2 years "), ", if considered at low risk by their dentist"),
           tags$li("Every ", strong("6 months")),
           tags$li("Or ", strong("risk-based"), "which they said was ", em("'an individualised, recall interval based on the patient's risk of dental disease.'"))
         ),
         p(""),
-        p(strong("Note:"), "In this exercise we are going to focus on just those assigned to 6-month and risk-based recall, who were typically older with worse scores."),
+        p(strong("Note:"), "In this exercise we are going to focus on just those 
+          assigned to 6-month and risk-based recall, who were typically older 
+          with worse scores."),
       ),
     ),
     accordion_panel(
         title = "What are the missing measurements we are interested in today?",
         icon = bsicons::bs_icon("puzzle"),
         div(
-            p("Many measurements were taken from participants in this clinical trial. This exercise focuses on just one, which was asking them about a specific symptom over the last 12 months."),
+            p("Many measurements were taken from participants in this clinical 
+              trial. This exercise focuses on just one, which was asking them 
+              about a specific symptom over the last 12 months."),
           tags$ul(
             tags$li(strong("Question:"), "Have you had painful aching in your mouth?"),
             tags$li(strong("Answer:"), "the patient answered by selecting a number from below"),
@@ -125,17 +143,21 @@ ui <- fluidPage(
               )
             )
           ),
-          "This question was asked in a questionnaire, which patients completed once a year. ",
-          "It was completed at home and returned to the researchers using a pre-paid envelope. They did this every year for 4 years.",
+          "This question was asked in a questionnaire, which patients completed 
+          once a year. ",
+          "It was completed at home and returned to the researchers using a pre-
+          paid envelope. They did this every year for 4 years.",
           p(""),
-          p(strong("Note:"), "we are going to focus on the missing answers to this question just at Year 4"),
+          p(strong("Note:"), "we are going to focus on the missing answers to 
+            this question just at Year 4"),
         )
     ),
     accordion_panel(
         title = "How many pieces were missing?",
         icon = bsicons::bs_icon("search"),
         div(
-          p(strong("How many were missing?"), "There were 438 patients missing an answer to this question. Split into the two groups it looked like this."),
+          p(strong("How many were missing?"), "There were 438 patients missing a
+            n answer to this question. Split into the two groups it looked like this."),
           tags$table(
             class = "table table-bordered table-striped",
             tags$thead(
@@ -418,52 +440,128 @@ ui <- fluidPage(
     p("Now we are going to estimate the 217 patients whose responses were missing.
       We want to get a general sense of how they could have answered that question, 
       on average, 4 years into the trial."),
-    p("This activity will be completed in ", strong("3 steps"),". Be sure to complete each one 
-      before clicking 'Next'"),
-      
-    navset_card_tab(
+   p("This activity will be completed in ", strong("3 steps"),". Be sure to 
+   complete each one before clicking 'Next'"),
+   
+#### Page 3 - tabs ####
+
+   navset_card_tab(
+      id = "nav_tab_top_1",
       nav_panel("Step 1", 
-        div(
-          div(strong("Question 1a: "), p("Thinking about the overall average response from these participants, based on your judgement. What is the LOWEST possible value the average could be? (L = lower plausible limit)")),
+          p("Remember the question was 'Have you had painful aching in your 
+            mouth?', and the scale was"),
+          tags$table(
+                  class = "table table-bordered table-striped",
+                  style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
+                  tags$thead(
+                    tags$tr(
+                      tags$th("0"),
+                      tags$th("1"),
+                      tags$th("2"),
+                      tags$th("3"),
+                      tags$th("4")
+                    )
+                  ),
+                  tags$tbody(
+                    tags$tr(
+                      tags$td(style = "background-color: #ccffff;", "never"),
+                      tags$td(style = "background-color: #ccffcc;", "hardly ever"),
+                      tags$td(style = "background-color: #ffffcc;", "occasionally"),
+                      tags$td(style = "background-color: #ffebcc;", "fairly often"),
+                      tags$td(style = "background-color: #ffcccc;", "very often")
+                    )
+                  )
+           ),
+         div(
+           div(strong("Question 1a: "), p("Thinking about the overall average 
+                                         response from these participants, based 
+                                         on your judgement. What is the LOWEST 
+                                         possible value the average could be? 
+                                         (L = lower plausible limit)")),
           sliderInput("question1aSlider", label = NULL, min = 0, max = 4, value = 0, step = 0.1),
           uiOutput("question1aValue") # Display the selected value
         ),
 
         div(
-          div(strong("Question 1b: "), p("Thinking about the overall average response from these participants, based on your judgement. What is the HIGHEST possible value the average could be? (U = upper plausible limit)")),
+          div(strong("Question 1b: "), p("Thinking about the overall average 
+                                         response from these participants, 
+                                         based on your judgement. What is the 
+                                         HIGHEST possible value the average 
+                                         could be? (U = upper plausible limit)")),
           sliderInput("question1bSlider", label = NULL, min = 0, max = 4, value = 4, step = 0.1),
           uiOutput("question1bValue"), # Display the selected value
-          p("Reflection: Based on the answer you've given, you think that the average participant response to the questionnaire ranged from "),
-          uiOutput("reflection1ab") # Display the reflection with values
+          p(""),
+          uiOutput("reflection1ab"), # Display the reflection with values
+          p(""),
+          
         ),
         div(
-          div(strong("Question 1c:"), p("Now you have you highest and lowest value, where in between these values splits the score, where it is equally likely that the average is above and below that value? Note that it doesn't have to sit in the middle! A value closer to right this means you think that then average of these 237 participants are likely to be is likely to be a higher score, which is a worse outcome")),
-          uiOutput("question1cRange"), # Show current range from 1a and 1b
+          div(strong("Question 1c:"), p("Now we have your highest and lowest 
+                                        value, we now need to split that bar in 
+                                        two! At which value on this scale do you 
+                                        think that the average of the group is 
+                                        equally likely to be above and below 
+                                        that value?")),
+          #uiOutput("question1cRange"), # Show current range from 1a and 1b
           sliderInput("question1cSlider", label = NULL, min = 0, max = 4, value = 2, step = 0.1),
           uiOutput("question1cValue"), # Display the selected value
+          p(""),
           div(
-            strong("Reflection:"),
+            strong("Tips for Question 1c:"),
             tags$ul(
-              tags$li(strong("Question:"), "Once you have a value on the scale have a think. Imagine you're in a game show and there is big prize for getting this question right. Do you think the average is more likely to be in above or below that middle value?"),
-              tags$li(strong("Answer:"), "If you answered yes, return to Q1c and consider increasing or reducing your value until you don't have a preference for above or below. If you answered no, continue onto the next")
+              tags$li("Note that your answer doesn't have to sit in the middle! 
+              A value closer to right this means you think that then average of 
+              these 217 participants are likely to be is likely to be a higher 
+              score, which is a worse outcome"),
+              tags$li("When you have an answer have a think. Imagine you're in a 
+              game show and there is big prize for getting this question right. 
+              Do you think the average of the group of 217 patients is more 
+              likely to be in above or below that middle value? If you think yes
+              , then return to Q1c and consider increasing or reducing your 
+              value until you don't have a preference for above or below. If you 
+              answered no, continue onto Step 2, by clicking above")
             )
           )
         )
       ),
       nav_panel("Step 2", 
+          p("Remember the question was 'Have you had painful aching in your 
+            mouth?', and the scale was"),
+                tags$table(
+                  class = "table table-bordered table-striped",
+                  style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
+                  tags$thead(
+                    tags$tr(
+                      tags$th("0"),
+                      tags$th("1"),
+                      tags$th("2"),
+                      tags$th("3"),
+                      tags$th("4")
+                    )
+                  ),
+                  tags$tbody(
+                    tags$tr(
+                      tags$td(style = "background-color: #ccffff;", "never"),
+                      tags$td(style = "background-color: #ccffcc;", "hardly ever"),
+                      tags$td(style = "background-color: #ffffcc;", "occasionally"),
+                      tags$td(style = "background-color: #ffebcc;", "fairly often"),
+                      tags$td(style = "background-color: #ffcccc;", "very often")
+                    )
+                  )
+        ),
         div(
-          p("We're now going to split our group of 237 participant in half. One half have better (lower) scores, and the other have worse (higher) scores for the 6-months group."),
-          div(strong("Question 1d:"), "For the half of the 237 participant with lower (better) scores move the scale to draw a line on the left where you think it is equally likely that the average is above and below that value? (remember it doesn't need to be in the middle!)"),
+          p("We're now going to split our group of 217 participant in half. One half have better (lower) scores, and the other have worse (higher) scores for the 6-months group."),
+          div(strong("Question 1d:"), "For the half of the 217 participant with lower (better) scores move the scale to draw a line on the left where you think it is equally likely that the average is above and below that value? (remember it doesn't need to be in the middle!)"),
           uiOutput("question1dRange"), # Show current range from 1a and 1c
           sliderInput("question1dSlider", label = NULL, min = 0, max = 4, value = 1, step = 0.1),
           uiOutput("question1dValue") # Display the selected value
         ),
         div(
-          div(strong("Question 1e:"), "For the half of the 237 participant with higher (worse) scores move the scale to draw a line on the left where you think it is equally likely that the average is above and below that value? (remember it doesn't need to be in the middle!)"),
+          div(strong("Question 1e:"), "For the half of the 217 participant with higher (worse) scores move the scale to draw a line on the left where you think it is equally likely that the average is above and below that value? (remember it doesn't need to be in the middle!)"),
           uiOutput("question1eRange"), # Show current range from 1c and 1b
           sliderInput("question1eSlider", label = NULL, min = 0, max = 4, value = 3, step = 0.1),
           uiOutput("question1eValue"), # Display the selected value
-          div(strong("Reflection:"), "You have given your judgement about the average missing score for those 237 participants through 5 numbers. We now have a plot that is split into four segments, where it is equally likely that the average value of those 237 participants could be in each segment. It's normal for them not to be equally sized, often the middle two segments are much smaller!")
+          div(strong("Reflection:"), "You have given your judgement about the average missing score for those 217 participants through 5 numbers. We now have a plot that is split into four segments, where it is equally likely that the average value of those 217 participants could be in each segment. It's normal for them not to be equally sized, often the middle two segments are much smaller!")
         ),
         
         div(
@@ -478,7 +576,7 @@ ui <- fluidPage(
       ),
       nav_panel("Step 3", 
         div(
-          div(strong("Question 1g:"), "Lastly, lets now compare your judgements on the average of the 237 participants who did not answer against the average of the 624 participants who did answer the question."),
+          div(strong("Question 1g:"), "Lastly, lets now compare your judgements on the average of the 217 participants who did not answer against the average of the 624 participants who did answer the question."),
           tags$table(
             class = "table table-bordered table-striped",
             tags$thead(
@@ -489,7 +587,7 @@ ui <- fluidPage(
             ),
             tags$tbody(
               tags$tr(
-                tags$td("No (your judgement on the 237 participants)"),
+                tags$td("No (your judgement on the 217 participants)"),
                 tags$td(
                   uiOutput("question1gNoValue"), # Display value from 1c
                   sliderInput("question1gNoSlider", label = NULL, min = 0, max = 4, value = 2, step = 0.1)
@@ -511,8 +609,18 @@ ui <- fluidPage(
             another look at your answer!")
         )
       )
+    ),
+    
+    navset_card_tab(
+      id = "nav_tab_bottom_1",
+      nav_panel("Step 1", ""),
+      nav_panel("Step 2", ""),
+      nav_panel("Step 3", ""),
     )
+
   ),
+  
+
 
  
  
@@ -820,6 +928,7 @@ server <- function(input, output, session) {
   page <- reactiveVal(1)
   total_pages <- 5
   
+  #### Server - Question text updates with values ####
   responses <- reactiveValues(
     q1a = 0,
     q1b = 4,
@@ -857,7 +966,12 @@ server <- function(input, output, session) {
   })
   
   output$reflection1ab <- renderUI({
-    HTML(paste0("<strong>", responses$q1a, "</strong> (L) and <strong>", responses$q1b, "</strong> (U). If this is not what you think go back to edit your answer to Q1a and Q1b. After thinking about the extreme cases, we now have a scale of all the possible values that this average could be."))
+    p("Based on the answer you've given, you think that the average participant 
+      response to the questionnaire ranged from", strong(responses$q1a), " and ", 
+      strong(responses$q1b), ". If this is not what you think go back to edit 
+      your answer to Q1a and Q1b."
+      )
+    # HTML(paste0("<strong>", responses$q1a, "</strong> (L) and <strong>", responses$q1b, "</strong> (U). If this is not what you think go back to edit your answer to Q1a and Q1b. After thinking about the extreme cases, we now have a scale of all the possible values that this average could be."))
   })
   
   output$question1cRange <- renderUI({
@@ -886,7 +1000,7 @@ server <- function(input, output, session) {
   output$question1eValue <- renderUI({
     p(strong("Your answer: ", responses$q1e))
   })
-  
+  #### Server - Q1f summary ####
   output$question1fSummary <- renderUI({
     div(
       p("Your judgments so far:"),
@@ -899,50 +1013,11 @@ server <- function(input, output, session) {
       ),
       
       div(
-        style = "position: relative; height: 120px; margin-top: 30px;",
+        style = "position: relative; left: -50px; height: 120px; margin-top: 30px;",
 
          # Horizontal graph with distribution
          plotlyOutput("HorizontalDistr")
-      #   
-      #   # Slider for q1a 
-      #   div(
-      #     style = "position: absolute; top: 0px; left: 0; width: 100%; z-index: 5;",
-      #     class = "redbar",
-      #     sliderInput("q1aVisual", label="",
-      #                min = 0, max = 4, value = responses$q1a, step = 0.1, ticks = FALSE)
-      #   ),
-      #   
-      #   # Slider for q1d 
-      #   div(
-      #     style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 4;",
-      #     class = "bluebar",
-      #     sliderInput("q1dVisual", label="",
-      #                min = 0, max = 4, value = responses$q1d, step = 0.1, ticks = FALSE)
-      #   ),
-      #   
-      #   # Slider for q1c
-      #   div(
-      #     style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 3;",
-      #     class = "greenbar",
-      #     sliderInput("q1cVisual", label="",
-      #                min = 0, max = 4, value = responses$q1c, step = 0.1, ticks = FALSE)
-      #   ),
-      #   
-      #   # Slider for q1e
-      #   div(
-      #     style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 2;",
-      #     class = "orangebar",
-      #     sliderInput("q1eVisual", label="",
-      #                min = 0, max = 4, value = responses$q1e, step = 0.1, ticks = FALSE)
-      #   ),
-      #   
-      #   # Slider for q1b 
-      #   div(
-      #     style = "position: absolute; top: 0; left: 0; width: 100%; z-index: 1;",
-      #     class = "pinkbar",
-      #     sliderInput("q1bVisual", label="",
-      #                min = 0, max = 4, value = responses$q1b, step = 0.1, ticks = FALSE)
-      #   )
+      
       ),
       
       div(
@@ -974,72 +1049,7 @@ server <- function(input, output, session) {
                 "</strong> the participants who did not return their questionnaire. (Based on the median value)"))
   })
   
-  # observeEvent(input$page, {
-  #   if (input$page == 4) {
-  #     median_val <- round((responses$q1a + responses$q1b) / 2, 1)
-  #     updateSliderInput(session, "question1cSlider", value = median_val)
-  #     
-  #     lower_quartile <- round((responses$q1a + median_val) / 2, 1)
-  #     updateSliderInput(session, "question1dSlider", value = lower_quartile)
-  #     
-  #     upper_quartile <- round((median_val + responses$q1b) / 2, 1)
-  #     updateSliderInput(session, "question1eSlider", value = upper_quartile)
-  #     
-  #     updateSliderInput(session, "question1gNoSlider", value = median_val)
-  #   }
-  # })
-  # 
-  # observeEvent(input$question1aSlider, {
-  #   if (input$question1aSlider >= input$question1cSlider) {
-  #     updateSliderInput(session, "question1cSlider", value = input$question1aSlider + 0.1)
-  #   }
-  #   if (input$question1aSlider > input$question1dSlider) {
-  #     updateSliderInput(session, "question1dSlider", value = input$question1aSlider)
-  #   }
-  # })
-  # 
-  # observeEvent(input$question1bSlider, {
-  #   if (input$question1bSlider <= input$question1cSlider) {
-  #     updateSliderInput(session, "question1cSlider", value = input$question1bSlider - 0.1)
-  #   }
-  #   if (input$question1bSlider < input$question1eSlider) {
-  #     updateSliderInput(session, "question1eSlider", value = input$question1bSlider)
-  #   }
-  # })
-  # 
-  # observeEvent(input$question1cSlider, {
-  #   if (input$question1cSlider <= input$question1aSlider) {
-  #     updateSliderInput(session, "question1aSlider", value = input$question1cSlider - 0.1)
-  #   }
-  #   if (input$question1cSlider >= input$question1bSlider) {
-  #     updateSliderInput(session, "question1bSlider", value = input$question1cSlider + 0.1)
-  #   }
-  #   if (input$question1cSlider < input$question1dSlider) {
-  #     updateSliderInput(session, "question1dSlider", value = input$question1cSlider)
-  #   }
-  #   if (input$question1cSlider > input$question1eSlider) {
-  #     updateSliderInput(session, "question1eSlider", value = input$question1cSlider)
-  #   }
-  #   updateSliderInput(session, "question1gNoSlider", value = input$question1cSlider)
-  # })
-  # 
-  # observeEvent(input$question1dSlider, {
-  #   if (input$question1dSlider < input$question1aSlider) {
-  #     updateSliderInput(session, "question1dSlider", value = input$question1aSlider)
-  #   }
-  #   if (input$question1dSlider > input$question1cSlider) {
-  #     updateSliderInput(session, "question1dSlider", value = input$question1cSlider)
-  #   }
-  # })
-  # 
-  # observeEvent(input$question1eSlider, {
-  #   if (input$question1eSlider < input$question1cSlider) {
-  #     updateSliderInput(session, "question1eSlider", value = input$question1cSlider)
-  #   }
-  #   if (input$question1eSlider > input$question1bSlider) {
-  #     updateSliderInput(session, "question1eSlider", value = input$question1bSlider)
-  #   }
-  # })
+  #### Server - slider code 1 ####
   
   # Observe changes in slider1a or slider1b and update slider1c (Median slider based on Min and Max)
   observe(
@@ -1067,7 +1077,22 @@ server <- function(input, output, session) {
                       value = (responses$q1b + responses$q1c)/2 # Keep value in range
     )
   )     
+  observe({
+    updateSliderInput(session, "q1aVisual", value = responses$q1a)
+    updateSliderInput(session, "q1bVisual", value = responses$q1b)
+    updateSliderInput(session, "q1cVisual", value = responses$q1c)
+    updateSliderInput(session, "q1dVisual", value = responses$q1d)
+    updateSliderInput(session, "q1eVisual", value = responses$q1e)
+  })
   
+  observe({
+    shinyjs::disable("q1aVisual")
+    shinyjs::disable("q1bVisual")
+    shinyjs::disable("q1cVisual")
+    shinyjs::disable("q1dVisual")
+    shinyjs::disable("q1eVisual")
+  })
+  #### Server - Q1f graph output ####
   # Plot the horizontal line chart with horizontal lines at each value
   output$HorizontalDistr <- renderPlotly({
     
@@ -1132,6 +1157,7 @@ server <- function(input, output, session) {
       )
   })
   
+  #### Server - Next / previous buttons ####
   observeEvent(input$nextBtn, {
     if (page() == 3) {
       showModal(
@@ -1161,7 +1187,8 @@ server <- function(input, output, session) {
       page(page() - 1)
     }
   })
-  
+
+  #### Server - PDF output  ####
   output$export = downloadHandler(
     filename = function() {
       paste0("My_results_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".pdf")
@@ -1214,22 +1241,17 @@ server <- function(input, output, session) {
       dev.off()
     }
   )
-  
-  observe({
-    updateSliderInput(session, "q1aVisual", value = responses$q1a)
-    updateSliderInput(session, "q1bVisual", value = responses$q1b)
-    updateSliderInput(session, "q1cVisual", value = responses$q1c)
-    updateSliderInput(session, "q1dVisual", value = responses$q1d)
-    updateSliderInput(session, "q1eVisual", value = responses$q1e)
+  #### Server - Navbar  ####
+  # We want the two buttons to work together 
+  # Sync Bottom Tab -> Updates Top Tab
+  observeEvent(input$nav_tab_bottom_1, {
+    updateTabsetPanel(session, "nav_tab_top_1", selected = input$nav_tab_bottom_1)
   })
-  
-  observe({
-    shinyjs::disable("q1aVisual")
-    shinyjs::disable("q1bVisual")
-    shinyjs::disable("q1cVisual")
-    shinyjs::disable("q1dVisual")
-    shinyjs::disable("q1eVisual")
+  # Sync Top Tab -> Updates Bottom Tab
+  observeEvent(input$nav_tab_top_1, {
+    updateTabsetPanel(session, "nav_tab_bottom_1", selected = input$nav_tab_top_1)
   })
+
 }
 
 #### Run the app ####

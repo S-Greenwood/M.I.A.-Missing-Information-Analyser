@@ -593,10 +593,12 @@ ui <- fluidPage(
                   sliderInput("question1gNoSlider", label = NULL, min = 0, max = 4, value = 2, step = 0.1)
                 )
               ),
+              # Set Median value to be 0, which is what the observed result were 
+              # Potential discussion point later on as to whether we should "anchor" the participants on this fact
               tags$tr(
                 tags$td("Yes (the results of the 624 who did answer the question)"),
                 tags$td(
-                  sliderInput("question1gYesSlider", label = NULL, min = 0, max = 4, value = 1.5, step = 0.1, animate = FALSE)
+                  sliderInput("question1gYesSlider", label = NULL, min = 0, max = 4, value = 0, step = 0.1, animate = FALSE)
                 )
               ),
               tags$tr(

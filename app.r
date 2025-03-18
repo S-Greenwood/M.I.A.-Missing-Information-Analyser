@@ -272,134 +272,20 @@ ui <- fluidPage(
       accordion_panel(
         title="What is the profile of these patients?",
         icon = bsicons::bs_icon("person-circle"),
-        p("Here is a table showing some background information about the patients with 
-          missing data, compared to those without missing data."),
         div(
-          p("Summary of what the tables shows:"),
+          p("The 217 participants missing their pain scores were similar to the 
+            624 who did not, apart from the following factors."),
           tags$ul(
-            tags$li("..."),
-            tags$li("..."),
-            tags$li("..."),
+            tags$li(strong("They were younger"), " (averaging 45 years old, 
+                    compared to 52 year old for the 624 participants)"),
+            tags$li(strong("More of them smoked"), " (About a 22% of the 217 
+                    missing a pain score reported smoking in last 12 months, compared to 12%.)"),
+            tags$li(strong("Less received their care entirely through the NHS"), 
+                    " (at 68% compare to the 82% of the 624 participants)"),
+            tags$li(strong("Attended the dentist less regularly"), " (at 73% vs 
+                    89% of the 624 participants)"),
           ),
         ),
-        
-        tags$table(
-          class = "table table-bordered table-striped",
-          tags$thead(
-            tags$tr(
-              tags$th(""),
-              tags$th("Patients with a missing answer?"),
-              tags$th("Patients with no missing answer?"),
-              tags$th("Total - Table 6 - data")
-            )
-          ),
-          tags$tbody(
-            tags$tr(
-              tags$td("How many patients? (%)"),
-              tags$td("217 (25.14%)"),
-              tags$td("646 (74.86%)"),
-              tags$td("863 (100%)")
-            ),
-            tags$tr(
-              tags$td("Did they complete this questionnaire at the start?"),
-              tags$td("187 (21.67%)"),
-              tags$td("616 (71.38%)"),
-              tags$td("803 (93.05%)")
-            ),
-            tags$tr(
-              tags$td("Mean Age (years)"),
-              tags$td("45.1"),
-              tags$td("51.7"),
-              tags$td("48.4")
-            ),
-            tags$tr(
-              tags$td("Gender")
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("Male")
-                )
-              ),
-              tags$td("95 (11.01%)"),
-              tags$td("271 (31.4%)"),
-              tags$td("366 (42.41%)")
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("Female")
-                )
-              ),
-              tags$td("116 (13.44%)"),
-              tags$td("375 (43.45%)"),
-              tags$td("491 (56.89%)")
-            ),
-            tags$tr(
-              tags$td("Smoked in last 12 months"),
-              tags$td("48 (5.56%)"),
-              tags$td("82 (9.5%)"),
-              tags$td("130 (15.06%)")
-            ),
-            tags$tr(
-              tags$td("What care do they normally have?"),
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("NHS")
-                )
-              ),
-              tags$td("148 (17.15%)"),
-              tags$td("529 (61.3%)"),
-              tags$td("677 (78.45%)")
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("Private")
-                )
-              ),
-              tags$td("10 (1.16%)"),
-              tags$td("22 (2.55%)"),
-              tags$td("32 (3.71%)")
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("Combination")
-                )
-              ),
-              tags$td("18 (2.09%)"),
-              tags$td("38 (4.4%)"),
-              tags$td("56 (6.49%)")
-            ),
-            tags$tr(
-              tags$td("Type of toothbrush"),
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("Manual")
-                )
-              ),
-              tags$td("115 (13.33%)"),
-              tags$td("381 (44.15%)"),
-              tags$td("496 (57.47%)")
-            ),
-            tags$tr(
-              tags$td(
-                tags$ul(
-                  tags$li("Electric")
-                )
-              ),
-              tags$td("67 (7.76%)"),
-              tags$td("231 (26.77%)"),
-              tags$td("298 (34.53%)")
-            ),
-            
-          ),
-        )
       ),
       accordion_panel(
         title = "What were they missing?",
@@ -441,8 +327,8 @@ ui <- fluidPage(
    p("This activity will be completed in ", strong("3 steps"),". Be sure to 
    complete each one before clicking 'Next'"),
    
-#### Page 3 - tabs ####
-
+  # Page 3 - tabs ####
+      # Step 1 ####
    navset_card_tab(
       id = "nav_tab_top_1",
       nav_panel("Step 1", 
@@ -522,6 +408,8 @@ ui <- fluidPage(
           )
         )
       ),
+    
+      # Step 2 ####
       nav_panel("Step 2", 
           p("Remember the question was 'Have you had painful aching in your 
             mouth?', and the scale was"),
@@ -593,45 +481,58 @@ ui <- fluidPage(
             have been. So we have one last reflection to help you with your response.")
         )
       ),
+      
+      # Step 3 ####
       nav_panel("Step 3", 
         div(
           div(strong("Question 1g:"), "Lastly, lets now compare your judgements 
               on the average of the 217 participants who did not answer against 
-              the average of the 624 participants who did answer the question.
-              Note that these 624 participants gave low scores, so low that 
-              their median score was 0! "),
-          tags$table(
-            class = "table table-bordered table-striped",
-            tags$thead(
-              tags$tr(
-                tags$th("Provided a pain score?"),
-                tags$th("")
-              )
-            ),
-            tags$tbody(
-              tags$tr(
-                tags$td("No (your judgement on the 217 participants)"),
-                tags$td(
-                  uiOutput("question1gNoValue"), # Display value from 1c
-                  sliderInput("question1gNoSlider", label = NULL, min = 0, max = 4, value = 2, step = 0.1)
-                )
-              ),
-              # Set Median value to be 0, which is what the observed result were 
-              # Potential discussion point later on as to whether we should "anchor" the participants on this fact
-              tags$tr(
-                tags$td("Yes (the results of the 624 who did answer the question)"),
-                tags$td(
-                  sliderInput("question1gYesSlider", label = NULL, min = 0, max = 4, value = 0, step = 0.1, animate = FALSE)
-                )
-              ),
-              tags$tr(
-                tags$td("What does this mean?"),
-                tags$td(uiOutput("comparison1g"))
-              )
-            )
-          ),
-          p("If you're not happy with your response, go back to Q1c and take
-            another look at your answer!")
+              the average of the 624 participants who did answer the question."),
+          p(""),
+          div("This is your judgement on the", strong("217"), " participants"),
+          uiOutput("question1gPlot_Mis"), # Show summary of previous answers
+          #br(), br(), br(), br(), br(), br(), br(),
+          div("This is results of on the ", strong("624"), " participants that gave their pain score."),
+          uiOutput("question1gPlot_Obs"), # Show summary of previous answers
+          #br(), br(), br(), br(), br(), br(), br(),
+          p("You will notice that there is only the colours yellow and green. 
+            Among 624 participants, half scored 0, so the blue and pink sections 
+            are missing from the plot due to many reporting no pain (score of 0)."),
+          p("Now you have seen the results of the other 624 participants, you 
+          can, if you want, to back to Q1c to rethink your answer. Otherwise 
+            click next.")
+          # tags$table(
+          #   class = "table table-bordered table-striped",
+          #   tags$thead(
+          #     tags$tr(
+          #       tags$th("Provided a pain score?"),
+          #       tags$th("")
+          #     )
+          #   ),
+          #   tags$tbody(
+          #     tags$tr(
+          #       tags$td("No (your judgement on the 217 participants)"),
+          #       tags$td(
+          #         uiOutput("question1gNoValue"), # Display value from 1c
+          #         #uiOutput("question1fSummary"),
+          #         #sliderInput("question1gNoSlider", label = NULL, min = 0, max = 4, value = 2, step = 0.1)
+          #       )
+          #     ),
+          #     # Set Median value to be 0, which is what the observed result were 
+          #     # Potential discussion point later on as to whether we should "anchor" the participants on this fact
+          #     tags$tr(
+          #       tags$td("Yes (the results of the 624 who did answer the question)"),
+          #       tags$td(
+          #         sliderInput("question1gYesSlider", label = NULL, min = 0, max = 4, value = 0, step = 0.1, animate = FALSE)
+          #       )
+          #     ),
+          #     tags$tr(
+          #       tags$td("What does this mean?"),
+          #       tags$td(uiOutput("comparison1g"))
+          #     )
+          #   )
+          # ),
+          
         )
       )
     ),
@@ -791,7 +692,6 @@ ui <- fluidPage(
   
   
   
-  # HTML code for coloured graphic
   
   tags$style(HTML("
   #question1fSummary .irs {
@@ -947,7 +847,7 @@ ui <- fluidPage(
 )
 
 
-#### Server code ####
+  #### Server code ####
 
 server <- function(input, output, session) {
   page <- reactiveVal(1)
@@ -963,7 +863,12 @@ server <- function(input, output, session) {
     q1f = "",
     q1gNo = 2,
     q1gYes = 1.5,
-    comparison = "similar to"
+    comparison = "similar to",
+    q1a_obs = 0,
+    q1b_obs = 4,
+    q1c_obs = 0,
+    q1d_obs = 0,
+    q1e_obs = 1,
   )
   
   # Update reactive values whenever sliders change
@@ -1076,6 +981,64 @@ server <- function(input, output, session) {
                 "</strong> pain outcomes than the 624 who did. (Based on the 
                 median value)"))
   })
+  #### Server - Q1f summary and positioning of the plot ####
+  output$question1fSummary <- renderUI({
+    div(
+      p("Your judgments so far:"),
+      tags$ul(
+        tags$li("Lowest possible average: ", strong(responses$q1a)),
+        tags$li("Highest possible average: ", strong(responses$q1b)),
+        tags$li("Median value (equally likely to be above/below): ", strong(responses$q1c)),
+        tags$li("Lower half median: ", strong(responses$q1d)),
+        tags$li("Upper half median: ", strong(responses$q1e))
+      ),
+      
+      div(
+        style = "position: relative; left: -50px; height: 120px; margin-top: 30px;",
+
+         # Horizontal graph with distribution
+         plotlyOutput("HorizontalDistr")
+      
+      ),
+      
+      div(
+        style = "margin-top: 50px;",
+        p("Legend:"),
+        tags$ul(
+          tags$li(tags$span("L", style = "color: blue; font-weight: bold;"), " - Lowest possible average (", strong(responses$q1a), ")"),
+          tags$li(tags$span("Q1", style = "color: green; font-weight: bold;"), " - Lower quartile (", strong(responses$q1d), ")"),
+          tags$li(tags$span("M", style = "color: red; font-weight: bold;"), " - Median value (", strong(responses$q1c), ")"),
+          tags$li(tags$span("Q3", style = "color: green; font-weight: bold;"), " - Upper quartile (", strong(responses$q1e), ")"),
+          tags$li(tags$span("U", style = "color: blue; font-weight: bold;"), " - Highest possible average (", strong(responses$q1b), ")")
+        )
+      )
+    )
+  })
+  
+  #### Server - Q1g summary graphic - missing ####
+  output$question1gPlot_Mis <- renderUI({
+    div(
+      div(
+        style = "position: relative",
+        #style = "position: relative; left: -50px; height: 120px; margin-top: 30px;",
+        # Horizontal graph with distribution
+        plotlyOutput("HorizontalDistr")
+      ),
+      
+    )
+  })
+  
+  # #### Server - Q1g summary graphic - observed ####
+  output$question1gPlot_Obs <- renderUI({
+    div(
+      div(
+        style = "position: relative",
+        # Horizontal graph with distribution
+        plotlyOutput("HorizontalDistr_Q1g")
+      ),
+
+    )
+  })
   
   #### Server - slider code 1 ####
   
@@ -1120,7 +1083,7 @@ server <- function(input, output, session) {
     shinyjs::disable("q1dVisual")
     shinyjs::disable("q1eVisual")
   })
-  #### Server - Q1f graph output ####
+  #### Server - Q1f graph output  ####
   # Plot the horizontal line chart with horizontal lines at each value
   output$HorizontalDistr <- renderPlotly({
     
@@ -1166,6 +1129,71 @@ server <- function(input, output, session) {
       add_trace(x=responses$q1c, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
       add_trace(x=responses$q1e, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
       add_trace(x=responses$q1b, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      
+      layout(
+        #title = "Distribution Metrics as Horizontal Lines",
+        xaxis = list(#title = "Your estimated distribution", 
+          tickvals = seq(0,4,0.1), 
+          ticktext = c("<b>never: 0</b>", "", "0.2", "", "0.4", "", "0.6", "", "0.8", "",
+                       "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
+                       "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
+                       "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
+                       "<b>very often: 4</b>"), 
+          range = c(0, 4), 
+          zeroline = FALSE,
+          tickangle= 330),
+        yaxis = list(range=c(0, 1.5),
+                     showticklabels = FALSE),
+        showlegend = FALSE
+      )
+  })
+  
+  #### Server - Q1g graph output - observed ####
+  # Plot the horizontal line chart with horizontal lines at each value
+  output$HorizontalDistr_Q1g <- renderPlotly({
+    
+    # Values to plot: Min, Q1, Median, Q3, Max
+    x1 = c(0, responses$q1a_obs)
+    y1 = c(1, 1)
+    
+    x2 = c(responses$q1a_obs, responses$q1d_obs)
+    y2 = c(1, 1)
+    
+    x3 = c(responses$q1d_obs, responses$q1c_obs)
+    y3 = c(1, 1)
+    
+    x4 = c(responses$q1c_obs, responses$q1e_obs)
+    y4 = c(1, 1)
+    
+    x5 = c(responses$q1e_obs, responses$q1b_obs)
+    y5 = c(1, 1)
+    
+    x6 = c(responses$q1b_obs, 4)
+    y6 = c(1, 1)
+    
+    # Create the plot: horizontal lines at each metric
+    plot_ly(hoverinfo='skip') %>%
+      # Horizontal blocs
+      add_trace(x=x1, y=y1, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      add_trace(x=x2, y=y2, type = 'scatter', mode="lines", line = list(color = "#4477AA", width = 50)) %>%
+      add_trace(x=x3, y=y3, type = 'scatter', mode="lines", line = list(color = "#AA3377", width = 50)) %>%
+      add_trace(x=x4, y=y4, type = 'scatter', mode="lines", line = list(color = "#228833", width = 50)) %>%
+      add_trace(x=x5, y=y5, type = 'scatter', mode="lines", line = list(color = "#DDAA33", width = 50)) %>%
+      add_trace(x=x6, y=y6, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      
+      # Vertical black lines between blocs and markers
+      add_trace(x=rep(responses$q1a_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1d_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1c_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1e_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1b_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      
+      # Markers with text inside
+      add_trace(x=responses$q1a_obs, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1d_obs, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1c_obs, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1e_obs, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1b_obs, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
       
       layout(
         #title = "Distribution Metrics as Horizontal Lines",

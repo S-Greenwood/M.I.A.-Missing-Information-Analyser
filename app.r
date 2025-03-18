@@ -41,7 +41,7 @@ ui <- fluidPage(
     strong("Objective of this step: "),
     p("As a patient, we want to take your judgements/ opinions/ thoughts on what you 
       think the gaps should be for specific clinical trial. This activity should 
-      take 30 - 60 minutes."),
+      take 60 - 80 minutes."),
     p("Before you start, if you want a refresher on any of these topics see these links below."),
     tags$ul(
       tags$li(
@@ -74,8 +74,7 @@ ui <- fluidPage(
     accordion_panel(
       title = "What is the clinical trial?",
       icon = bsicons::bs_icon("question-circle"),
-      div("Traditionally, dentists have encouraged both patients at low risk and 
-          patients at high risk of developing dental disease to attend their dental 
+      div("Traditionally, dentists have encouraged patients to attend their dental 
           practices for regular 6-month ‘check-ups’. There is, however, little 
           evidence available for either patients or dentists to use when deciding 
           on the best dental recall interval (i.e. time between dental check-ups) 
@@ -210,8 +209,8 @@ ui <- fluidPage(
       title = "What if I am not sure?",
       icon = bsicons::bs_icon("person-raised-hand"),
       div(
-        p(strong("Remember:"), "If you're not feeling sure this that is a good 
-          thing! Counter to what you might think, we want to capture 
+        p(strong("Remember:"), "If you're not feeling sure this is a good thing! 
+        Counter to what you might think, we want to capture 
           that",em("uncertainty"),"in your judgements. Your judgement is not 
           being used to accurately represent one patient's medical condition, 
           it is about getting a general sense about all of those patients with 
@@ -241,7 +240,6 @@ ui <- fluidPage(
   conditionalPanel(
     condition = "input.page == 3",
     p("Group 1: 6-month recall", style = "font-size: 24px; font-weight: bold;"),
-    #p("We are first going to focus on the 861 participants who were going back to see the dentist every 6-months. We want to estimate the responses of those 237 (27.5%) whose responses were missing."),
     accordion(
       id = "q1-accordion",
       open = NULL,
@@ -496,12 +494,12 @@ ui <- fluidPage(
           
         ),
         div(
-          div(strong("Question 1c:"), p("Now we have your highest and lowest 
-                                        value, we now need to split that bar in 
-                                        two! At which value on this scale do you 
-                                        think that the average of the group is 
-                                        equally likely to be above and below 
-                                        that value?")),
+          div(strong("Question 1c:"), 
+              p("Now we have your highest and lowest value, we now need to split 
+                that bar in two! At which value on this scale do you think that 
+                the average of the group is equally likely to be greater or less 
+                than that value?")
+              ),
           #uiOutput("question1cRange"), # Show current range from 1a and 1b
           sliderInput("question1cSlider", label = NULL, min = 0, max = 4, value = 2, step = 0.1),
           uiOutput("question1cValue"), # Display the selected value
@@ -550,38 +548,63 @@ ui <- fluidPage(
                   )
         ),
         div(
-          p("We're now going to split our group of 217 participant in half. One half have better (lower) scores, and the other have worse (higher) scores for the 6-months group."),
-          div(strong("Question 1d:"), "For the half of the 217 participant with lower (better) scores move the scale to draw a line on the left where you think it is equally likely that the average is above and below that value? (remember it doesn't need to be in the middle!)"),
+          p("We're now going to split our group of 217 participant in half."),
+          div(strong("Question 1d:"), 
+              "Among the 217 participants, focus on the half who had the lowest 
+              (best) scores. Compared to the other participants with missing 
+              scores, these participants had less of no pain. Choose a value 
+              where you think their average score has an equal chance of being 
+              higher or lower than that value. (Remember, it doesn’t have to be 
+              exactly in the middle!)"),
           uiOutput("question1dRange"), # Show current range from 1a and 1c
           sliderInput("question1dSlider", label = NULL, min = 0, max = 4, value = 1, step = 0.1),
           uiOutput("question1dValue") # Display the selected value
         ),
         div(
-          div(strong("Question 1e:"), "For the half of the 217 participant with higher (worse) scores move the scale to draw a line on the left where you think it is equally likely that the average is above and below that value? (remember it doesn't need to be in the middle!)"),
+          div(strong("Question 1e:"), 
+              "Among the 217 participants, focus on the half with the highest 
+              (worst) scores. Compared to the other participants with missing 
+              scores, these participants had more pain. Choose a value where you 
+              think their average score has an equal chance of being higher or 
+              lower than that value. (Remember, it doesn’t have to be exactly in 
+              the middle!)."),
           uiOutput("question1eRange"), # Show current range from 1c and 1b
           sliderInput("question1eSlider", label = NULL, min = 0, max = 4, value = 3, step = 0.1),
           uiOutput("question1eValue"), # Display the selected value
-          div(strong("Reflection:"), "You have given your judgement about the average missing score for those 217 participants through 5 numbers. We now have a plot that is split into four segments, where it is equally likely that the average value of those 217 participants could be in each segment. It's normal for them not to be equally sized, often the middle two segments are much smaller!")
+          div(strong("Reflection:"), "You have given your judgement about the 
+              average missing score for those 217 participants through 5 numbers. 
+              We now have a plot that is split into four segments, where it is 
+              equally likely that the average value of those 217 participants 
+              could be in each segment. It's normal for them not to be equally 
+              sized, often the middle two segments are much smaller!")
         ),
         
         div(
-          div(strong("Question 1f:"), "Do you have any reasons, or rationale you want to write about your judgement above?"),
+          div(strong("Question 1f:"), "Do you have any reasons, or rationale you 
+              want to write about your judgement above?"),
           uiOutput("question1fSummary"), # Show summary of previous answers
           br(),
           br(),
           br(),
           textAreaInput("question1fTextArea", label = NULL, placeholder = "Write your reasons here"),
-          p("Remember, we want to capture that uncertainty in your judgements, and we are asking your judgement to get a general sense about those patients with missing measurements, and what their results might have been. So we have one last reflection to help you with your response.")
+          p("Remember, we want to capture that uncertainty in your judgements, 
+            and we are asking your judgement to get a general sense about those 
+            patients with missing measurements, and what their results might 
+            have been. So we have one last reflection to help you with your response.")
         )
       ),
       nav_panel("Step 3", 
         div(
-          div(strong("Question 1g:"), "Lastly, lets now compare your judgements on the average of the 217 participants who did not answer against the average of the 624 participants who did answer the question."),
+          div(strong("Question 1g:"), "Lastly, lets now compare your judgements 
+              on the average of the 217 participants who did not answer against 
+              the average of the 624 participants who did answer the question.
+              Note that these 624 participants gave low scores, so low that 
+              their median score was 0! "),
           tags$table(
             class = "table table-bordered table-striped",
             tags$thead(
               tags$tr(
-                tags$th("Returned the questionnaire at Year 4?"),
+                tags$th("Provided a pain score?"),
                 tags$th("")
               )
             ),
@@ -1041,14 +1064,17 @@ server <- function(input, output, session) {
   })
   
   output$comparison1g <- renderUI({
-    comparison <- ifelse(responses$q1gNo > responses$q1gYes + 0.2, "worse than",
-                 ifelse(responses$q1gNo < responses$q1gYes - 0.2, "better than", "similar to"))
+    comparison <- ifelse(responses$q1gNo > responses$q1gYes + 0.2, "worse",
+                 ifelse(responses$q1gNo < responses$q1gYes - 0.2, "better", "similar"))
     
     responses$comparison <- comparison
     
-    HTML(paste0("When we compare this against your judgements, this means that they did <strong>", 
+    HTML(paste0("Comparing this with your judgments, this suggests that most of 
+                the 217 participants who did not provide a pain score experienced  
+                <strong>", 
                 comparison, 
-                "</strong> the participants who did not return their questionnaire. (Based on the median value)"))
+                "</strong> pain outcomes than the 624 who did. (Based on the 
+                median value)"))
   })
   
   #### Server - slider code 1 ####

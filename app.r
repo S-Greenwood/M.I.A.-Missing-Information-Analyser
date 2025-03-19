@@ -9,7 +9,7 @@ library(dplyr)
 ui <- fluidPage(
   theme = bs_theme(version = 5),
   useShinyjs(),
-  title = "Rethinking missing data with patients",
+  title = "Rethinking missing data with patients.",
   
   
  div(

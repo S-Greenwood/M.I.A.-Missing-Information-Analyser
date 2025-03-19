@@ -943,7 +943,7 @@ server <- function(input, output, session) {
       ),
       
       div(
-        style = "position: relative; left: -50px; height: 120px; margin-top: 30px;",
+        style = "position: relative; height: 120px; margin-top: 30px;",
 
          # Horizontal graph with distribution
          plotlyOutput("HorizontalDistr")
@@ -994,7 +994,7 @@ server <- function(input, output, session) {
       ),
       
       div(
-        style = "position: relative; left: -50px; height: 120px; margin-top: 30px;",
+        style = "position: relative; height: 120px; margin-top: 30px;",
 
          # Horizontal graph with distribution
          plotlyOutput("HorizontalDistr")
@@ -1144,7 +1144,9 @@ server <- function(input, output, session) {
           tickangle= 330),
         yaxis = list(range=c(0, 1.5),
                      showticklabels = FALSE),
-        showlegend = FALSE
+        showlegend = FALSE,
+        margin = list(l = 0, r = 0, t = 0, b = 0),
+        automargin = TRUE
       )
   })
   
@@ -1200,16 +1202,19 @@ server <- function(input, output, session) {
         xaxis = list(#title = "Your estimated distribution", 
           tickvals = seq(0,4,0.1), 
           ticktext = c("<b>never: 0</b>", "", "0.2", "", "0.4", "", "0.6", "", "0.8", "",
-                       "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
-                       "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
-                       "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
-                       "<b>very often: 4</b>"), 
+                        "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
+                        "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
+                        "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
+                        "<b>very often: 4</b>"), 
           range = c(0, 4), 
           zeroline = FALSE,
-          tickangle= 330),
+          tickangle= 330
+        ),
         yaxis = list(range=c(0, 1.5),
                      showticklabels = FALSE),
-        showlegend = FALSE
+        showlegend = FALSE,
+        margin = list(l = 0, r = 0, t = 0, b = 0),
+        automargin = TRUE
       )
   })
   

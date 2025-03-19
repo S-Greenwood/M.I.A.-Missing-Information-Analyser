@@ -1138,12 +1138,12 @@ server <- function(input, output, session) {
                        "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
                        "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
                        "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
-                       "<b>very often: 4</b>"), 
-          range = c(0, 4), 
+                       "<b>very often: 4</b>"),
+          range = c(-0.2, 4.2), 
           zeroline = FALSE,
-          tickangle= 330),
+          tickangle = 270),
         yaxis = list(range=c(0, 1.5),
-                     showticklabels = FALSE),
+        showticklabels = FALSE),
         showlegend = FALSE,
         margin = list(l = 0, r = 0, t = 0, b = 0),
         automargin = TRUE
@@ -1206,9 +1206,9 @@ server <- function(input, output, session) {
                         "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
                         "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
                         "<b>very often: 4</b>"), 
-          range = c(0, 4), 
+          range = c(-0.2, 4.2), 
           zeroline = FALSE,
-          tickangle= 330
+          tickangle= 270
         ),
         yaxis = list(range=c(0, 1.5),
                      showticklabels = FALSE),

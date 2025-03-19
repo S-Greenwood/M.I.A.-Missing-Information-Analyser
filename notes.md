@@ -8,6 +8,16 @@ Add comments to everything
 
 
 ## Compiling
+
+Make sure this is installed
+```
+install.packages("shinylive")
+install.packages("httpuv")
+```
+
+and then run this, but replace ~/Documents/Projects/Rshiny/App-1 with wherever you have it saved. In Rstudio you can probably just put '.' and './docs/'. We can test
+
+
 ```
 shinylive::export(appdir = "~/Documents/Projects/Rshiny/App-1",destdir = "~/Documents/Projects/Rshiny/App-1/docs")
 ```

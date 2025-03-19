@@ -22,6 +22,11 @@ and then run this, but replace ~/Documents/Projects/Rshiny/App-1 with wherever y
 shinylive::export(appdir = "~/Documents/Projects/Rshiny/App-1",destdir = "~/Documents/Projects/Rshiny/App-1/docs")
 ```
 
+### Compiling from RStudio
+```
+shinylive::export(appdir = ".",destdir = "./docs")
+```
+
 ## Middle step between highest and medium where they reflect on if its correct
 
 

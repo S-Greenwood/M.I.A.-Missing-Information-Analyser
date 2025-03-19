@@ -6,6 +6,12 @@ Be able to define some stuff like email addresses, extra descriptions in variabl
 
 Add comments to everything
 
+
+## Compiling
+```
+shinylive::export(appdir = "~/Documents/Projects/Rshiny/App-1",destdir = "~/Documents/Projects/Rshiny/App-1/docs")
+```
+
 ## Middle step between highest and medium where they reflect on if its correct
 
 

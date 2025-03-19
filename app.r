@@ -623,14 +623,8 @@ ui <- fluidPage(
                    border-radius: 5px;"),
     ),
   ),
-  
-  
   hr(),
   p("MIA Tool (Missing Information Analyser)", style = "font-style: italic; color: grey"),
-  
-  
-  
-  
   #### Formatting #####
   
   # Force the panels to be collapsed
@@ -644,27 +638,6 @@ ui <- fluidPage(
           });
         });
       ")
-  ),
-
-
-  # HTML code to style the accordion bars
-  tags$head(
-    tags$style(HTML("
-      .accordion-button {
-        background-color: #1d4675 !important;  /* dark blue for all panels */
-        color: white !important; 
-        
-      }
-      
-      .accordion-item {
-        border: 2px solid #4CAF50 !important; /* green border */
-      }
-      
-      .accordion-button:not(.collapsed) {
-        background-color: #388E3C !important; /* green for open panel */
-        color: white !important;
-      }
-    "))
   ),
   
   # HTML code to style the navigation bars 

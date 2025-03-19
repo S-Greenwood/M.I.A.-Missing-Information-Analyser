@@ -21,7 +21,7 @@ ui <- fluidPage(
   #### Header ####
   div(
     hr(),
-    h1("Rethinking missing data with patients"),
+    h1("Rethinking missing data with patients."),
     hr(),
   ),
   

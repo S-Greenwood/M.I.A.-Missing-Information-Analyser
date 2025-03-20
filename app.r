@@ -1373,35 +1373,35 @@ server <- function(input, output, session) {
     content = function(file) {
       pdf(file, width = 10, height = 14)
       plot.new()
-      text(0.5, 0.95, "Rethinking Missing Data with Patients: Your Responses", font = 2, cex = 1.5)
+      text(0.5, 1, "Rethinking Missing Data with Patients: Your Responses", font = 2, cex = 1.5)
       
       # 6-month recall responses
-      text(0.5, 0.85, "Group 1: 6-month recall", font = 2, cex = 1.2)
+      text(0.5, 0.95, "Group 1: 6-month recall", font = 2, cex = 1.2)
       
       # text(0.3, 0.8, "Thank you for completing the exercise! These are the 
       #      judgements / opinion / thoughts on the questions below. Please send 
       #      this document to s.greenwood.22@abdn.ac.uk.", cex = 1)
       
-      text(0.3, 0.8, "Question", cex = 1)
-      text(0.7, 0.8, "Your Response", cex = 1)
+      text(0.3, 0.9, "Question", cex = 1)
+      text(0.7, 0.9, "Your Response", cex = 1)
       
-      text(0.3, 0.75, "1a) LOWEST overall average responses", cex = 0.9)
-      text(0.7, 0.75, as.character(responses$q1a), cex = 0.9)
+      text(0.3, 0.85, "1a) LOWEST overall average responses", cex = 0.9)
+      text(0.7, 0.85, as.character(responses$q1a), cex = 0.9)
       
-      text(0.3, 0.7, "1b) HIGHEST overall average responses", cex = 0.9)
-      text(0.7, 0.7, as.character(responses$q1b), cex = 0.9)
+      text(0.3, 0.8, "1b) HIGHEST overall average responses", cex = 0.9)
+      text(0.7, 0.8, as.character(responses$q1b), cex = 0.9)
       
-      text(0.3, 0.65, "1c) Typical value on the average responses", cex = 0.9)
-      text(0.7, 0.65, as.character(responses$q1c), cex = 0.9)
+      text(0.3, 0.75, "1c) Typical value on the average responses", cex = 0.9)
+      text(0.7, 0.75, as.character(responses$q1c), cex = 0.9)
       
-      text(0.3, 0.6, "1d) Quartile 1 of overall average responses", cex = 0.9)
-      text(0.7, 0.6, as.character(responses$q1d), cex = 0.9)
+      text(0.3, 0.7, "1d) Quartile 1 of overall average responses", cex = 0.9)
+      text(0.7, 0.7, as.character(responses$q1d), cex = 0.9)
       
-      text(0.3, 0.55, "1e) Quartile 3 of overall average responses", cex = 0.9)
-      text(0.7, 0.55, as.character(responses$q1e), cex = 0.9)
+      text(0.3, 0.65, "1e) Quartile 3 of overall average responses", cex = 0.9)
+      text(0.7, 0.65, as.character(responses$q1e), cex = 0.9)
       
-      text(0.3, 0.5, "1f) Rationale for your judgements", cex = 0.9)
-      text(0.7, 0.5, "See below", cex = 0.9)
+      text(0.3, 0.6, "1f) Rationale for your judgements", cex = 0.9)
+      text(0.7, 0.6, "See below", cex = 0.9)
       
       if (responses$q1f != "") {
         wrapped_text <- strwrap(responses$q1f, width = 80)
@@ -1410,10 +1410,44 @@ server <- function(input, output, session) {
         }
       }
       
-      text(0.5, 0.2, paste("Your judgement suggests missing responses were", responses$comparison, 
+      text(0.5, 0.55, paste("Your judgement suggests missing responses were", responses$comparison, 
                            "those who did answer."), cex = 0.9)
       
-      text(0.5, 0.1, paste("Generated on:", format(Sys.time(), "%Y-%m-%d %H:%M:%S")), cex = 0.8)
+      # Question 2
+      # text(0.5, 0.5, "Group 2: ", font = 2, cex = 1.2)
+      # text(0.3, 0.45, "Question", cex = 1)
+      # text(0.7, 0.45, "Your Response", cex = 1)
+      
+      # text(0.3, 0.4, "1a) LOWEST overall average responses", cex = 0.9)
+      # text(0.7, 0.4, as.character(responses$q1a), cex = 0.9)
+      
+      # text(0.3, 0.35, "1b) HIGHEST overall average responses", cex = 0.9)
+      # text(0.7, 0.35, as.character(responses$q1b), cex = 0.9)
+      
+      # text(0.3, 0.3, "1c) Typical value on the average responses", cex = 0.9)
+      # text(0.7, 0.3, as.character(responses$q1c), cex = 0.9)
+      
+      # text(0.3, 0.25, "1d) Quartile 1 of overall average responses", cex = 0.9)
+      # text(0.7, 0.25, as.character(responses$q1d), cex = 0.9)
+      
+      # text(0.3, 0.2, "1e) Quartile 3 of overall average responses", cex = 0.9)
+      # text(0.7, 0.2, as.character(responses$q1e), cex = 0.9)
+      
+      # text(0.3, 0.15, "1f) Rationale for your judgements", cex = 0.9)
+      # text(0.7, 0.15, "See below", cex = 0.9)
+      # if (responses$q1f != "") {
+      #   wrapped_text <- strwrap(responses$q1f, width = 80)
+      #   for (i in 1:min(length(wrapped_text), 10)) {
+      #     text(0.5, 0.45 - (i * 0.03), wrapped_text[i], cex = 0.8)
+      #   }
+      # }
+      
+      # text(0.5, 0.1, paste("Your judgement suggests missing responses were", responses$comparison, 
+      #                      "those who did answer."), cex = 0.9)
+      
+
+      # Generated at text
+      text(0.5, 0, paste("Generated on:", format(Sys.time(), "%Y-%m-%d %H:%M:%S")), cex = 0.8)
       
       dev.off()
     }

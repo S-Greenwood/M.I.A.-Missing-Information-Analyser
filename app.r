@@ -4,6 +4,8 @@ library(shinyjs)
 library(plotly)
 library(palmerpenguins)
 library(dplyr)
+library(gridExtra)
+library(grid)
 
 #### UI code ####
 ui <- fluidPage(
@@ -123,6 +125,7 @@ ui <- fluidPage(
           ),
           tags$table(
             class = "table table-bordered table-striped",
+            style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
             tags$thead(
               tags$tr(
                 tags$th("0"),
@@ -134,11 +137,11 @@ ui <- fluidPage(
             ),
             tags$tbody(
               tags$tr(
-                tags$td("never"),
-                tags$td("hardly ever"),
-                tags$td("occasionally"),
-                tags$td("fairly often"),
-                tags$td("very often")
+                tags$td(style = "background-color: #ccffff;", "never"),
+                tags$td(style = "background-color: #ccffcc;", "hardly ever"),
+                tags$td(style = "background-color: #ffffcc;", "occasionally"),
+                tags$td(style = "background-color: #ffebcc;", "fairly often"),
+                tags$td(style = "background-color: #ffcccc;", "very often")
               )
             )
           ),
@@ -241,7 +244,7 @@ ui <- fluidPage(
     condition = "input.page == 3",
     p("Group 1: 6-month recall", style = "font-size: 24px; font-weight: bold;"),
     accordion(
-      id = "q1-accordion",
+      id = "Group1-accordion",
       open = NULL,
       multiple = FALSE,
       accordion_panel(
@@ -296,26 +299,27 @@ ui <- fluidPage(
           tags$li(strong("Answer: "), "picking a number from below"),
         ),
         tags$table(
-            class = "table table-bordered table-striped",
-            tags$thead(
-              tags$tr(
-                tags$th("0"),
-                tags$th("1"),
-                tags$th("2"),
-                tags$th("3"),
-                tags$th("4")
-              )
-            ),
-            tags$tbody(
-              tags$tr(
-                tags$td("never"),
-                tags$td("hardly ever"),
-                tags$td("occasionally"),
-                tags$td("fairly often"),
-                tags$td("very often")
-              )
+          class = "table table-bordered table-striped",
+          style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
+          tags$thead(
+            tags$tr(
+              tags$th("0"),
+              tags$th("1"),
+              tags$th("2"),
+              tags$th("3"),
+              tags$th("4")
             )
           ),
+          tags$tbody(
+            tags$tr(
+              tags$td(style = "background-color: #ccffff;", "never"),
+              tags$td(style = "background-color: #ccffcc;", "hardly ever"),
+              tags$td(style = "background-color: #ffffcc;", "occasionally"),
+              tags$td(style = "background-color: #ffebcc;", "fairly often"),
+              tags$td(style = "background-color: #ffcccc;", "very often")
+            )
+          )
+        ),
       )
     ),
     br(),
@@ -471,9 +475,8 @@ ui <- fluidPage(
           div(strong("Question 1f:"), "Do you have any reasons, or rationale you 
               want to write about your judgement above?"),
           uiOutput("question1fSummary"), # Show summary of previous answers
-          br(),
-          br(),
-          br(),
+          br(),br(),br(),br(),br(),br(),br(),
+          br(),br(),br(),br(),br(),br(),br(),
           textAreaInput("question1fTextArea", label = NULL, placeholder = "Write your reasons here"),
           p("Remember, we want to capture that uncertainty in your judgements, 
             and we are asking your judgement to get a general sense about those 
@@ -486,54 +489,23 @@ ui <- fluidPage(
       nav_panel("Step 3", 
         div(
           div(strong("Question 1g:"), "Lastly, lets now compare your judgements 
-              on the average of the 217 participants who did not answer against 
-              the average of the 624 participants who did answer the question."),
+              on the average of the 221 participants who did not answer against 
+              the average of the 640 participants who did answer the question."),
           p(""),
-          div("This is your judgement on the", strong("217"), " participants"),
-          uiOutput("question1gPlot_Mis"), # Show summary of previous answers
-          #br(), br(), br(), br(), br(), br(), br(),
-          div("This is results of on the ", strong("624"), " participants that gave their pain score."),
-          uiOutput("question1gPlot_Obs"), # Show summary of previous answers
-          #br(), br(), br(), br(), br(), br(), br(),
+          div("This is your judgement on the", strong("221"), " participants"),
+          # Show summary of previous answers
+          uiOutput("question1gPlot_Mis"), 
+          div("This is results of on the ", strong("640"), " participants that gave their pain score."),
+          # Show summary of observed 
+          uiOutput("question1gPlot_Obs"), 
           p("You will notice that there is only the colours yellow and green. 
-            Among 624 participants, half scored 0, so the blue and pink sections 
+            Among 640 participants, half scored 0, so the blue and pink sections 
             are missing from the plot due to many reporting no pain (score of 0)."),
           p("These are the numbers that make up the graphs"),
           uiOutput("question1gSummary"),
-          p("Now you have seen the results of the other 624 participants, you 
+          p("Now you have seen the results of the other 640 participants, you 
           can, if you want, to back to Q1c to rethink your answer. Otherwise 
             click next.")
-          # tags$table(
-          #   class = "table table-bordered table-striped",
-          #   tags$thead(
-          #     tags$tr(
-          #       tags$th("Provided a pain score?"),
-          #       tags$th("")
-          #     )
-          #   ),
-          #   tags$tbody(
-          #     tags$tr(
-          #       tags$td("No (your judgement on the 217 participants)"),
-          #       tags$td(
-          #         uiOutput("question1gNoValue"), # Display value from 1c
-          #         #uiOutput("question1fSummary"),
-          #         #sliderInput("question1gNoSlider", label = NULL, min = 0, max = 4, value = 2, step = 0.1)
-          #       )
-          #     ),
-          #     # Set Median value to be 0, which is what the observed result were 
-          #     # Potential discussion point later on as to whether we should "anchor" the participants on this fact
-          #     tags$tr(
-          #       tags$td("Yes (the results of the 624 who did answer the question)"),
-          #       tags$td(
-          #         sliderInput("question1gYesSlider", label = NULL, min = 0, max = 4, value = 0, step = 0.1, animate = FALSE)
-          #       )
-          #     ),
-          #     tags$tr(
-          #       tags$td("What does this mean?"),
-          #       tags$td(uiOutput("comparison1g"))
-          #     )
-          #   )
-          # ),
           
         )
       )
@@ -552,10 +524,309 @@ ui <- fluidPage(
 
  
  
-  # Page 5 - text ####
+ # Page 4 - text ####
+ 
+ conditionalPanel(
+   condition = "input.page == 4",
+   p("Pause", style = "font-size: 24px; font-weight: bold;"),
+   p("That is one group done! Now we are going to do the same task for the
+     second group. Feel free to take a pause here, but note that if you don't 
+     click on anything for ", strong("15 minutes"), " your session will 'time 
+     out', and your earlier responses may be lost. "),
+   
+   p("When you are ready click next.")
+ ),
+ # Page 5 - text ####
+ 
+ conditionalPanel(
+   condition = "input.page == 5",
+   p("Group 2: Risk-based recall", style = "font-size: 24px; font-weight: bold;"),
+   accordion(
+     id = "Group2-accordion",
+     open = NULL,
+     multiple = FALSE,
+     accordion_panel(
+       title = "How many patients were missing their measurement?",
+       icon = bsicons::bs_icon("search"),
+       p("Of the 861 patients in Group 2 (risk-based), 221 (25.7%) missed a 
+          response to this question at year 4."),
+       tags$table(
+         class = "table table-bordered table-striped",
+         tags$thead(
+           tags$tr(
+             tags$th("Number of patients"),
+             tags$th("Risk-recall")
+           )
+         ),
+         tags$tbody(
+           tags$tr(
+             tags$td("Total number in group"),
+             tags$td("861 (100%)")
+           ),
+           tags$tr(
+             tags$td("Missing an answer"),
+             tags$td("221 (25.7%)")
+           )
+         )
+       )
+     ),
+     accordion_panel(
+       title="What is the profile of these patients?",
+       icon = bsicons::bs_icon("person-circle"),
+       div(
+         p("The 217 participants missing their pain scores were similar to the 
+            624 who did not, apart from the following factors."),
+         tags$ul(
+           tags$li(strong("They were younger"), " (averaging 44 years old, 
+                   compared to 51 year old for the 640 participants)"),
+           tags$li(strong("More of them smoked"), " (About 21%  reported smoking 
+                   in last 12 months, compared to 16%.)"),
+           tags$li(strong("Less received their care entirely through the NHS"), 
+                   " (at 73% compare to the 83% of the 624 participants)"),
+           tags$li(strong("Attended the dentist less regularly"), " (at 67% vs 
+                   93% of the 624 participants)"),
+         ),
+       ),
+     ),
+     accordion_panel(
+       title = "What were they missing?",
+       icon = bsicons::bs_icon("lightbulb"),
+       p("These participants did not answer this question at Year 4:"),
+       tags$ul(
+         tags$li(strong("Question: "), "Have you had painful aching in your mouth?"),
+         tags$li(strong("Answer: "), "picking a number from below"),
+       ),
+       tags$table(
+         class = "table table-bordered table-striped",
+         style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
+         tags$thead(
+           tags$tr(
+             tags$th("0"),
+             tags$th("1"),
+             tags$th("2"),
+             tags$th("3"),
+             tags$th("4")
+           )
+         ),
+         tags$tbody(
+           tags$tr(
+             tags$td(style = "background-color: #ccffff;", "never"),
+             tags$td(style = "background-color: #ccffcc;", "hardly ever"),
+             tags$td(style = "background-color: #ffffcc;", "occasionally"),
+             tags$td(style = "background-color: #ffebcc;", "fairly often"),
+             tags$td(style = "background-color: #ffcccc;", "very often")
+           )
+         )
+       ),
+     )
+   ),
+   br(),
+   p("Activity: 'Fill in the gaps'", style = "font-size: 18px; font-weight: bold;"),
+      p("Now we are going to estimate the 217 patients whose responses were missing.
+      We want to get a general sense of how they could have answered that question, 
+      on average, 4 years into the trial."),
+   p("This activity will be completed in ", strong("3 steps"),". Be sure to 
+   complete each one before clicking 'Next'"),
+
+     # Step 1 ####
+   navset_card_tab(
+      id = "nav_tab_top_2",
+      nav_panel("Step 1", 
+          p("Remember the question was 'Have you had painful aching in your 
+            mouth?', and the scale was"),
+          tags$table(
+                  class = "table table-bordered table-striped",
+                  style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
+                  tags$thead(
+                    tags$tr(
+                      tags$th("0"),
+                      tags$th("1"),
+                      tags$th("2"),
+                      tags$th("3"),
+                      tags$th("4")
+                    )
+                  ),
+                  tags$tbody(
+                    tags$tr(
+                      tags$td(style = "background-color: #ccffff;", "never"),
+                      tags$td(style = "background-color: #ccffcc;", "hardly ever"),
+                      tags$td(style = "background-color: #ffffcc;", "occasionally"),
+                      tags$td(style = "background-color: #ffebcc;", "fairly often"),
+                      tags$td(style = "background-color: #ffcccc;", "very often")
+                    )
+                  )
+           ),
+         div(
+           div(strong("Question 2a: "), p("Thinking about the overall average 
+                                         response from these participants, based 
+                                         on your judgement. What is the LOWEST 
+                                         possible value the average could be? 
+                                         (L = lower plausible limit)")),
+          sliderInput("question2aSlider", label = NULL, min = 0, max = 4, value = 0, step = 0.1),
+          uiOutput("question2aValue") # Display the selected value
+        ),
+
+        div(
+          div(strong("Question 2b: "), p("Thinking about the overall average 
+                                         response from these participants, 
+                                         based on your judgement. What is the 
+                                         HIGHEST possible value the average 
+                                         could be? (U = upper plausible limit)")),
+          sliderInput("question2bSlider", label = NULL, min = 0, max = 4, value = 4, step = 0.1),
+          uiOutput("question2bValue"), # Display the selected value
+          p(""),
+          uiOutput("reflection2ab"), # Display the reflection with values
+          p(""),
+          
+        ),
+        div(
+          div(strong("Question 2c:"), 
+              p("Now we have your highest and lowest value, we now need to split 
+                that bar in two! At which value on this scale do you think that 
+                the average of the group is equally likely to be greater or less 
+                than that value?")
+              ),
+          #uiOutput("question1cRange"), # Show current range from 1a and 1b
+          sliderInput("question2cSlider", label = NULL, min = 0, max = 4, value = 2, step = 0.1),
+          uiOutput("question2cValue"), # Display the selected value
+          p(""),
+          div(
+            strong("Tips for Question 2c:"),
+            tags$ul(
+              tags$li("Note that your answer doesn't have to sit in the middle! 
+              A value closer to right this means you think that then average of 
+              these 221 participants are likely to be is likely to be a higher 
+              score, which is a worse outcome"),
+              tags$li("When you have an answer have a think. Imagine you're in a 
+              game show and there is big prize for getting this question right. 
+              Do you think the average of the group of 221 patients is more 
+              likely to be in above or below that middle value? If you think yes
+              , then return to Q1c and consider increasing or reducing your 
+              value until you don't have a preference for above or below. If you 
+              answered no, continue onto Step 2, by clicking above")
+            )
+          )
+        )
+      ),
+    
+     # Step 2 ####
+      nav_panel("Step 2", 
+          p("Remember the question was 'Have you had painful aching in your 
+            mouth?', and the scale was"),
+                tags$table(
+                  class = "table table-bordered table-striped",
+                  style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
+                  tags$thead(
+                    tags$tr(
+                      tags$th("0"),
+                      tags$th("1"),
+                      tags$th("2"),
+                      tags$th("3"),
+                      tags$th("4")
+                    )
+                  ),
+                  tags$tbody(
+                    tags$tr(
+                      tags$td(style = "background-color: #ccffff;", "never"),
+                      tags$td(style = "background-color: #ccffcc;", "hardly ever"),
+                      tags$td(style = "background-color: #ffffcc;", "occasionally"),
+                      tags$td(style = "background-color: #ffebcc;", "fairly often"),
+                      tags$td(style = "background-color: #ffcccc;", "very often")
+                    )
+                  )
+        ),
+        div(
+          p("We're now going to split our group of 221 participant in half."),
+          div(strong("Question 2d:"), 
+              "Among the 221 participants, focus on the half who had the lowest 
+              (best) scores. Compared to the other participants with missing 
+              scores, these participants had less of no pain. Choose a value 
+              where you think their average score has an equal chance of being 
+              higher or lower than that value. (Remember, it doesn’t have to be 
+              exactly in the middle!)"),
+          uiOutput("question2dRange"), # Show current range from 1a and 1c
+          sliderInput("question2dSlider", label = NULL, min = 0, max = 4, value = 1, step = 0.1),
+          uiOutput("question2dValue") # Display the selected value
+        ),
+        div(
+          div(strong("Question 2e:"), 
+              "Among the 221 participants, focus on the half with the highest 
+              (worst) scores. Compared to the other participants with missing 
+              scores, these participants had more pain. Choose a value where you 
+              think their average score has an equal chance of being higher or 
+              lower than that value. (Remember, it doesn’t have to be exactly in 
+              the middle!)."),
+          uiOutput("question2eRange"), # Show current range from 1c and 1b
+          sliderInput("question2eSlider", label = NULL, min = 0, max = 4, value = 3, step = 0.1),
+          uiOutput("question2eValue"), # Display the selected value
+          div(strong("Reflection:"), "You have given your judgement about the 
+              average missing score for those 221 participants through 5 numbers. 
+              We now have a plot that is split into four segments, where it is 
+              equally likely that the average value of those 221 participants 
+              could be in each segment. It's normal for them not to be equally 
+              sized, often the middle two segments are much smaller!")
+        ),
+        
+        div(
+          div(strong("Question 2f:"), "Do you have any reasons, or rationale you 
+              want to write about your judgement above?"),
+          # Show summary of previous answers
+          uiOutput("question2fSummary"), 
+          br(),br(),br(),br(),br(),br(),br(),
+          br(),br(),br(),br(),br(),br(),br(),
+          textAreaInput("question2fTextArea", label = NULL, placeholder = "Write your reasons here"),
+          p("Remember, we want to capture that uncertainty in your judgements, 
+            and we are asking your judgement to get a general sense about those 
+            patients with missing measurements, and what their results might 
+            have been. So we have one last reflection to help you with your response.")
+        )
+      ),
+      
+     # Step 3 ####
+      nav_panel("Step 3", 
+        div(
+          div(strong("Question 2g:"), "Lastly, lets now compare your judgements 
+              on the average of the 221 participants who did not answer against 
+              the average of the 640 participants who did answer the question."),
+          p(""),
+          div("This is your judgement on the", strong("221"), " participants"),
+          # Show summary of previous answers
+          uiOutput("question2gPlot_Mis"), 
+          div("This is results of on the ", strong("640"), " participants that gave their pain score."),
+          # Show summary of observed 
+          uiOutput("question2gPlot_Obs"), 
+          p("You will notice that there is only the colours yellow and green. 
+            Among 640 participants, half scored 0, so the blue and pink sections 
+            are missing from the plot due to many reporting no pain (score of 0)."),
+          p("These are the numbers that make up the graphs"),
+          uiOutput("question2gSummary"),
+          p("Now you have seen the results of the other 640 participants, you 
+          can, if you want, to back to Q1c to rethink your answer. Otherwise 
+            click next.")
+          
+        )
+      )
+    ),
+    
+    navset_card_tab(
+      id = "nav_tab_bottom_2",
+      nav_panel("Step 1", ""),
+      nav_panel("Step 2", ""),
+      nav_panel("Step 3", ""),
+    )
+
+  ),
+  
+
+
+ 
+ 
+
+
+   # Page 6 - text ####
  
   conditionalPanel(
-    condition = "input.page == 4",
+    condition = "input.page == 6",
     p("Send your results", style = "font-size: 24px; font-weight: bold;"),
     p("That is the end of this exercise! If you've not done so yet, please 
     download your results. Then please send this downloaded file to ", 
@@ -619,7 +890,7 @@ ui <- fluidPage(
                    border-radius: 5px;"),
     ),
     conditionalPanel(
-      condition = "input.page < 4",
+      condition = "input.page < 6",
       actionButton("nextBtn", "Next", style = "background-color: #1d4675; 
                    color: white; font-size: 18px; padding: 10px 20px; 
                    border-radius: 5px;"),
@@ -840,9 +1111,10 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   page <- reactiveVal(1)
-  total_pages <- 5
+  total_pages <- 6
   
   #### Server - Text updates in response to question updates ####
+  # Original values 
   responses <- reactiveValues(
     q1a = 0,
     q1b = 4,
@@ -858,10 +1130,25 @@ server <- function(input, output, session) {
     q1c_obs = 0,
     q1d_obs = 0,
     q1e_obs = 1,
+    q2a = 0,
+    q2b = 4,
+    q2c = 2,
+    q2d = 1,
+    q2e = 3,
+    q2f = "",
+    q2gNo = 2,
+    q2gYes = 1.5,
+    comparison_2 = "similar to",
+    q2a_obs = 0,
+    q2b_obs = 4,
+    q2c_obs = 0,
+    q2d_obs = 0,
+    q2e_obs = 1,
   )
   
-  # Update reactive values whenever sliders change
+  # Update reactive values whenever sliders / values change
   observe({
+    # question 1
     responses$q1a <- input$question1aSlider
     responses$q1b <- input$question1bSlider
     responses$q1c <- input$question1cSlider
@@ -870,20 +1157,29 @@ server <- function(input, output, session) {
     responses$q1f <- input$question1fTextArea
     responses$q1gNo <- input$question1gNoSlider
     responses$q1gYes <- input$question1gYesSlider
+    # Question 2
+    responses$q2a <- input$question2aSlider
+    responses$q2b <- input$question2bSlider
+    responses$q2c <- input$question2cSlider
+    responses$q2d <- input$question2dSlider
+    responses$q2e <- input$question2eSlider
+    responses$q2f <- input$question2fTextArea
+    responses$q2gNo <- input$question2gNoSlider
+    responses$q2gYes <- input$question2gYesSlider
   })
   
+  ### 
+  # text updates - Group 2 
+  ### 
   observe({
     updateTextInput(session, "page", value = page())
   })
-  
   output$question1aValue <- renderUI({
     p(strong("Your answer: ", responses$q1a))
   })
-  
   output$question1bValue <- renderUI({
     p(strong("Your answer: ", responses$q1b))
   })
-  
   output$reflection1ab <- renderUI({
     p("Based on the answer you've given, you think that the average participant 
       response to the questionnaire ranged from", strong(responses$q1a), " and ", 
@@ -892,34 +1188,71 @@ server <- function(input, output, session) {
       )
     # HTML(paste0("<strong>", responses$q1a, "</strong> (L) and <strong>", responses$q1b, "</strong> (U). If this is not what you think go back to edit your answer to Q1a and Q1b. After thinking about the extreme cases, we now have a scale of all the possible values that this average could be."))
   })
-  
   output$question1cRange <- renderUI({
     p("Based on your previous answers, you've indicated the range is between ", 
       strong(responses$q1a), " and ", strong(responses$q1b), ".")
   })
-  
   output$question1cValue <- renderUI({
     p(strong("Your answer: ", responses$q1c))
   })
-  
   output$question1dRange <- renderUI({
     p("Based on your previous answers, this value should be between ", 
       strong(responses$q1a), " and ", strong(responses$q1c), ".")
   })
-  
   output$question1dValue <- renderUI({
     p(strong("Your answer: ", responses$q1d))
   })
-  
   output$question1eRange <- renderUI({
     p("Based on your previous answers, this value should be between ", 
       strong(responses$q1c), " and ", strong(responses$q1b), ".")
   })
-  
   output$question1eValue <- renderUI({
     p(strong("Your answer: ", responses$q1e))
   })
-  #### Server - slider code 1 ####
+  
+  ### 
+  # text updates - Group 2 
+  ### 
+  observe({
+    updateTextInput(session, "page", value = page())
+  })
+  output$question2aValue <- renderUI({
+    p(strong("Your answer: ", responses$q2a))
+  })
+  output$question2bValue <- renderUI({
+    p(strong("Your answer: ", responses$q2b))
+  })
+  output$reflection2ab <- renderUI({
+    p("Based on the answer you've given, you think that the average participant 
+      response to the questionnaire ranged from", strong(responses$q2a), " and ", 
+      strong(responses$q2b), ". If this is not what you think go back to edit 
+      your answer to Q2a and Q2b."
+    )
+    # HTML(paste0("<strong>", responses$q1a, "</strong> (L) and <strong>", responses$q1b, "</strong> (U). If this is not what you think go back to edit your answer to Q1a and Q1b. After thinking about the extreme cases, we now have a scale of all the possible values that this average could be."))
+  })
+  output$question2cRange <- renderUI({
+    p("Based on your previous answers, you've indicated the range is between ", 
+      strong(responses$q2a), " and ", strong(responses$q2b), ".")
+  })
+  output$question2cValue <- renderUI({
+    p(strong("Your answer: ", responses$q2c))
+  })
+  output$question2dRange <- renderUI({
+    p("Based on your previous answers, this value should be between ", 
+      strong(responses$q2a), " and ", strong(responses$q2c), ".")
+  })
+  output$question2dValue <- renderUI({
+    p(strong("Your answer: ", responses$q2d))
+  })
+  output$question2eRange <- renderUI({
+    p("Based on your previous answers, this value should be between ", 
+      strong(responses$q2c), " and ", strong(responses$q2b), ".")
+  })
+  output$question2eValue <- renderUI({
+    p(strong("Your answer: ", responses$q2e))
+  }) 
+  
+  #### Server - slider code - Group 1 ####
   
   # Observe changes in slider1a or slider1b and update slider1c (Median slider based on Min and Max)
   observe(
@@ -962,6 +1295,7 @@ server <- function(input, output, session) {
     shinyjs::disable("q1dVisual")
     shinyjs::disable("q1eVisual")
   })
+
   #### Server - Q1f summary ####
   output$question1fSummary <- renderUI({
     div(
@@ -978,21 +1312,9 @@ server <- function(input, output, session) {
         style = "position: relative; height: 120px; margin-top: 30px;",
 
          # Horizontal graph with distribution
-         plotlyOutput("HorizontalDistr")
+         plotlyOutput("g1_q1f_plot")
       
       ),
-      
-      div(
-        style = "margin-top: 50px;",
-        p("Legend:"),
-        tags$ul(
-          tags$li(tags$span("L", style = "color: blue; font-weight: bold;"), " - Lowest possible average (", strong(responses$q1a), ")"),
-          tags$li(tags$span("Q1", style = "color: green; font-weight: bold;"), " - Lower quartile (", strong(responses$q1d), ")"),
-          tags$li(tags$span("M", style = "color: red; font-weight: bold;"), " - Median value (", strong(responses$q1c), ")"),
-          tags$li(tags$span("Q3", style = "color: green; font-weight: bold;"), " - Upper quartile (", strong(responses$q1e), ")"),
-          tags$li(tags$span("U", style = "color: blue; font-weight: bold;"), " - Highest possible average (", strong(responses$q1b), ")")
-        )
-      )
     )
   })
   
@@ -1013,7 +1335,8 @@ server <- function(input, output, session) {
                 "</strong> pain outcomes than the 624 who did. (Based on the 
                 median value)"))
   })
-  #### Server - Q1f summary and positioning of the plot ####
+  
+  #### Server - Q1f plot ####
   output$question1fSummary <- renderUI({
     div(
       p("Your judgments so far:"),
@@ -1029,50 +1352,217 @@ server <- function(input, output, session) {
         style = "position: relative; height: 120px; margin-top: 30px;",
 
          # Horizontal graph with distribution
-         plotlyOutput("HorizontalDistr")
-      
+         plotlyOutput("g1_q1f_plot")
       ),
-      
-      div(
-        style = "margin-top: 50px;",
-        p("Legend:"),
-        tags$ul(
-          tags$li(tags$span("L", style = "color: blue; font-weight: bold;"), " - Lowest possible average (", strong(responses$q1a), ")"),
-          tags$li(tags$span("Q1", style = "color: green; font-weight: bold;"), " - Lower quartile (", strong(responses$q1d), ")"),
-          tags$li(tags$span("M", style = "color: red; font-weight: bold;"), " - Median value (", strong(responses$q1c), ")"),
-          tags$li(tags$span("Q3", style = "color: green; font-weight: bold;"), " - Upper quartile (", strong(responses$q1e), ")"),
-          tags$li(tags$span("U", style = "color: blue; font-weight: bold;"), " - Highest possible average (", strong(responses$q1b), ")")
-        )
-      )
     )
   })
-  
-  #### Server - Q1g summary graphic - missing ####
+  # Plot the horizontal line chart with horizontal lines at each value
+  output$g1_q1f_plot <- renderPlotly({
+    
+    # Values to plot: Min, Q1, Median, Q3, Max
+    x1 = c(0, responses$q1a)
+    y1 = c(1, 1)
+    x2 = c(responses$q1a, responses$q1d)
+    y2 = c(1, 1)
+    x3 = c(responses$q1d, responses$q1c)
+    y3 = c(1, 1)
+    x4 = c(responses$q1c, responses$q1e)
+    y4 = c(1, 1)
+    x5 = c(responses$q1e, responses$q1b)
+    y5 = c(1, 1)
+    x6 = c(responses$q1b, 4)
+    y6 = c(1, 1)
+    
+    # Create the plot: horizontal lines at each metric
+    plot_ly(hoverinfo='skip') %>%
+      # Horizontal blocs
+      add_trace(x=x1, y=y1, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      add_trace(x=x2, y=y2, type = 'scatter', mode="lines", line = list(color = "#4477AA", width = 50)) %>%
+      add_trace(x=x3, y=y3, type = 'scatter', mode="lines", line = list(color = "#AA3377", width = 50)) %>%
+      add_trace(x=x4, y=y4, type = 'scatter', mode="lines", line = list(color = "#228833", width = 50)) %>%
+      add_trace(x=x5, y=y5, type = 'scatter', mode="lines", line = list(color = "#DDAA33", width = 50)) %>%
+      add_trace(x=x6, y=y6, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      
+      # Vertical black lines between blocs and markers
+      add_trace(x=rep(responses$q1a,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1d,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1c,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1e,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1b,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      
+      # Markers with text inside
+      add_trace(x=responses$q1a, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1d, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1c, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1e, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1b, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      
+      layout(
+        #title = "Distribution Metrics as Horizontal Lines",
+        xaxis = list(#title = "Your estimated distribution", 
+          tickvals = seq(0,4,0.1), 
+          ticktext = c("<b>never: 0</b>", "", "0.2", "", "0.4", "", "0.6", "", "0.8", "",
+                       "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
+                       "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
+                       "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
+                       "<b>very often: 4</b>"),
+          range = c(-0.2, 4.2), 
+          zeroline = FALSE,
+          tickangle = 270),
+        yaxis = list(range=c(0, 1.5),
+                     showticklabels = FALSE),
+        showlegend = FALSE,
+        margin = list(l = 0, r = 0, t = 0, b = 0),
+        automargin = TRUE
+      )
+  })
+  #### Server - Q1g plot - missing ####
   output$question1gPlot_Mis <- renderUI({
     div(
       div(
         style = "position: relative",
         #style = "position: relative; left: -50px; height: 120px; margin-top: 30px;",
         # Horizontal graph with distribution
-        plotlyOutput("HorizontalDistr_miss")
+        plotlyOutput("g1_q1g_plot_miss")
       ),
       
     )
   })
+  # Plot the horizontal line chart with horizontal lines at each value
+  output$g1_q1g_plot_miss <- renderPlotly({
+    
+    # Values to plot: Min, Q1, Median, Q3, Max
+    x1 = c(0, responses$q1a)
+    y1 = c(1, 1)
+    x2 = c(responses$q1a, responses$q1d)
+    y2 = c(1, 1)
+    x3 = c(responses$q1d, responses$q1c)
+    y3 = c(1, 1)
+    x4 = c(responses$q1c, responses$q1e)
+    y4 = c(1, 1)
+    x5 = c(responses$q1e, responses$q1b)
+    y5 = c(1, 1)
+    x6 = c(responses$q1b, 4)
+    y6 = c(1, 1)
+    
+    # Create the plot: horizontal lines at each metric
+    plot_ly(hoverinfo='skip') %>%
+      # Horizontal blocs
+      add_trace(x=x1, y=y1, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      add_trace(x=x2, y=y2, type = 'scatter', mode="lines", line = list(color = "#4477AA", width = 50)) %>%
+      add_trace(x=x3, y=y3, type = 'scatter', mode="lines", line = list(color = "#AA3377", width = 50)) %>%
+      add_trace(x=x4, y=y4, type = 'scatter', mode="lines", line = list(color = "#228833", width = 50)) %>%
+      add_trace(x=x5, y=y5, type = 'scatter', mode="lines", line = list(color = "#DDAA33", width = 50)) %>%
+      add_trace(x=x6, y=y6, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      
+      # Vertical black lines between blocs and markers
+      add_trace(x=rep(responses$q1a,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1d,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1c,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1e,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1b,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      
+      # Markers with text inside
+      add_trace(x=responses$q1a, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1d, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1c, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1e, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1b, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      
+      layout(
+        #title = "Distribution Metrics as Horizontal Lines",
+        xaxis = list(#title = "Your estimated distribution", 
+          tickvals = seq(0,4,0.1), 
+          ticktext = c("<b>never: 0</b>", "", "0.2", "", "0.4", "", "0.6", "", "0.8", "",
+                       "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
+                       "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
+                       "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
+                       "<b>very often: 4</b>"),
+          range = c(-0.2, 4.2), 
+          zeroline = FALSE,
+          tickangle = 270),
+        yaxis = list(range=c(0, 1.5),
+                     showticklabels = FALSE),
+        showlegend = FALSE,
+        margin = list(l = 0, r = 0, t = 0, b = 0),
+        automargin = TRUE
+      )
+  })
   
-  #### Server - Q1g summary graphic - observed ####
+  #### Server - Q1g plot - observed ####
   output$question1gPlot_Obs <- renderUI({
     div(
       div(
         style = "position: relative",
         # Horizontal graph with distribution
-        plotlyOutput("HorizontalDistr_Q1g")
+        plotlyOutput("g1_q1g_plot_obs")
       ),
 
     )
   })
+  # Plot the horizontal line chart with horizontal lines at each value
+  output$g1_q1g_plot_obs <- renderPlotly({
+    
+    # Values to plot: Min, Q1, Median, Q3, Max
+    x1 = c(0, responses$q1a_obs)
+    y1 = c(1, 1)
+    x2 = c(responses$q1a_obs, responses$q1d_obs)
+    y2 = c(1, 1)
+    x3 = c(responses$q1d_obs, responses$q1c_obs)
+    y3 = c(1, 1)
+    x4 = c(responses$q1c_obs, responses$q1e_obs)
+    y4 = c(1, 1)
+    x5 = c(responses$q1e_obs, responses$q1b_obs)
+    y5 = c(1, 1)
+    x6 = c(responses$q1b_obs, 4)
+    y6 = c(1, 1)
+    
+    # Create the plot: horizontal lines at each metric
+    plot_ly(hoverinfo='skip') %>%
+      # Horizontal blocs
+      add_trace(x=x1, y=y1, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      add_trace(x=x2, y=y2, type = 'scatter', mode="lines", line = list(color = "#4477AA", width = 50)) %>%
+      add_trace(x=x3, y=y3, type = 'scatter', mode="lines", line = list(color = "#AA3377", width = 50)) %>%
+      add_trace(x=x4, y=y4, type = 'scatter', mode="lines", line = list(color = "#228833", width = 50)) %>%
+      add_trace(x=x5, y=y5, type = 'scatter', mode="lines", line = list(color = "#DDAA33", width = 50)) %>%
+      add_trace(x=x6, y=y6, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      
+      # Vertical black lines between blocs and markers
+      add_trace(x=rep(responses$q1a_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1d_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1c_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1e_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1b_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      
+      # Markers with text inside
+      add_trace(x=responses$q1a_obs, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1d_obs, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1c_obs, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1e_obs, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1b_obs, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      
+      layout(
+        #title = "Distribution Metrics as Horizontal Lines",
+        xaxis = list(#title = "Your estimated distribution", 
+          tickvals = seq(0,4,0.1), 
+          ticktext = c("<b>never: 0</b>", "", "0.2", "", "0.4", "", "0.6", "", "0.8", "",
+                       "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
+                       "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
+                       "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
+                       "<b>very often: 4</b>"), 
+          range = c(-0.2, 4.2), 
+          zeroline = FALSE,
+          tickangle= 270
+        ),
+        yaxis = list(range=c(0, 1.5),
+                     showticklabels = FALSE),
+        showlegend = FALSE,
+        margin = list(l = 0, r = 0, t = 0, b = 0),
+        automargin = TRUE
+      )
+  })
   
-  #### Server - Q1g summary table ####
+  #### Server - Q1g table ####
   output$question1gSummary <- renderUI({
     div(
       tags$table(
@@ -1131,96 +1621,133 @@ server <- function(input, output, session) {
     )
   })
   
-  
-  
-  #### Server - Q1f graph output  ####
-  # Plot the horizontal line chart with horizontal lines at each value
-  output$HorizontalDistr <- renderPlotly({
-    
-    # Values to plot: Min, Q1, Median, Q3, Max
-    x1 = c(0, responses$q1a)
-    y1 = c(1, 1)
-    
-    x2 = c(responses$q1a, responses$q1d)
-    y2 = c(1, 1)
-    
-    x3 = c(responses$q1d, responses$q1c)
-    y3 = c(1, 1)
-    
-    x4 = c(responses$q1c, responses$q1e)
-    y4 = c(1, 1)
-    
-    x5 = c(responses$q1e, responses$q1b)
-    y5 = c(1, 1)
-    
-    x6 = c(responses$q1b, 4)
-    y6 = c(1, 1)
-    
-    # Create the plot: horizontal lines at each metric
-    plot_ly(hoverinfo='skip') %>%
-      # Horizontal blocs
-      add_trace(x=x1, y=y1, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
-      add_trace(x=x2, y=y2, type = 'scatter', mode="lines", line = list(color = "#4477AA", width = 50)) %>%
-      add_trace(x=x3, y=y3, type = 'scatter', mode="lines", line = list(color = "#AA3377", width = 50)) %>%
-      add_trace(x=x4, y=y4, type = 'scatter', mode="lines", line = list(color = "#228833", width = 50)) %>%
-      add_trace(x=x5, y=y5, type = 'scatter', mode="lines", line = list(color = "#DDAA33", width = 50)) %>%
-      add_trace(x=x6, y=y6, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
-      
-      # Vertical black lines between blocs and markers
-      add_trace(x=rep(responses$q1a,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1d,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1c,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1e,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1b,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      
-      # Markers with text inside
-      add_trace(x=responses$q1a, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1d, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1c, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1e, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1b, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      
-      layout(
-        #title = "Distribution Metrics as Horizontal Lines",
-        xaxis = list(#title = "Your estimated distribution", 
-          tickvals = seq(0,4,0.1), 
-          ticktext = c("<b>never: 0</b>", "", "0.2", "", "0.4", "", "0.6", "", "0.8", "",
-                       "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
-                       "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
-                       "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
-                       "<b>very often: 4</b>"),
-          range = c(-0.2, 4.2), 
-          zeroline = FALSE,
-          tickangle = 270),
-        yaxis = list(range=c(0, 1.5),
-        showticklabels = FALSE),
-        showlegend = FALSE,
-        margin = list(l = 0, r = 0, t = 0, b = 0),
-        automargin = TRUE
-      )
-  })
+  # # make a version for the PDF 
+  # question1gSummary_pdf <- reactive({
+  #   data.frame(
+  #     "Pain score" = c("Lowest", "Quartile 1", "Median", "Quartile 3", "Highest", "Your rationale"),
+  #     "Missing (217 patients)" = c(responses$q1a, responses$q1d, responses$q1c, responses$q1e, responses$q1b, responses$q1f),
+  #     "Not missing (624 patients)" = c(responses$q1a_obs, responses$q1d_obs, responses$q1c_obs, responses$q1e_obs, responses$q1b_obs, NA)  # NA for rationale since no observed value
+  #   )
+  # })
 
-  #### Server - Q1g graph output - Missing  ####
+  
+  #### Server - slider code - Group 2 ####
+  
+  # Observe changes in slider2a or slider2b and update slider2c (Median slider based on Min and Max)
+  observe(
+    updateSliderInput(session, "question2cSlider",
+                      min = responses$q2a,
+                      max = responses$q2b,
+                      value = (responses$q2a + responses$q2b)/2 # Keep value in range
+    )
+  )
+  
+  # Observe changes in slider2a or slider2c and update slider2d (Q2 slider based on Min and Median)
+  observe(
+    updateSliderInput(session, "question2dSlider",
+                      min = responses$q2a,
+                      max = responses$q2c,
+                      value = (responses$q2a + responses$q2c)/2 # Keep value in range
+    )
+  )  
+  
+  # Observe changes in slider2b or slider2c and update slider2d (Q3 slider based on Max and Median)
+  observe(
+    updateSliderInput(session, "question2eSlider",
+                      min = responses$q2c,
+                      max = responses$q2b,
+                      value = (responses$q2b + responses$q2c)/2 # Keep value in range
+    )
+  )     
+  observe({
+    updateSliderInput(session, "q2aVisual", value = responses$q2a)
+    updateSliderInput(session, "q2bVisual", value = responses$q2b)
+    updateSliderInput(session, "q2cVisual", value = responses$q2c)
+    updateSliderInput(session, "q2dVisual", value = responses$q2d)
+    updateSliderInput(session, "q2eVisual", value = responses$q2e)
+  })
+  
+  observe({
+    shinyjs::disable("q2aVisual")
+    shinyjs::disable("q2bVisual")
+    shinyjs::disable("q2cVisual")
+    shinyjs::disable("q2dVisual")
+    shinyjs::disable("q2eVisual")
+  })
+  
+  
+  #### Server - Q2f summary ####
+  output$question2fSummary <- renderUI({
+    div(
+      p("Your judgments so far:"),
+      tags$ul(
+        tags$li("Lowest possible average: ", strong(responses$q2a)),
+        tags$li("Highest possible average: ", strong(responses$q2b)),
+        tags$li("Median value (equally likely to be above/below): ", strong(responses$q2c)),
+        tags$li("Lower half median: ", strong(responses$q2d)),
+        tags$li("Upper half median: ", strong(responses$q2e))
+      ),
+      
+      div(
+        style = "position: relative; height: 120px; margin-top: 30px;",
+        # Horizontal graph with distribution
+        plotlyOutput("g2_q1f_plot")
+        
+      ),
+    )
+  })
+  
+  output$question2gNoValue <- renderUI({
+    p("Based on your previous answer to Q1c: ", strong(responses$q2c))
+  })
+  
+  output$comparison2g <- renderUI({
+    comparison_2 <- ifelse(responses$q2gNo > responses$q2gYes + 0.2, "worse",
+                         ifelse(responses$q2gNo < responses$q2gYes - 0.2, "better", "similar"))
+    
+    responses$comparison_2 <- comparison_2
+    
+    HTML(paste0("Comparing this with your judgments, this suggests that most of 
+                the 221 participants who did not provide a pain score experienced  
+                <strong>", 
+                comparison_2, 
+                "</strong> pain outcomes than the 640 who did. (Based on the 
+                median value)"))
+  })
+  #### Server - Q2f plot ####
+  output$question2fSummary <- renderUI({
+    div(
+      p("Your judgments so far:"),
+      tags$ul(
+        tags$li("Lowest possible average: ", strong(responses$q2a)),
+        tags$li("Highest possible average: ", strong(responses$q2b)),
+        tags$li("Median value (equally likely to be above/below): ", strong(responses$q2c)),
+        tags$li("Lower half median: ", strong(responses$q2d)),
+        tags$li("Upper half median: ", strong(responses$q2e))
+      ),
+      
+      div(
+        style = "position: relative; height: 120px; margin-top: 30px;",
+        # Horizontal graph with distribution
+        plotlyOutput("g2_q1f_plot")
+      ),
+    )
+  })
   # Plot the horizontal line chart with horizontal lines at each value
-  output$HorizontalDistr_miss <- renderPlotly({
+  output$g2_q1f_plot <- renderPlotly({
     
     # Values to plot: Min, Q1, Median, Q3, Max
-    x1 = c(0, responses$q1a)
+    x1 = c(0, responses$q2a)
     y1 = c(1, 1)
-    
-    x2 = c(responses$q1a, responses$q1d)
+    x2 = c(responses$q2a, responses$q2d)
     y2 = c(1, 1)
-    
-    x3 = c(responses$q1d, responses$q1c)
+    x3 = c(responses$q2d, responses$q2c)
     y3 = c(1, 1)
-    
-    x4 = c(responses$q1c, responses$q1e)
+    x4 = c(responses$q2c, responses$q2e)
     y4 = c(1, 1)
-    
-    x5 = c(responses$q1e, responses$q1b)
+    x5 = c(responses$q2e, responses$q2b)
     y5 = c(1, 1)
-    
-    x6 = c(responses$q1b, 4)
+    x6 = c(responses$q2b, 4)
     y6 = c(1, 1)
     
     # Create the plot: horizontal lines at each metric
@@ -1234,18 +1761,18 @@ server <- function(input, output, session) {
       add_trace(x=x6, y=y6, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
       
       # Vertical black lines between blocs and markers
-      add_trace(x=rep(responses$q1a,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1d,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1c,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1e,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1b,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2a,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2d,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2c,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2e,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2b,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
       
       # Markers with text inside
-      add_trace(x=responses$q1a, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1d, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1c, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1e, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1b, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2a, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2d, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2c, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2e, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2b, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
       
       layout(
         #title = "Distribution Metrics as Horizontal Lines",
@@ -1266,27 +1793,32 @@ server <- function(input, output, session) {
         automargin = TRUE
       )
   })
-  #### Server - Q1g graph output - observed ####
+  #### Server - Q2g plot - missing ####
+  output$question2gPlot_Mis <- renderUI({
+    div(
+      div(
+        style = "position: relative",
+        #style = "position: relative; left: -50px; height: 120px; margin-top: 30px;",
+        # Horizontal graph with distribution
+        plotlyOutput("g2_q1g_plot_miss")
+      ),
+    )
+  })
   # Plot the horizontal line chart with horizontal lines at each value
-  output$HorizontalDistr_Q1g <- renderPlotly({
+  output$g2_q1g_plot_miss <- renderPlotly({
     
     # Values to plot: Min, Q1, Median, Q3, Max
-    x1 = c(0, responses$q1a_obs)
+    x1 = c(0, responses$q2a)
     y1 = c(1, 1)
-    
-    x2 = c(responses$q1a_obs, responses$q1d_obs)
+    x2 = c(responses$q2a, responses$q2d)
     y2 = c(1, 1)
-    
-    x3 = c(responses$q1d_obs, responses$q1c_obs)
+    x3 = c(responses$q2d, responses$q2c)
     y3 = c(1, 1)
-    
-    x4 = c(responses$q1c_obs, responses$q1e_obs)
+    x4 = c(responses$q2c, responses$q2e)
     y4 = c(1, 1)
-    
-    x5 = c(responses$q1e_obs, responses$q1b_obs)
+    x5 = c(responses$q2e, responses$q2b)
     y5 = c(1, 1)
-    
-    x6 = c(responses$q1b_obs, 4)
+    x6 = c(responses$q2b, 4)
     y6 = c(1, 1)
     
     # Create the plot: horizontal lines at each metric
@@ -1300,28 +1832,100 @@ server <- function(input, output, session) {
       add_trace(x=x6, y=y6, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
       
       # Vertical black lines between blocs and markers
-      add_trace(x=rep(responses$q1a_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1d_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1c_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1e_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
-      add_trace(x=rep(responses$q1b_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2a,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2d,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2c,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2e,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2b,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
       
       # Markers with text inside
-      add_trace(x=responses$q1a_obs, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1d_obs, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1c_obs, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1e_obs, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
-      add_trace(x=responses$q1b_obs, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2a, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2d, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2c, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2e, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2b, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
       
       layout(
         #title = "Distribution Metrics as Horizontal Lines",
         xaxis = list(#title = "Your estimated distribution", 
           tickvals = seq(0,4,0.1), 
           ticktext = c("<b>never: 0</b>", "", "0.2", "", "0.4", "", "0.6", "", "0.8", "",
-                        "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
-                        "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
-                        "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
-                        "<b>very often: 4</b>"), 
+                       "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
+                       "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
+                       "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
+                       "<b>very often: 4</b>"),
+          range = c(-0.2, 4.2), 
+          zeroline = FALSE,
+          tickangle = 270),
+        yaxis = list(range=c(0, 1.5),
+                     showticklabels = FALSE),
+        showlegend = FALSE,
+        margin = list(l = 0, r = 0, t = 0, b = 0),
+        automargin = TRUE
+      )
+  })
+  
+  #### Server - Q2g plot - observed ####
+  output$question2gPlot_Obs <- renderUI({
+    div(
+      div(
+        style = "position: relative",
+        # Horizontal graph with distribution
+        plotlyOutput("g2_q1g_plot_obs")
+      ),
+      
+    )
+  })
+  # Plot the horizontal line chart with horizontal lines at each value
+  output$g2_q1g_plot_obs <- renderPlotly({
+    
+    # Values to plot: Min, Q1, Median, Q3, Max
+    x1 = c(0, responses$q2a_obs)
+    y1 = c(1, 1)
+    x2 = c(responses$q2a_obs, responses$q2d_obs)
+    y2 = c(1, 1)
+    x3 = c(responses$q2d_obs, responses$q2c_obs)
+    y3 = c(1, 1)
+    x4 = c(responses$q2c_obs, responses$q2e_obs)
+    y4 = c(1, 1)
+    x5 = c(responses$q2e_obs, responses$q2b_obs)
+    y5 = c(1, 1)
+    x6 = c(responses$q2b_obs, 4)
+    y6 = c(1, 1)
+    
+    # Create the plot: horizontal lines at each metric
+    plot_ly(hoverinfo='skip') %>%
+      # Horizontal blocs
+      add_trace(x=x1, y=y1, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      add_trace(x=x2, y=y2, type = 'scatter', mode="lines", line = list(color = "#4477AA", width = 50)) %>%
+      add_trace(x=x3, y=y3, type = 'scatter', mode="lines", line = list(color = "#AA3377", width = 50)) %>%
+      add_trace(x=x4, y=y4, type = 'scatter', mode="lines", line = list(color = "#228833", width = 50)) %>%
+      add_trace(x=x5, y=y5, type = 'scatter', mode="lines", line = list(color = "#DDAA33", width = 50)) %>%
+      add_trace(x=x6, y=y6, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      
+      # Vertical black lines between blocs and markers
+      add_trace(x=rep(responses$q2a_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2d_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2c_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2e_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q2b_obs,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      
+      # Markers with text inside
+      add_trace(x=responses$q2a_obs, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2d_obs, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2c_obs, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2e_obs, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q2b_obs, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      
+      layout(
+        #title = "Distribution Metrics as Horizontal Lines",
+        xaxis = list(#title = "Your estimated distribution", 
+          tickvals = seq(0,4,0.1), 
+          ticktext = c("<b>never: 0</b>", "", "0.2", "", "0.4", "", "0.6", "", "0.8", "",
+                       "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
+                       "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
+                       "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
+                       "<b>very often: 4</b>"), 
           range = c(-0.2, 4.2), 
           zeroline = FALSE,
           tickangle= 270
@@ -1334,9 +1938,88 @@ server <- function(input, output, session) {
       )
   })
   
+  #### Server - Q2g table ####
+  output$question2gSummary <- renderUI({
+    div(
+      tags$table(
+        class = "table table-bordered table-striped",
+        tags$thead(
+          tags$tr(
+            tags$th("Pain score"),
+            tags$th("Missing (221 patients)"),
+            tags$th("Not missing (640 patients)")
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Lowest"),
+            tags$td(responses$q2a),
+            tags$td(responses$q2a_obs)
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Quartile 1"),
+            tags$td(responses$q2d),
+            tags$td(responses$q2d_obs)
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Median"),
+            tags$td(responses$q2c),
+            tags$td(responses$q2c_obs)
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Quartile 3"),
+            tags$td(responses$q2e),
+            tags$td(responses$q2e_obs)
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Highest"),
+            tags$td(responses$q2b),
+            tags$td(responses$q2b_obs)
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Your rationale"),
+            tags$td(responses$q2f),
+            #tags$td(responses$q1b_obs)
+          )
+        ),
+      ),
+      
+    )
+  })
+  
+  
+  
+  
+  
   #### Server - Next / previous buttons ####
+
+  
+  observeEvent(input$confirmNext, {
+    removeModal()
+    if (page() < total_pages) {
+      page(page() + 1)
+    }
+  })
+  
+  observeEvent(input$prevBtn, {
+    if (page() > 1) {
+      page(page() - 1)
+    }
+  })
+
+  # Prompts to check they completed all the steps - 6-months
   observeEvent(input$nextBtn, {
-    if (page() == 3) {
+    if (page() == 3 | page() == 5) {
       showModal(
         modalDialog(
           title = "Confirmation",
@@ -1352,106 +2035,162 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$confirmNext, {
-    removeModal()
-    if (page() < total_pages) {
-      page(page() + 1)
-    }
-  })
+  # # Prompts to check they completed all the steps - risk-based recall
+  # observeEvent(input$nextBtn, {
+  #   if (page() == 3) {
+  #     showModal(
+  #       modalDialog(
+  #         title = "Confirmation",
+  #         "For Group 1, have you completed all 3 steps?",
+  #         footer = tagList(
+  #           modalButton("No"),
+  #           actionButton("confirmNext", "Yes")
+  #         )
+  #       )
+  #     )
+  #   } else if (page() < total_pages) {
+  #     page(page() + 1)
+  #   }
+  # })
   
-  observeEvent(input$prevBtn, {
-    if (page() > 1) {
-      page(page() - 1)
-    }
-  })
-
-  #### Server - PDF output  ####
-  output$export = downloadHandler(
+  #### Server - PDF output WITH TABLE  ####
+  library(gridExtra)
+  library(grid)
+  
+  output$export <- downloadHandler(
     filename = function() {
       paste0("My_results_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".pdf")
     },
     content = function(file) {
-      pdf(file, width = 10, height = 14)
+      pdf(file, width = 10, height = 14)  # Set PDF size
+      
+      # First Page: Title and Group 1 Table
       plot.new()
       text(0.5, 1, "Rethinking Missing Data with Patients: Your Responses", font = 2, cex = 1.5)
-      
-      # 6-month recall responses
       text(0.5, 0.95, "Group 1: 6-month recall", font = 2, cex = 1.2)
       
-      # text(0.3, 0.8, "Thank you for completing the exercise! These are the 
-      #      judgements / opinion / thoughts on the questions below. Please send 
-      #      this document to s.greenwood.22@abdn.ac.uk.", cex = 1)
+      # Group 1 Table Data
+      table_data_g1 <- data.frame(
+        "Pain Score" = c("Lowest", "Quartile 1", "Median", "Quartile 3", "Highest", "Your rationale"),
+        "Missing (217 patients)" = c(responses$q1a, responses$q1d, responses$q1c, responses$q1e, responses$q1b, responses$q1f),
+        "Not Missing (624 patients)" = c(responses$q1a_obs, responses$q1d_obs, responses$q1c_obs, responses$q1e_obs, responses$q1b_obs, NA)
+      )
       
-      text(0.3, 0.9, "Question", cex = 1)
-      text(0.7, 0.9, "Your Response", cex = 1)
+      # Display Group 1 Table
+      grid.table(table_data_g1)
       
-      text(0.3, 0.85, "1a) LOWEST overall average responses", cex = 0.9)
-      text(0.7, 0.85, as.character(responses$q1a), cex = 0.9)
+      # Start a New Page for Group 2
+      grid.newpage()
       
-      text(0.3, 0.8, "1b) HIGHEST overall average responses", cex = 0.9)
-      text(0.7, 0.8, as.character(responses$q1b), cex = 0.9)
+      # Second Page: Group 2 Table
+      plot.new()
+      text(0.5, 1, "Rethinking Missing Data with Patients: Your Responses", font = 2, cex = 1.5)
+      text(0.5, 0.95, "Group 2: Risk-Recall", font = 2, cex = 1.2)
       
-      text(0.3, 0.75, "1c) Typical value on the average responses", cex = 0.9)
-      text(0.7, 0.75, as.character(responses$q1c), cex = 0.9)
+      # Group 2 Table Data
+      table_data_g2 <- data.frame(
+        "Pain Score" = c("Lowest", "Quartile 1", "Median", "Quartile 3", "Highest", "Your rationale"),
+        "Missing (217 patients)" = c(responses$q2a, responses$q2d, responses$q2c, responses$q2e, responses$q2b, responses$q2f),
+        "Not Missing (624 patients)" = c(responses$q2a_obs, responses$q2d_obs, responses$q2c_obs, responses$q2e_obs, responses$q2b_obs, NA)
+      )
       
-      text(0.3, 0.7, "1d) Quartile 1 of overall average responses", cex = 0.9)
-      text(0.7, 0.7, as.character(responses$q1d), cex = 0.9)
+      # Display Group 2 Table
+      grid.table(table_data_g2)
       
-      text(0.3, 0.65, "1e) Quartile 3 of overall average responses", cex = 0.9)
-      text(0.7, 0.65, as.character(responses$q1e), cex = 0.9)
+      # Footer: Generated timestamp on the last page
+      mtext(paste("Generated on:", format(Sys.time(), "%Y-%m-%d %H:%M:%S")), side = 1, line = 4, cex = 0.8)
       
-      text(0.3, 0.6, "1f) Rationale for your judgements", cex = 0.9)
-      text(0.7, 0.6, "See below", cex = 0.9)
-      
-      if (responses$q1f != "") {
-        wrapped_text <- strwrap(responses$q1f, width = 80)
-        for (i in 1:min(length(wrapped_text), 10)) {
-          text(0.5, 0.45 - (i * 0.03), wrapped_text[i], cex = 0.8)
-        }
-      }
-      
-      text(0.5, 0.55, paste("Your judgement suggests missing responses were", responses$comparison, 
-                           "those who did answer."), cex = 0.9)
-      
-      # Question 2
-      # text(0.5, 0.5, "Group 2: ", font = 2, cex = 1.2)
-      # text(0.3, 0.45, "Question", cex = 1)
-      # text(0.7, 0.45, "Your Response", cex = 1)
-      
-      # text(0.3, 0.4, "1a) LOWEST overall average responses", cex = 0.9)
-      # text(0.7, 0.4, as.character(responses$q1a), cex = 0.9)
-      
-      # text(0.3, 0.35, "1b) HIGHEST overall average responses", cex = 0.9)
-      # text(0.7, 0.35, as.character(responses$q1b), cex = 0.9)
-      
-      # text(0.3, 0.3, "1c) Typical value on the average responses", cex = 0.9)
-      # text(0.7, 0.3, as.character(responses$q1c), cex = 0.9)
-      
-      # text(0.3, 0.25, "1d) Quartile 1 of overall average responses", cex = 0.9)
-      # text(0.7, 0.25, as.character(responses$q1d), cex = 0.9)
-      
-      # text(0.3, 0.2, "1e) Quartile 3 of overall average responses", cex = 0.9)
-      # text(0.7, 0.2, as.character(responses$q1e), cex = 0.9)
-      
-      # text(0.3, 0.15, "1f) Rationale for your judgements", cex = 0.9)
-      # text(0.7, 0.15, "See below", cex = 0.9)
-      # if (responses$q1f != "") {
-      #   wrapped_text <- strwrap(responses$q1f, width = 80)
-      #   for (i in 1:min(length(wrapped_text), 10)) {
-      #     text(0.5, 0.45 - (i * 0.03), wrapped_text[i], cex = 0.8)
-      #   }
-      # }
-      
-      # text(0.5, 0.1, paste("Your judgement suggests missing responses were", responses$comparison, 
-      #                      "those who did answer."), cex = 0.9)
-      
-
-      # Generated at text
-      text(0.5, 0, paste("Generated on:", format(Sys.time(), "%Y-%m-%d %H:%M:%S")), cex = 0.8)
-      
-      dev.off()
+      dev.off()  # Close PDF device
     }
   )
+  
+  #### Server - PDF output with text  ####
+  # output$export = downloadHandler(
+  #   filename = function() {
+  #     paste0("My_results_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".pdf")
+  #   },
+  #   content = function(file) {
+  #     pdf(file, width = 10, height = 14)
+  #     plot.new()
+  #     text(0.5, 1, "Rethinking Missing Data with Patients: Your Responses", font = 2, cex = 1.5)
+  #     
+  #     # 6-month recall responses
+  #     text(0.5, 0.95, "Group 1: 6-month recall", font = 2, cex = 1.2)
+  #     
+  #     # text(0.3, 0.8, "Thank you for completing the exercise! These are the 
+  #     #      judgements / opinion / thoughts on the questions below. Please send 
+  #     #      this document to s.greenwood.22@abdn.ac.uk.", cex = 1)
+  #     
+  #     text(0.3, 0.9, "Question", cex = 1)
+  #     text(0.7, 0.9, "Your Response", cex = 1)
+  #     
+  #     text(0.3, 0.85, "1a) LOWEST overall average responses", cex = 0.9)
+  #     text(0.7, 0.85, as.character(responses$q1a), cex = 0.9)
+  #     
+  #     text(0.3, 0.8, "1b) HIGHEST overall average responses", cex = 0.9)
+  #     text(0.7, 0.8, as.character(responses$q1b), cex = 0.9)
+  #     
+  #     text(0.3, 0.75, "1c) Typical value on the average responses", cex = 0.9)
+  #     text(0.7, 0.75, as.character(responses$q1c), cex = 0.9)
+  #     
+  #     text(0.3, 0.7, "1d) Quartile 1 of overall average responses", cex = 0.9)
+  #     text(0.7, 0.7, as.character(responses$q1d), cex = 0.9)
+  #     
+  #     text(0.3, 0.65, "1e) Quartile 3 of overall average responses", cex = 0.9)
+  #     text(0.7, 0.65, as.character(responses$q1e), cex = 0.9)
+  #     
+  #     text(0.3, 0.6, "1f) Rationale for your judgements", cex = 0.9)
+  #     text(0.7, 0.6, "See below", cex = 0.9)
+  #     
+  #     if (responses$q1f != "") {
+  #       wrapped_text <- strwrap(responses$q1f, width = 80)
+  #       for (i in 1:min(length(wrapped_text), 10)) {
+  #         text(0.5, 0.45 - (i * 0.03), wrapped_text[i], cex = 0.8)
+  #       }
+  #     }
+  #     
+  #     text(0.5, 0.55, paste("Your judgement suggests missing responses were", responses$comparison, 
+  #                          "those who did answer."), cex = 0.9)
+  #     
+  #     # Question 2
+  #     text(0.5, 0.5, "Group 2: ", font = 2, cex = 1.2)
+  #     text(0.3, 0.45, "Question", cex = 1)
+  #     text(0.7, 0.45, "Your Response", cex = 1)
+  # 
+  #     text(0.3, 0.4, "1a) LOWEST overall average responses", cex = 0.9)
+  #     text(0.7, 0.4, as.character(responses$q2a), cex = 0.9)
+  # 
+  #     text(0.3, 0.35, "1b) HIGHEST overall average responses", cex = 0.9)
+  #     text(0.7, 0.35, as.character(responses$q2b), cex = 0.9)
+  # 
+  #     text(0.3, 0.3, "1c) Typical value on the average responses", cex = 0.9)
+  #     text(0.7, 0.3, as.character(responses$q2c), cex = 0.9)
+  # 
+  #     text(0.3, 0.25, "1d) Quartile 1 of overall average responses", cex = 0.9)
+  #     text(0.7, 0.25, as.character(responses$q2d), cex = 0.9)
+  # 
+  #     text(0.3, 0.2, "1e) Quartile 3 of overall average responses", cex = 0.9)
+  #     text(0.7, 0.2, as.character(responses$q2e), cex = 0.9)
+  # 
+  #     text(0.3, 0.15, "1f) Rationale for your judgements", cex = 0.9)
+  #     text(0.7, 0.15, "See below", cex = 0.9)
+  #     if (responses$q2f != "") {
+  #       wrapped_text <- strwrap(responses$q1f, width = 80)
+  #       for (i in 1:min(length(wrapped_text), 10)) {
+  #         text(0.5, 0.45 - (i * 0.03), wrapped_text[i], cex = 0.8)
+  #       }
+  #     }
+  # 
+  #     text(0.5, 0.1, paste("Your judgement suggests missing responses were", responses$comparison_2,
+  #                          "those who did answer."), cex = 0.9)
+  # 
+  # 
+  #     # Generated at text
+  #     text(0.5, 0, paste("Generated on:", format(Sys.time(), "%Y-%m-%d %H:%M:%S")), cex = 0.8)
+  #     
+  #     dev.off()
+  #   }
+  # )
   #### Server - Navbar  ####
   # We want the two buttons to work together 
   # Sync Bottom Tab -> Updates Top Tab
@@ -1463,6 +2202,14 @@ server <- function(input, output, session) {
     updateTabsetPanel(session, "nav_tab_bottom_1", selected = input$nav_tab_top_1)
   })
 
+  # Sync Bottom Tab -> Updates Top Tab
+  observeEvent(input$nav_tab_bottom_2, {
+    updateTabsetPanel(session, "nav_tab_top_2", selected = input$nav_tab_bottom_2)
+  })
+  # Sync Top Tab -> Updates Bottom Tab
+  observeEvent(input$nav_tab_top_2, {
+    updateTabsetPanel(session, "nav_tab_bottom_2", selected = input$nav_tab_top_2)
+  })
 }
 
 #### Run the app ####

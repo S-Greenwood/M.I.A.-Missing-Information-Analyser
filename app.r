@@ -498,6 +498,8 @@ ui <- fluidPage(
           p("You will notice that there is only the colours yellow and green. 
             Among 624 participants, half scored 0, so the blue and pink sections 
             are missing from the plot due to many reporting no pain (score of 0)."),
+          p("These are the numbers that make up the graphs"),
+          uiOutput("question1gSummary"),
           p("Now you have seen the results of the other 624 participants, you 
           can, if you want, to back to Q1c to rethink your answer. Otherwise 
             click next.")
@@ -663,7 +665,21 @@ ui <- fluidPage(
     "))
   ),
   
-  
+ # HTML code to style the accordion bars
+ tags$head(
+   tags$style(HTML("
+      .accordion-button {
+        background-color: #1d4675 !important;  /* dark blue for all panels */
+        color: white !important; 
+        
+      }
+      
+      .accordion-button:not(.collapsed) {
+        background-color: #388E3C !important; /* green for open panel */
+        color: white !important;
+      }
+    "))
+ ),
   
   
   tags$style(HTML("
@@ -826,7 +842,7 @@ server <- function(input, output, session) {
   page <- reactiveVal(1)
   total_pages <- 5
   
-  #### Server - Question text updates with values ####
+  #### Server - Text updates in response to question updates ####
   responses <- reactiveValues(
     q1a = 0,
     q1b = 4,
@@ -903,6 +919,49 @@ server <- function(input, output, session) {
   output$question1eValue <- renderUI({
     p(strong("Your answer: ", responses$q1e))
   })
+  #### Server - slider code 1 ####
+  
+  # Observe changes in slider1a or slider1b and update slider1c (Median slider based on Min and Max)
+  observe(
+    updateSliderInput(session, "question1cSlider",
+                      min = responses$q1a,
+                      max = responses$q1b,
+                      value = (responses$q1a + responses$q1b)/2 # Keep value in range
+    )
+  )
+  
+  # Observe changes in slider1a or slider1c and update slider1d (Q1 slider based on Min and Median)
+  observe(
+    updateSliderInput(session, "question1dSlider",
+                      min = responses$q1a,
+                      max = responses$q1c,
+                      value = (responses$q1a + responses$q1c)/2 # Keep value in range
+    )
+  )  
+  
+  # Observe changes in slider1b or slider1c and update slider1d (Q3 slider based on Max and Median)
+  observe(
+    updateSliderInput(session, "question1eSlider",
+                      min = responses$q1c,
+                      max = responses$q1b,
+                      value = (responses$q1b + responses$q1c)/2 # Keep value in range
+    )
+  )     
+  observe({
+    updateSliderInput(session, "q1aVisual", value = responses$q1a)
+    updateSliderInput(session, "q1bVisual", value = responses$q1b)
+    updateSliderInput(session, "q1cVisual", value = responses$q1c)
+    updateSliderInput(session, "q1dVisual", value = responses$q1d)
+    updateSliderInput(session, "q1eVisual", value = responses$q1e)
+  })
+  
+  observe({
+    shinyjs::disable("q1aVisual")
+    shinyjs::disable("q1bVisual")
+    shinyjs::disable("q1cVisual")
+    shinyjs::disable("q1dVisual")
+    shinyjs::disable("q1eVisual")
+  })
   #### Server - Q1f summary ####
   output$question1fSummary <- renderUI({
     div(
@@ -966,7 +1025,7 @@ server <- function(input, output, session) {
         tags$li("Upper half median: ", strong(responses$q1e))
       ),
       
-      div(
+     div(
         style = "position: relative; height: 120px; margin-top: 30px;",
 
          # Horizontal graph with distribution
@@ -995,13 +1054,13 @@ server <- function(input, output, session) {
         style = "position: relative",
         #style = "position: relative; left: -50px; height: 120px; margin-top: 30px;",
         # Horizontal graph with distribution
-        plotlyOutput("HorizontalDistr")
+        plotlyOutput("HorizontalDistr_miss")
       ),
       
     )
   })
   
-  # #### Server - Q1g summary graphic - observed ####
+  #### Server - Q1g summary graphic - observed ####
   output$question1gPlot_Obs <- renderUI({
     div(
       div(
@@ -1013,49 +1072,67 @@ server <- function(input, output, session) {
     )
   })
   
-  #### Server - slider code 1 ####
-  
-  # Observe changes in slider1a or slider1b and update slider1c (Median slider based on Min and Max)
-  observe(
-    updateSliderInput(session, "question1cSlider",
-                      min = responses$q1a,
-                      max = responses$q1b,
-                      value = (responses$q1a + responses$q1b)/2 # Keep value in range
+  #### Server - Q1g summary table ####
+  output$question1gSummary <- renderUI({
+    div(
+      tags$table(
+        class = "table table-bordered table-striped",
+        tags$thead(
+          tags$tr(
+            tags$th("Pain score"),
+            tags$th("Missing (217 patients)"),
+            tags$th("Not missing (624 patients)")
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Lowest"),
+            tags$td(responses$q1a),
+            tags$td(responses$q1a_obs)
+            )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Quartile 1"),
+            tags$td(responses$q1d),
+            tags$td(responses$q1d_obs)
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Median"),
+            tags$td(responses$q1c),
+            tags$td(responses$q1c_obs)
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Quartile 3"),
+            tags$td(responses$q1e),
+            tags$td(responses$q1e_obs)
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Highest"),
+            tags$td(responses$q1b),
+            tags$td(responses$q1b_obs)
+          )
+        ),
+        tags$tbody(
+          tags$tr(
+            tags$td("Your rationale"),
+            tags$td(responses$q1f),
+            #tags$td(responses$q1b_obs)
+          )
+        ),
+      ),
+      
     )
-  )
-  
-  # Observe changes in slider1a or slider1c and update slider1d (Q1 slider based on Min and Median)
-  observe(
-    updateSliderInput(session, "question1dSlider",
-                      min = responses$q1a,
-                      max = responses$q1c,
-                      value = (responses$q1a + responses$q1c)/2 # Keep value in range
-    )
-  )  
-  
-  # Observe changes in slider1b or slider1c and update slider1d (Q3 slider based on Max and Median)
-  observe(
-    updateSliderInput(session, "question1eSlider",
-                      min = responses$q1c,
-                      max = responses$q1b,
-                      value = (responses$q1b + responses$q1c)/2 # Keep value in range
-    )
-  )     
-  observe({
-    updateSliderInput(session, "q1aVisual", value = responses$q1a)
-    updateSliderInput(session, "q1bVisual", value = responses$q1b)
-    updateSliderInput(session, "q1cVisual", value = responses$q1c)
-    updateSliderInput(session, "q1dVisual", value = responses$q1d)
-    updateSliderInput(session, "q1eVisual", value = responses$q1e)
   })
   
-  observe({
-    shinyjs::disable("q1aVisual")
-    shinyjs::disable("q1bVisual")
-    shinyjs::disable("q1cVisual")
-    shinyjs::disable("q1dVisual")
-    shinyjs::disable("q1eVisual")
-  })
+  
+  
   #### Server - Q1f graph output  ####
   # Plot the horizontal line chart with horizontal lines at each value
   output$HorizontalDistr <- renderPlotly({
@@ -1122,7 +1199,73 @@ server <- function(input, output, session) {
         automargin = TRUE
       )
   })
-  
+
+  #### Server - Q1g graph output - Missing  ####
+  # Plot the horizontal line chart with horizontal lines at each value
+  output$HorizontalDistr_miss <- renderPlotly({
+    
+    # Values to plot: Min, Q1, Median, Q3, Max
+    x1 = c(0, responses$q1a)
+    y1 = c(1, 1)
+    
+    x2 = c(responses$q1a, responses$q1d)
+    y2 = c(1, 1)
+    
+    x3 = c(responses$q1d, responses$q1c)
+    y3 = c(1, 1)
+    
+    x4 = c(responses$q1c, responses$q1e)
+    y4 = c(1, 1)
+    
+    x5 = c(responses$q1e, responses$q1b)
+    y5 = c(1, 1)
+    
+    x6 = c(responses$q1b, 4)
+    y6 = c(1, 1)
+    
+    # Create the plot: horizontal lines at each metric
+    plot_ly(hoverinfo='skip') %>%
+      # Horizontal blocs
+      add_trace(x=x1, y=y1, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      add_trace(x=x2, y=y2, type = 'scatter', mode="lines", line = list(color = "#4477AA", width = 50)) %>%
+      add_trace(x=x3, y=y3, type = 'scatter', mode="lines", line = list(color = "#AA3377", width = 50)) %>%
+      add_trace(x=x4, y=y4, type = 'scatter', mode="lines", line = list(color = "#228833", width = 50)) %>%
+      add_trace(x=x5, y=y5, type = 'scatter', mode="lines", line = list(color = "#DDAA33", width = 50)) %>%
+      add_trace(x=x6, y=y6, type = 'scatter', mode="lines", line = list(color = "#CC3311", width = 2)) %>%
+      
+      # Vertical black lines between blocs and markers
+      add_trace(x=rep(responses$q1a,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1d,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1c,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1e,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      add_trace(x=rep(responses$q1b,2), y=c(0.5, 1.11), type = 'scatter', mode="lines", line = list(color = "black", width = 1)) %>%
+      
+      # Markers with text inside
+      add_trace(x=responses$q1a, y=0.5, text="L", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1d, y=0.5, text="Q1", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1c, y=0.5, text="Med", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1e, y=0.5, text="Q3", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      add_trace(x=responses$q1b, y=0.5, text="U", type = 'scatter', mode="markers+text", marker = list(color = "white", size=40, line=list(width=2, color='DarkSlateGrey'))) %>%
+      
+      layout(
+        #title = "Distribution Metrics as Horizontal Lines",
+        xaxis = list(#title = "Your estimated distribution", 
+          tickvals = seq(0,4,0.1), 
+          ticktext = c("<b>never: 0</b>", "", "0.2", "", "0.4", "", "0.6", "", "0.8", "",
+                       "<b>hardly ever: 1</b>", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "",
+                       "<b>occasionally: 2</b>", "", "2.2", "", "2.4", "", "2.6", "", "2.8", "",
+                       "<b>fairly often: 3</b>", "", "3.2", "", "3.4", "", "3.6", "", "3.8", "",
+                       "<b>very often: 4</b>"),
+          range = c(-0.2, 4.2), 
+          zeroline = FALSE,
+          tickangle = 270),
+        yaxis = list(range=c(0, 1.5),
+                     showticklabels = FALSE),
+        showlegend = FALSE,
+        margin = list(l = 0, r = 0, t = 0, b = 0),
+        automargin = TRUE
+      )
+  })
   #### Server - Q1g graph output - observed ####
   # Plot the horizontal line chart with horizontal lines at each value
   output$HorizontalDistr_Q1g <- renderPlotly({

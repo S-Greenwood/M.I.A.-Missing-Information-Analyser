@@ -2079,14 +2079,14 @@ server <- function(input, output, session) {
       )
       grid.table(table_data_g1)
      
-      # "Your Rationale"
-      wrapped_text_g1 <- paste(strwrap(responses$q1f, width = 100), collapse = "\n")  # Wrap long text
-      rationale_g1 <- grobTree(
-        rectGrob(gp = gpar(fill = "lightgray", col = "black")),  # Rationale box
-        textGrob("Your Rationale for Group 1:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
-        textGrob(wrapped_text_g1, y = 0.60, gp = gpar(fontsize = 12), just = "center")  # Rationale text (adjusted y position)
-      )
-      grid.arrange(rationale_g1, nrow = 1)
+      # # "Your Rationale"
+      # wrapped_text_g1 <- paste(strwrap(responses$q1f, width = 100), collapse = "\n")  # Wrap long text
+      # rationale_g1 <- grobTree(
+      #   rectGrob(gp = gpar(fill = "lightgray", col = "black")),  # Rationale box
+      #   textGrob("Your Rationale for Group 1:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
+      #   textGrob(wrapped_text_g1, y = 0.60, gp = gpar(fontsize = 12), just = "center")  # Rationale text (adjusted y position)
+      # )
+      # grid.arrange(rationale_g1, nrow = 1)
       
       
       ####### PAGE 2: Group 2 Table and Rationale ######
@@ -2108,17 +2108,17 @@ server <- function(input, output, session) {
       # Footer: Generated timestamp on the last page
       mtext(paste("Generated on:", format(Sys.time(), "%Y-%m-%d %H:%M:%S")), side = 1, line = 4, cex = 0.8)
       
-      # "Your Rationale"
-      wrapped_text_g2 <- paste(strwrap(responses$q2f, width = 100), collapse = "\n")  # Wrap long text
-
-      # Create Smaller Rationale Box (below the table)
-      rationale_g2 <- grobTree(
-        rectGrob(gp = gpar(fill = "lightgray", col = "black")),  # Rationale box
-        textGrob("Your Rationale for Group 2:", y = 0.8, gp = gpar(fontsize = 16, fontface = "bold")),  # Label for Rationale
-        textGrob(wrapped_text_g2, y = 0.60, gp = gpar(fontsize = 14), just = "center")  # Rationale text (adjusted y position)
-      )
-
-      grid.arrange(rationale_g2, nrow = 1)
+      # # "Your Rationale"
+      # wrapped_text_g2 <- paste(strwrap(responses$q2f, width = 100), collapse = "\n")  # Wrap long text
+      # 
+      # # Create Smaller Rationale Box (below the table)
+      # rationale_g2 <- grobTree(
+      #   rectGrob(gp = gpar(fill = "lightgray", col = "black")),  # Rationale box
+      #   textGrob("Your Rationale for Group 2:", y = 0.8, gp = gpar(fontsize = 16, fontface = "bold")),  # Label for Rationale
+      #   textGrob(wrapped_text_g2, y = 0.60, gp = gpar(fontsize = 14), just = "center")  # Rationale text (adjusted y position)
+      # )
+      # 
+      # grid.arrange(rationale_g2, nrow = 1)
       
       
       dev.off()  # Close PDF device

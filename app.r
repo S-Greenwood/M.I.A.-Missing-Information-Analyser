@@ -2053,24 +2053,22 @@ server <- function(input, output, session) {
   #   }
   # })
   
+  
   #### Server - PDF output WITH TABLE  ####
   library(gridExtra)
   library(grid)
-  
+
   output$export <- downloadHandler(
     filename = function() {
       paste0("My_results_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".pdf")
     },
     content = function(file) {
       pdf(file, width = 10, height = 14)  # Set PDF size
-      
-      ####### PAGE 1: Group 1 Table and Rationale ######
-      grid.newpage()
-      
-      # Title and Group 1 Header
-      grid.text("Rethinking Missing Data with Patients: Your Responses", x = 0.5, y = 0.98, gp = gpar(fontsize = 18, fontface = "bold"))
-      grid.text("Group 1: 6-month recall", x = 0.5, y = 0.94, gp = gpar(fontsize = 16, fontface = "bold"))
-      
+
+     # Title and Group 1 Header
+      plot.new()
+      text(0.5, 1, "Rethinking Missing Data with Patients: Your Responses", font = 2, cex = 1.5)
+      text(0.5, 0.95, "Group 1: 6-month recall", font = 2, cex = 1.2)
       # Group 1 Table Data
       table_data_g1 <- data.frame(
         "Pain Score" = c("Lowest", "Quartile 1", "Median", "Quartile 3", "Highest", "Your rationale"),
@@ -2078,53 +2076,116 @@ server <- function(input, output, session) {
         "Not Missing (624 patients)" = c(responses$q1a_obs, responses$q1d_obs, responses$q1c_obs, responses$q1e_obs, responses$q1b_obs, NA)
       )
       grid.table(table_data_g1)
-     
-      # # "Your Rationale"
-      # wrapped_text_g1 <- paste(strwrap(responses$q1f, width = 100), collapse = "\n")  # Wrap long text
-      # rationale_g1 <- grobTree(
-      #   rectGrob(gp = gpar(fill = "lightgray", col = "black")),  # Rationale box
-      #   textGrob("Your Rationale for Group 1:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
-      #   textGrob(wrapped_text_g1, y = 0.60, gp = gpar(fontsize = 12), just = "center")  # Rationale text (adjusted y position)
-      # )
-      # grid.arrange(rationale_g1, nrow = 1)
-      
-      
-      ####### PAGE 2: Group 2 Table and Rationale ######
-      plot.new()
-      
-      # Title and Group 1 Header
-      grid.text("Rethinking Missing Data with Patients: Your Responses", x = 0.5, y = 0.98, gp = gpar(fontsize = 18, fontface = "bold"))
-      grid.text("Group 2: risk-based recall", x = 0.5, y = 0.94, gp = gpar(fontsize = 16, fontface = "bold"))
-      
-      # Group 1 Table Data
-      table_data_g2 <- data.frame(
-        "Pain Score" = c("Lowest", "Quartile 1", "Median", "Quartile 3", "Highest", "Your rationale"),
-        "Missing (220 patients)" = c(responses$q2a, responses$q2d, responses$q2c, responses$q2e, responses$q2b, "See below"),
-        "Not Missing (640 patients)" = c(responses$q2a_obs, responses$q2d_obs, responses$q2c_obs, responses$q2e_obs, responses$q2b_obs, NA)
-      )
 
-      # Display Group 2 Table
-      grid.table(table_data_g2)
-      # Footer: Generated timestamp on the last page
-      mtext(paste("Generated on:", format(Sys.time(), "%Y-%m-%d %H:%M:%S")), side = 1, line = 4, cex = 0.8)
-      
+      ####### PAGE 2: Group 2 Table and Rationale ######
+      # plot.new()
+      # 
+      # # Title and Group 1 Header
+      # grid.text("Rethinking Missing Data with Patients: Your Responses", x = 0.5, y = 0.98, gp = gpar(fontsize = 18, fontface = "bold"))
+      # grid.text("Group 2: risk-based recall", x = 0.5, y = 0.94, gp = gpar(fontsize = 16, fontface = "bold"))
+      # 
+      # # Group 1 Table Data
+      # table_data_g2 <- data.frame(
+      #   "Pain Score" = c("Lowest", "Quartile 1", "Median", "Quartile 3", "Highest", "Your rationale"),
+      #   "Missing (220 patients)" = c(responses$q2a, responses$q2d, responses$q2c, responses$q2e, responses$q2b, "See below"),
+      #   "Not Missing (640 patients)" = c(responses$q2a_obs, responses$q2d_obs, responses$q2c_obs, responses$q2e_obs, responses$q2b_obs, NA)
+      # )
+      # 
+      # # Display Group 2 Table
+      # grid.table(table_data_g2)
+      # # Footer: Generated timestamp on the last page
+      # mtext(paste("Generated on:", format(Sys.time(), "%Y-%m-%d %H:%M:%S")), side = 1, line = 4, cex = 0.8)
+
       # # "Your Rationale"
       # wrapped_text_g2 <- paste(strwrap(responses$q2f, width = 100), collapse = "\n")  # Wrap long text
-      # 
+      #
       # # Create Smaller Rationale Box (below the table)
       # rationale_g2 <- grobTree(
       #   rectGrob(gp = gpar(fill = "lightgray", col = "black")),  # Rationale box
       #   textGrob("Your Rationale for Group 2:", y = 0.8, gp = gpar(fontsize = 16, fontface = "bold")),  # Label for Rationale
       #   textGrob(wrapped_text_g2, y = 0.60, gp = gpar(fontsize = 14), just = "center")  # Rationale text (adjusted y position)
       # )
-      # 
+      #
       # grid.arrange(rationale_g2, nrow = 1)
-      
-      
+
+
       dev.off()  # Close PDF device
     }
   )
+
   
+  #### Server - PDF output WITH TABLE  ####
+  # library(gridExtra)
+  # library(grid)
+  # 
+  # output$export <- downloadHandler(
+  #   filename = function() {
+  #     paste0("My_results_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".pdf")
+  #   },
+  #   content = function(file) {
+  #     pdf(file, width = 10, height = 14)  # Set PDF size
+  #     
+  #     ####### PAGE 1: Group 1 Table and Rationale ######
+  #     grid.newpage()
+  #     
+  #     # Title and Group 1 Header
+  #     grid.text("Rethinking Missing Data with Patients: Your Responses", x = 0.5, y = 0.98, gp = gpar(fontsize = 18, fontface = "bold"))
+  #     grid.text("Group 1: 6-month recall", x = 0.5, y = 0.94, gp = gpar(fontsize = 16, fontface = "bold"))
+  #     
+  #     # Group 1 Table Data
+  #     table_data_g1 <- data.frame(
+  #       "Pain Score" = c("Lowest", "Quartile 1", "Median", "Quartile 3", "Highest", "Your rationale"),
+  #       "Missing (217 patients)" = c(responses$q1a, responses$q1d, responses$q1c, responses$q1e, responses$q1b, "See below"),
+  #       "Not Missing (624 patients)" = c(responses$q1a_obs, responses$q1d_obs, responses$q1c_obs, responses$q1e_obs, responses$q1b_obs, NA)
+  #     )
+  #     grid.table(table_data_g1)
+  #    
+  #     # # "Your Rationale"
+  #     # wrapped_text_g1 <- paste(strwrap(responses$q1f, width = 100), collapse = "\n")  # Wrap long text
+  #     # rationale_g1 <- grobTree(
+  #     #   rectGrob(gp = gpar(fill = "lightgray", col = "black")),  # Rationale box
+  #     #   textGrob("Your Rationale for Group 1:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
+  #     #   textGrob(wrapped_text_g1, y = 0.60, gp = gpar(fontsize = 12), just = "center")  # Rationale text (adjusted y position)
+  #     # )
+  #     # grid.arrange(rationale_g1, nrow = 1)
+  #     
+  #     
+  #     ####### PAGE 2: Group 2 Table and Rationale ######
+  #     plot.new()
+  #     
+  #     # Title and Group 1 Header
+  #     grid.text("Rethinking Missing Data with Patients: Your Responses", x = 0.5, y = 0.98, gp = gpar(fontsize = 18, fontface = "bold"))
+  #     grid.text("Group 2: risk-based recall", x = 0.5, y = 0.94, gp = gpar(fontsize = 16, fontface = "bold"))
+  #     
+  #     # Group 1 Table Data
+  #     table_data_g2 <- data.frame(
+  #       "Pain Score" = c("Lowest", "Quartile 1", "Median", "Quartile 3", "Highest", "Your rationale"),
+  #       "Missing (220 patients)" = c(responses$q2a, responses$q2d, responses$q2c, responses$q2e, responses$q2b, "See below"),
+  #       "Not Missing (640 patients)" = c(responses$q2a_obs, responses$q2d_obs, responses$q2c_obs, responses$q2e_obs, responses$q2b_obs, NA)
+  #     )
+  # 
+  #     # Display Group 2 Table
+  #     grid.table(table_data_g2)
+  #     # Footer: Generated timestamp on the last page
+  #     mtext(paste("Generated on:", format(Sys.time(), "%Y-%m-%d %H:%M:%S")), side = 1, line = 4, cex = 0.8)
+  #     
+  #     # # "Your Rationale"
+  #     # wrapped_text_g2 <- paste(strwrap(responses$q2f, width = 100), collapse = "\n")  # Wrap long text
+  #     # 
+  #     # # Create Smaller Rationale Box (below the table)
+  #     # rationale_g2 <- grobTree(
+  #     #   rectGrob(gp = gpar(fill = "lightgray", col = "black")),  # Rationale box
+  #     #   textGrob("Your Rationale for Group 2:", y = 0.8, gp = gpar(fontsize = 16, fontface = "bold")),  # Label for Rationale
+  #     #   textGrob(wrapped_text_g2, y = 0.60, gp = gpar(fontsize = 14), just = "center")  # Rationale text (adjusted y position)
+  #     # )
+  #     # 
+  #     # grid.arrange(rationale_g2, nrow = 1)
+  #     
+  #     
+  #     dev.off()  # Close PDF device
+  #   }
+  # )
+  # 
 
   #### Server - Navbar  ####
   # We want the two buttons to work together 

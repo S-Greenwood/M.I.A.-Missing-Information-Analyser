@@ -11,7 +11,7 @@ library(grid)
 ui <- fluidPage(
   theme = bs_theme(version = 5),
   useShinyjs(),
-  title = "Rethinking missing data with patients.",
+  title = "Rethinking missing data with patients. TEST",
   
   
  div(
@@ -23,7 +23,7 @@ ui <- fluidPage(
   #### Header ####
   div(
     hr(),
-    h1("Rethinking missing data with patients."),
+    h1("Rethinking missing data with patients. TEST"),
     hr(),
   ),
   

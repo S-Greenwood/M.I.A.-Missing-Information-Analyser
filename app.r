@@ -2115,8 +2115,7 @@ server <- function(input, output, session) {
 
   
   #### Server - PDF output WITH TABLE  ####
-  library(gridExtra)
-  library(grid)
+
 
   output$export <- downloadHandler(
     filename = function() {

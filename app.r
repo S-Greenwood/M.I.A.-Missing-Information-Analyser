@@ -474,14 +474,17 @@ ui <- fluidPage(
         div(
           div(strong("Question 1f:"), "Do you have any reasons, or rationale you 
               want to write about your judgement above?"),
-          uiOutput("question1fSummary"), # Show summary of previous answers
-          br(),br(),br(),br(),br(),br(),br(),
-          br(),br(),br(),br(),br(),br(),br(),
-          textAreaInput("question1fTextArea", label = NULL, placeholder = "Write your reasons here"),
+          textAreaInput("question1fTextArea", label = NULL, placeholder = "Write your reasons here",rows=6, width="100%"),
+          strong("Tip: This rationale is optional but can be helpful for you to 
+            remember why you chose these answers for the group discussion. You can also use this space to 
+            write any other comments you have about the task."),
+          br(), br(),
           p("Remember, we want to capture that uncertainty in your judgements, 
             and we are asking your judgement to get a general sense about those 
             patients with missing measurements, and what their results might 
-            have been. So we have one last reflection to help you with your response.")
+            have been. So we have one last reflection to help you with your response."),
+          uiOutput("question1fSummary"), # Show summary of previous answers
+
         )
       ),
       
@@ -491,11 +494,13 @@ ui <- fluidPage(
           div(strong("Question 1g:"), "Lastly, lets now compare your judgements 
               on the average of the 221 participants who did not answer against 
               the average of the 640 participants who did answer the question."),
-          p(""),
-          div("This is your judgement on the", strong("221"), " participants"),
+          #p(""),
+          #div("This is your judgement on the", strong("221"), " participants"),
           # Show summary of previous answers
-          uiOutput("question1gPlot_Mis"), 
+          #uiOutput("question1gPlot_Mis"), 
+  
           div("This is results of on the ", strong("640"), " participants that gave their pain score."),
+          br(),br(),
           # Show summary of observed 
           uiOutput("question1gPlot_Obs"), 
           p("You will notice that there is only the colours yellow and green. 
@@ -770,15 +775,17 @@ ui <- fluidPage(
         div(
           div(strong("Question 2f:"), "Do you have any reasons, or rationale you 
               want to write about your judgement above?"),
-          # Show summary of previous answers
-          uiOutput("question2fSummary"), 
-          br(),br(),br(),br(),br(),br(),br(),
-          br(),br(),br(),br(),br(),br(),br(),
-          textAreaInput("question2fTextArea", label = NULL, placeholder = "Write your reasons here"),
+              textAreaInput("question2fTextArea", label = NULL, placeholder = "Write your reasons here", rows=6, width="100%"),
           p("Remember, we want to capture that uncertainty in your judgements, 
             and we are asking your judgement to get a general sense about those 
             patients with missing measurements, and what their results might 
-            have been. So we have one last reflection to help you with your response.")
+            have been. So we have one last reflection to help you with your response."),
+          strong("Tip: This rationale is optional but can be helpful for you to
+            remember why you chose these answers for the group discussion. You can also use this space to 
+            write any other comments you have about the task."),
+          br(), br(),
+          # Show summary of previous answers
+          uiOutput("question2fSummary")          
         )
       ),
       
@@ -788,10 +795,10 @@ ui <- fluidPage(
           div(strong("Question 2g:"), "Lastly, lets now compare your judgements 
               on the average of the 221 participants who did not answer against 
               the average of the 640 participants who did answer the question."),
-          p(""),
-          div("This is your judgement on the", strong("221"), " participants"),
+          #p(""),
+          #div("This is your judgement on the", strong("221"), " participants"),
           # Show summary of previous answers
-          uiOutput("question2gPlot_Mis"), 
+          #uiOutput("question2gPlot_Mis"), 
           div("This is results of on the ", strong("640"), " participants that gave their pain score."),
           # Show summary of observed 
           uiOutput("question2gPlot_Obs"), 
@@ -1299,7 +1306,7 @@ server <- function(input, output, session) {
   #### Server - Q1f summary ####
   output$question1fSummary <- renderUI({
     div(
-      p("Your judgments so far:"),
+      strong("Your judgements so far:"),
       tags$ul(
         tags$li("Lowest possible average: ", strong(responses$q1a)),
         tags$li("Highest possible average: ", strong(responses$q1b)),
@@ -1328,7 +1335,7 @@ server <- function(input, output, session) {
     
     responses$comparison <- comparison
     
-    HTML(paste0("Comparing this with your judgments, this suggests that most of 
+    HTML(paste0("Comparing this with your judgements, this suggests that most of 
                 the 217 participants who did not provide a pain score experienced  
                 <strong>", 
                 comparison, 
@@ -1339,7 +1346,7 @@ server <- function(input, output, session) {
   #### Server - Q1f plot ####
   output$question1fSummary <- renderUI({
     div(
-      p("Your judgments so far:"),
+      strong("Your judgements so far:"),
       tags$ul(
         tags$li("Lowest possible average: ", strong(responses$q1a)),
         tags$li("Highest possible average: ", strong(responses$q1b)),
@@ -1679,7 +1686,7 @@ server <- function(input, output, session) {
   #### Server - Q2f summary ####
   output$question2fSummary <- renderUI({
     div(
-      p("Your judgments so far:"),
+      strong("Your judgements so far:"),
       tags$ul(
         tags$li("Lowest possible average: ", strong(responses$q2a)),
         tags$li("Highest possible average: ", strong(responses$q2b)),
@@ -1707,7 +1714,7 @@ server <- function(input, output, session) {
     
     responses$comparison_2 <- comparison_2
     
-    HTML(paste0("Comparing this with your judgments, this suggests that most of 
+    HTML(paste0("Comparing this with your judgements, this suggests that most of 
                 the 221 participants who did not provide a pain score experienced  
                 <strong>", 
                 comparison_2, 
@@ -1717,7 +1724,7 @@ server <- function(input, output, session) {
   #### Server - Q2f plot ####
   output$question2fSummary <- renderUI({
     div(
-      p("Your judgments so far:"),
+      strong("Your judgements so far:"),
       tags$ul(
         tags$li("Lowest possible average: ", strong(responses$q2a)),
         tags$li("Highest possible average: ", strong(responses$q2b)),

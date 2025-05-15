@@ -277,16 +277,16 @@ ui <- fluidPage(
         icon = bsicons::bs_icon("person-circle"),
         div(
           p("The 217 participants missing their pain scores were similar to the 
-            624 who did not, apart from the following factors."),
+            646 who did not, apart from the following factors."),
           tags$ul(
             tags$li(strong("They were younger"), " (averaging 45 years old, 
-                    compared to 52 year old for the 624 participants)"),
+                    compared to 52 year old for the 646 participants)"),
             tags$li(strong("More of them smoked"), " (About a 22% of the 217 
                     missing a pain score reported smoking in last 12 months, compared to 12%.)"),
             tags$li(strong("Less received their care entirely through the NHS"), 
-                    " (at 68% compare to the 82% of the 624 participants)"),
+                    " (at 68% compare to the 82% of the 646 participants)"),
             tags$li(strong("Attended the dentist less regularly"), " (at 73% vs 
-                    89% of the 624 participants)"),
+                    89% of the 646 participants)"),
           ),
         ),
       ),
@@ -444,7 +444,7 @@ ui <- fluidPage(
           div(strong("Question 1d:"), 
               "Among the 217 participants, focus on the half who had the lowest 
               (best) scores. Compared to the other participants with missing 
-              scores, these participants had less of no pain. Choose a value 
+              scores, these participants had less pain. Choose a value 
               where you think their average score has an equal chance of being 
               higher or lower than that value. (Remember, it doesn’t have to be 
               exactly in the middle!)"),
@@ -491,25 +491,30 @@ ui <- fluidPage(
       # Step 3 ####
       nav_panel("Step 3", 
         div(
-          div(strong("Question 1g:"), "Lastly, lets now compare your judgements 
-              on the average of the 221 participants who did not answer against 
-              the average of the 640 participants who did answer the question."),
-          #p(""),
-          #div("This is your judgement on the", strong("221"), " participants"),
-          # Show summary of previous answers
-          #uiOutput("question1gPlot_Mis"), 
-  
-          div("This is results of on the ", strong("640"), " participants that gave their pain score."),
-          br(),br(),
-          # Show summary of observed 
-          uiOutput("question1gPlot_Obs"), 
-          p("You will notice that there is only the colours yellow and green. 
-            Among 640 participants, half scored 0, so the blue and pink sections 
-            are missing from the plot due to many reporting no pain (score of 0)."),
-          p("These are the numbers that make up the graphs"),
+          div("As a last step we will take a look at the
+          pain score of those other 646 patient who did give a pain score. Take 
+          a look at the barchart and the table below."),
+          br(),
+          div(strong("Question 1g:"), "Does the results of the 646 patients 
+              surprise you?"),
+          textAreaInput("question1gTextArea", label = NULL, placeholder = "Write your response here",rows=6, width="100%"),
+          br(),
+          div(strong("Bar chart")),
+          div("This bar chart shows that the majority of the 646 patient reported 
+              no pain at year 4 of the trial, and that very few have higher pain scores!"),
+          img(src="arm1_barchart_observed.png"),
+          br(),
+          div(strong("Table")),
+          div("This table shows how your previous answers about the average of 
+          the 217 patients compare  compare to the observed 646 patients. Notice 
+          how many of the 646 patients reported a score of 0 — so many, in fact, 
+          that the minimum, first quartile, and median are all 0."),
+          uiOutput("comparison1g"),
           uiOutput("question1gSummary"),
+          br(),
+          div(strong("Note")),
           p("Now you have seen the results of the other 640 participants, you 
-          can, if you want, to back to Q1c to rethink your answer. Otherwise 
+          can, if you want, to back to Step 1 and rethink your answers. Otherwise 
             click next.")
           
         )
@@ -745,7 +750,7 @@ ui <- fluidPage(
           div(strong("Question 2d:"), 
               "Among the 221 participants, focus on the half who had the lowest 
               (best) scores. Compared to the other participants with missing 
-              scores, these participants had less of no pain. Choose a value 
+              scores, these participants had less pain. Choose a value 
               where you think their average score has an equal chance of being 
               higher or lower than that value. (Remember, it doesn’t have to be 
               exactly in the middle!)"),
@@ -792,23 +797,30 @@ ui <- fluidPage(
      # Step 3 ####
       nav_panel("Step 3", 
         div(
-          div(strong("Question 2g:"), "Lastly, lets now compare your judgements 
-              on the average of the 221 participants who did not answer against 
-              the average of the 640 participants who did answer the question."),
-          #p(""),
-          #div("This is your judgement on the", strong("221"), " participants"),
-          # Show summary of previous answers
-          #uiOutput("question2gPlot_Mis"), 
-          div("This is results of on the ", strong("640"), " participants that gave their pain score."),
-          # Show summary of observed 
-          uiOutput("question2gPlot_Obs"), 
-          p("You will notice that there is only the colours yellow and green. 
-            Among 640 participants, half scored 0, so the blue and pink sections 
-            are missing from the plot due to many reporting no pain (score of 0)."),
-          p("These are the numbers that make up the graphs"),
+          div("As a last step we will take a look at the
+          pain score of those other 640 patient who did give a pain score. Take 
+          a look at the barchart and the table below."),
+          br(),
+          div(strong("Question 2g:"), "Does the results of the 640 patients 
+              surprise you?"),
+          textAreaInput("question2gTextArea", label = NULL, placeholder = "Write your response here",rows=6, width="100%"),
+          br(),
+          div(strong("Bar chart")),
+          div("This bar chart shows that the majority of the 640 patient reported 
+              no pain at year 4 of the trial, and that very few have higher pain scores!"),
+          img(src="arm2_barchart_observed.png"),
+          br(),
+          div(strong("Table")),
+          div("This table shows how your previous answers about the average of 
+          the 221 patients compare  compare to the observed 640 patients. Notice 
+          how many of the 640 patients reported a score of 0 — so many, in fact, 
+          that the minimum, first quartile, and median are all 0."),
+          uiOutput("comparison2g"),
           uiOutput("question2gSummary"),
+          br(),
+          div(strong("Note")),
           p("Now you have seen the results of the other 640 participants, you 
-          can, if you want, to back to Q1c to rethink your answer. Otherwise 
+          can, if you want, to back to Step 1 and rethink your answers. Otherwise 
             click next.")
           
         )
@@ -1164,6 +1176,7 @@ server <- function(input, output, session) {
     responses$q1f <- input$question1fTextArea
     responses$q1gNo <- input$question1gNoSlider
     responses$q1gYes <- input$question1gYesSlider
+    responses$q1g_text <- input$question1gTextArea
     # Question 2
     responses$q2a <- input$question2aSlider
     responses$q2b <- input$question2bSlider
@@ -1173,6 +1186,7 @@ server <- function(input, output, session) {
     responses$q2f <- input$question2fTextArea
     responses$q2gNo <- input$question2gNoSlider
     responses$q2gYes <- input$question2gYesSlider
+    responses$q2g_text <- input$question2gTextArea
   })
   
   ### 
@@ -1339,7 +1353,7 @@ server <- function(input, output, session) {
                 the 217 participants who did not provide a pain score experienced  
                 <strong>", 
                 comparison, 
-                "</strong> pain outcomes than the 624 who did. (Based on the 
+                "</strong> pain outcomes than the 646 who did. (Based on the 
                 median value)"))
   })
   
@@ -1578,7 +1592,7 @@ server <- function(input, output, session) {
           tags$tr(
             tags$th("Pain score"),
             tags$th("Missing (217 patients)"),
-            tags$th("Not missing (624 patients)")
+            tags$th("Not missing (646 patients)")
           )
         ),
         tags$tbody(
@@ -1623,6 +1637,7 @@ server <- function(input, output, session) {
             #tags$td(responses$q1b_obs)
           )
         ),
+        
       ),
       
     )
@@ -2154,6 +2169,15 @@ server <- function(input, output, session) {
         textGrob(wrapped_text_g1, y = 0.60, gp = gpar(fontsize = 12), just = "center")  # Rationale text (adjusted y position)
       )
       grid.arrange(rationale_g1, nrow = 1)
+      
+      # "Your surprise level"
+      wrapped_text_g1_2 <- paste(strwrap(responses$q1g_text, width = 100), collapse = "\n")  # Wrap long text
+      rationale_g1_2 <- grobTree(
+        rectGrob(gp = gpar(fill = "lightblue", col = "black")),  # Rationale box
+        textGrob("Were you surprised for Group 1:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
+        textGrob(wrapped_text_g1_2, y = 0.60, gp = gpar(fontsize = 12), just = "center")  # Rationale text (adjusted y position)
+      )
+      grid.arrange(rationale_g1_2, nrow = 1)
 
 
       ####### PAGE 2: Group 2 Table and Rationale ######
@@ -2187,6 +2211,15 @@ server <- function(input, output, session) {
 
       grid.arrange(rationale_g2, nrow = 1)
 
+      # "Your surprise level"
+      wrapped_text_g2_2 <- paste(strwrap(responses$q2g_text, width = 100), collapse = "\n")  # Wrap long text
+      rationale_g2_2 <- grobTree(
+        rectGrob(gp = gpar(fill = "lightblue", col = "black")),  # Rationale box
+        textGrob("Were you surprised for Group 2:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
+        textGrob(wrapped_text_g2_2, y = 0.60, gp = gpar(fontsize = 12), just = "center")  # Rationale text (adjusted y position)
+      )
+      grid.arrange(rationale_g2_2, nrow = 1)
+      
 
       dev.off()  # Close PDF device
     }

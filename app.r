@@ -1344,8 +1344,8 @@ server <- function(input, output, session) {
   })
   
   output$comparison1g <- renderUI({
-    comparison <- ifelse(responses$q1gNo > responses$q1gYes + 0.2, "worse",
-                 ifelse(responses$q1gNo < responses$q1gYes - 0.2, "better", "similar"))
+    comparison <- ifelse(responses$q1c > responses$q1c_obs + 0.2, "worse",
+                 ifelse(responses$q1c < responses$q1c_obs - 0.2, "better", "similar"))
     
     responses$comparison <- comparison
     
@@ -1724,8 +1724,8 @@ server <- function(input, output, session) {
   })
   
   output$comparison2g <- renderUI({
-    comparison_2 <- ifelse(responses$q2gNo > responses$q2gYes + 0.2, "worse",
-                         ifelse(responses$q2gNo < responses$q2gYes - 0.2, "better", "similar"))
+    comparison_2 <- ifelse(responses$q2c > responses$q2c_obs + 0.2, "worse",
+                         ifelse(responses$q2c < responses$q2c_obs - 0.2, "better", "similar"))
     
     responses$comparison_2 <- comparison_2
     

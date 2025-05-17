@@ -42,8 +42,8 @@ ui <- fluidPage(
     these missing measurements. This is where you come in!"),
     strong("Objective of this step: "),
     p("As a patient, we want to take your judgements/ opinions/ thoughts on what you 
-      think the gaps should be for specific clinical trial. This activity should 
-      take 60 - 80 minutes."),
+      think the gaps should be for a specific clinical trial. This activity should 
+      take 60 minutes."),
     p("Before you start, if you want a refresher on any of these topics see these links below."),
     tags$ul(
       tags$li(
@@ -158,8 +158,8 @@ ui <- fluidPage(
         title = "How many pieces were missing?",
         icon = bsicons::bs_icon("search"),
         div(
-          p(strong("How many were missing?"), "There were 438 patients missing a
-            n answer to this question. Split into the two groups it looked like this."),
+          p(strong("How many were missing?"), "There were 438 patients missing 
+            an answer to this question. Split into the two groups it looked like this."),
           tags$table(
             class = "table table-bordered table-striped",
             tags$thead(
@@ -250,8 +250,8 @@ ui <- fluidPage(
       accordion_panel(
         title = "How many patients were missing their measurement?",
         icon = bsicons::bs_icon("search"),
-        p("Of the 863 patients in Group 1 (6-months), 217 (25.1%) missed a 
-          response to this question at year 4."),
+        p("Of the 863 patients in Group 1 (6-months), 217 patients, roughly 1 in 4,
+        missed a response to this question at year 4."),
         tags$table(
           class = "table table-bordered table-striped",
           tags$thead(
@@ -325,70 +325,40 @@ ui <- fluidPage(
     br(),
     p("Activity: 'Fill in the gaps'", style = "font-size: 18px; font-weight: bold;"),
     
-    p("Now we are going to estimate the 217 patients whose responses were missing.
-      We want to get a general sense of how they could have answered that question, 
-      on average, 4 years into the trial."),
-   p("This activity will be completed in ", strong("3 steps"),". Be sure to 
-   complete each one before clicking 'Next'"),
+    p("Now we are going to estimate the patients whose responses were missing.
+    This activity will be completed in ", strong("3 steps"),". Be sure to 
+      complete each one before clicking 'Next'"),
+    
+    
    
   # Page 3 - tabs ####
       # Step 1 ####
    navset_card_tab(
       id = "nav_tab_top_1",
       nav_panel("Step 1", 
-          p("Remember the question was 'Have you had painful aching in your 
-            mouth?', and the scale was"),
-          tags$table(
-                  class = "table table-bordered table-striped",
-                  style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
-                  tags$thead(
-                    tags$tr(
-                      tags$th("0"),
-                      tags$th("1"),
-                      tags$th("2"),
-                      tags$th("3"),
-                      tags$th("4")
-                    )
-                  ),
-                  tags$tbody(
-                    tags$tr(
-                      tags$td(style = "background-color: #ccffff;", "never"),
-                      tags$td(style = "background-color: #ccffcc;", "hardly ever"),
-                      tags$td(style = "background-color: #ffffcc;", "occasionally"),
-                      tags$td(style = "background-color: #ffebcc;", "fairly often"),
-                      tags$td(style = "background-color: #ffcccc;", "very often")
-                    )
-                  )
-           ),
-         div(
-           div(strong("Question 1a: "), p("Thinking about the overall average 
-                                         response from these participants, based 
-                                         on your judgement. What is the LOWEST 
-                                         possible value the average could be? 
-                                         (L = lower plausible limit)")),
+          p("We will be thinking about the overall", strong("average pain score"), " for these 217 participants.
+          Remember they were missing an answer to this question", em("'have you had 
+          painful aching in your mouth?'"), ". Their answer was a score from 0 to 4."),
+          div(
+           div(strong("Question 1a: "), p("Based on your judgement, what is the LOWEST 
+                                         possible value their average could be?")),
           sliderInput("question1aSlider", label = NULL, min = 0, max = 4, value = 0, step = 0.1),
           uiOutput("question1aValue") # Display the selected value
         ),
-
         div(
-          div(strong("Question 1b: "), p("Thinking about the overall average 
-                                         response from these participants, 
-                                         based on your judgement. What is the 
-                                         HIGHEST possible value the average 
-                                         could be? (U = upper plausible limit)")),
+          div(strong("Question 1b: "), p("What is the HIGHEST possible value their
+                                          average could be?")),
           sliderInput("question1bSlider", label = NULL, min = 0, max = 4, value = 4, step = 0.1),
           uiOutput("question1bValue"), # Display the selected value
           p(""),
           uiOutput("reflection1ab"), # Display the reflection with values
           p(""),
-          
         ),
         div(
           div(strong("Question 1c:"), 
-              p("Now we have your highest and lowest value, we now need to split 
-                that bar in two! At which value on this scale do you think that 
-                the average of the group is equally likely to be greater or less 
-                than that value?")
+              p("What number on this scale feels like the halfway point — where 
+              it's just as likely that their average pain score could be higher or 
+                lower? See tips below for guidance")
               ),
           #uiOutput("question1cRange"), # Show current range from 1a and 1b
           sliderInput("question1cSlider", label = NULL, min = 0, max = 4, value = 2, step = 0.1),
@@ -397,17 +367,21 @@ ui <- fluidPage(
           div(
             strong("Tips for Question 1c:"),
             tags$ul(
-              tags$li("Note that your answer doesn't have to sit in the middle! 
-              A value closer to right this means you think that then average of 
-              these 217 participants are likely to be is likely to be a higher 
-              score, which is a worse outcome"),
-              tags$li("When you have an answer have a think. Imagine you're in a 
-              game show and there is big prize for getting this question right. 
-              Do you think the average of the group of 217 patients is more 
-              likely to be in above or below that middle value? If you think yes
-              , then return to Q1c and consider increasing or reducing your 
-              value until you don't have a preference for above or below. If you 
-              answered no, continue onto Step 2, by clicking above")
+              tags$li("What we've estimated here is the median - the point where
+              there is equal probabilty that the average of those 217 patients could be above 
+              or below that value!"),
+              tags$li("magine you're on a game show, and there's a big prize for 
+              getting this right. Do you think the average pain score of the 217 
+              patients is more likely to be above or below your answer to Question 
+              1c?"),
+              tags$ul(  
+                tags$li("If you ", strong("do"), " think it's more likely to be higher or lower, 
+                        go back to Q1c and adjust your answer — increase or decrease 
+                        it until you feel there’s a 50–50 chance it could go either way."),
+                tags$li("If you ", strong("don't"), " have a preference for above 
+                        or below, you’re ready to move on to Step 2 — click above to continue.")
+              )
+
             )
           )
         )
@@ -415,74 +389,39 @@ ui <- fluidPage(
     
       # Step 2 ####
       nav_panel("Step 2", 
-          p("Remember the question was 'Have you had painful aching in your 
-            mouth?', and the scale was"),
-                tags$table(
-                  class = "table table-bordered table-striped",
-                  style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
-                  tags$thead(
-                    tags$tr(
-                      tags$th("0"),
-                      tags$th("1"),
-                      tags$th("2"),
-                      tags$th("3"),
-                      tags$th("4")
-                    )
-                  ),
-                  tags$tbody(
-                    tags$tr(
-                      tags$td(style = "background-color: #ccffff;", "never"),
-                      tags$td(style = "background-color: #ccffcc;", "hardly ever"),
-                      tags$td(style = "background-color: #ffffcc;", "occasionally"),
-                      tags$td(style = "background-color: #ffebcc;", "fairly often"),
-                      tags$td(style = "background-color: #ffcccc;", "very often")
-                    )
-                  )
-        ),
+          
+        p("In Step 1 we determined the lowest, highest and halfway point for the 
+          average pain score for the 217 patients. In Step 2 we're now going to 
+          find more halfway point questions each half of the scale."),
         div(
-          p("We're now going to split our group of 217 participant in half."),
           div(strong("Question 1d:"), 
-              "Among the 217 participants, focus on the half who had the lowest 
-              (best) scores. Compared to the other participants with missing 
-              scores, these participants had less pain. Choose a value 
-              where you think their average score has an equal chance of being 
-              higher or lower than that value. (Remember, it doesn’t have to be 
-              exactly in the middle!)"),
+              "What number on this scale feels like the point where only the 
+              lowest quarter of possible average pain scores would fall below 
+              it? In other words, 75% of the time the average would be higher 
+              than this"),
           uiOutput("question1dRange"), # Show current range from 1a and 1c
           sliderInput("question1dSlider", label = NULL, min = 0, max = 4, value = 1, step = 0.1),
           uiOutput("question1dValue") # Display the selected value
         ),
         div(
           div(strong("Question 1e:"), 
-              "Among the 217 participants, focus on the half with the highest 
-              (worst) scores. Compared to the other participants with missing 
-              scores, these participants had more pain. Choose a value where you 
-              think their average score has an equal chance of being higher or 
-              lower than that value. (Remember, it doesn’t have to be exactly in 
-              the middle!)."),
+              "What number on this scale feels like the point where only the 
+              highest quarter of possible average pain scores would fall above 
+              it? In other words, 75% of the time the average would be lower 
+              than this."),
           uiOutput("question1eRange"), # Show current range from 1c and 1b
           sliderInput("question1eSlider", label = NULL, min = 0, max = 4, value = 3, step = 0.1),
           uiOutput("question1eValue"), # Display the selected value
-          div(strong("Reflection:"), "You have given your judgement about the 
-              average missing score for those 217 participants through 5 numbers. 
-              We now have a plot that is split into four segments, where it is 
-              equally likely that the average value of those 217 participants 
-              could be in each segment. It's normal for them not to be equally 
-              sized, often the middle two segments are much smaller!")
+          
         ),
-        
+        div(strong("Reflection:"), "You have given your judgement about the 
+              average pain score for those 217 participants through 5 numbers. 
+              We now have a plot that is built on your numbers."),
         div(
-          div(strong("Question 1f:"), "Do you have any reasons, or rationale you 
-              want to write about your judgement above?"),
-          textAreaInput("question1fTextArea", label = NULL, placeholder = "Write your reasons here",rows=6, width="100%"),
-          strong("Tip: This rationale is optional but can be helpful for you to 
-            remember why you chose these answers for the group discussion. You can also use this space to 
-            write any other comments you have about the task."),
-          br(), br(),
-          p("Remember, we want to capture that uncertainty in your judgements, 
-            and we are asking your judgement to get a general sense about those 
-            patients with missing measurements, and what their results might 
-            have been. So we have one last reflection to help you with your response."),
+          div(strong("Question 1f:"), "Do you have any reasons or thoughts you'd 
+              like to share about the numbers you chose?", 
+              em("Tip: jotting them down now could be a helpful reminder for the group discussion later.")),
+          textAreaInput("question1fTextArea", label = NULL, placeholder = "Write your reasons here",rows=3, width="100%"),
           uiOutput("question1fSummary"), # Show summary of previous answers
 
         )
@@ -492,30 +431,19 @@ ui <- fluidPage(
       nav_panel("Step 3", 
         div(
           div("As a last step we will take a look at the
-          pain score of those other 646 patient who did give a pain score. Take 
-          a look at the barchart and the table below."),
+          pain score of those other 646 patient who gave a pain score. Take 
+          a look at the information below."),
           br(),
           div(strong("Question 1g:"), "Does the results of the 646 patients 
               surprise you?"),
-          textAreaInput("question1gTextArea", label = NULL, placeholder = "Write your response here",rows=6, width="100%"),
-          br(),
-          div(strong("Bar chart")),
+          textAreaInput("question1gTextArea", label = NULL, placeholder = "Write your response here",rows=3, width="100%"),
           div("This bar chart shows that the majority of the 646 patient reported 
-              no pain at year 4 of the trial, and that very few have higher pain scores!"),
+              no pain at year 4 of the trial, and that very few have higher pain scores!
+              The average of their pain score was ", strong("0.66"), ", which is 
+              very close to 0.", strong("Reflection - "), "now you have seen the 
+              results of the other 646 patients, you can, if you want, to back 
+              to Step 1 and rethink your original answers. Otherwise click next." ),
           img(src="arm1_barchart_observed.png"),
-          br(),
-          div(strong("Table")),
-          div("This table shows how your previous answers about the average of 
-          the 217 patients compare  compare to the observed 646 patients. Notice 
-          how many of the 646 patients reported a score of 0 — so many, in fact, 
-          that the minimum, first quartile, and median are all 0."),
-          uiOutput("comparison1g"),
-          uiOutput("question1gSummary"),
-          br(),
-          div(strong("Note")),
-          p("Now you have seen the results of the other 640 participants, you 
-          can, if you want, to back to Step 1 and rethink your answers. Otherwise 
-            click next.")
           
         )
       )
@@ -546,6 +474,8 @@ ui <- fluidPage(
    
    p("When you are ready click next.")
  ),
+ 
+ 
  # Page 5 - text ####
  
  conditionalPanel(
@@ -558,8 +488,8 @@ ui <- fluidPage(
      accordion_panel(
        title = "How many patients were missing their measurement?",
        icon = bsicons::bs_icon("search"),
-       p("Of the 861 patients in Group 2 (risk-based), 221 (25.7%) missed a 
-          response to this question at year 4."),
+       p("Of the 861 patients in Group 2 (risk-based), 221 patients, roughly 1 in 4,
+        missed a response to this question at year 4."),
        tags$table(
          class = "table table-bordered table-striped",
          tags$thead(
@@ -632,56 +562,28 @@ ui <- fluidPage(
    ),
    br(),
    p("Activity: 'Fill in the gaps'", style = "font-size: 18px; font-weight: bold;"),
-      p("Now we are going to estimate the 217 patients whose responses were missing.
-      We want to get a general sense of how they could have answered that question, 
-      on average, 4 years into the trial."),
-   p("This activity will be completed in ", strong("3 steps"),". Be sure to 
-   complete each one before clicking 'Next'"),
+   
+   p("Now we are going to estimate the patients whose responses were missing.
+    This activity will be completed in ", strong("3 steps"),". Be sure to 
+      complete each one before clicking 'Next'"),
 
      # Step 1 ####
    navset_card_tab(
       id = "nav_tab_top_2",
       nav_panel("Step 1", 
-          p("Remember the question was 'Have you had painful aching in your 
-            mouth?', and the scale was"),
-          tags$table(
-                  class = "table table-bordered table-striped",
-                  style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
-                  tags$thead(
-                    tags$tr(
-                      tags$th("0"),
-                      tags$th("1"),
-                      tags$th("2"),
-                      tags$th("3"),
-                      tags$th("4")
-                    )
-                  ),
-                  tags$tbody(
-                    tags$tr(
-                      tags$td(style = "background-color: #ccffff;", "never"),
-                      tags$td(style = "background-color: #ccffcc;", "hardly ever"),
-                      tags$td(style = "background-color: #ffffcc;", "occasionally"),
-                      tags$td(style = "background-color: #ffebcc;", "fairly often"),
-                      tags$td(style = "background-color: #ffcccc;", "very often")
-                    )
-                  )
-           ),
-         div(
-           div(strong("Question 2a: "), p("Thinking about the overall average 
-                                         response from these participants, based 
-                                         on your judgement. What is the LOWEST 
-                                         possible value the average could be? 
-                                         (L = lower plausible limit)")),
+          p("We will be thinking about the overall", strong("average pain score"), " for these 221 participants.
+          Remember they were missing an answer to this question", em("'have you had 
+          painful aching in your mouth?'"), ". Their answer was a score from 0 to 4."),
+          div(
+           div(strong("Question 2a: "), p("Based on your judgement, what is the LOWEST 
+                                         possible value their average could be?")),
           sliderInput("question2aSlider", label = NULL, min = 0, max = 4, value = 0, step = 0.1),
           uiOutput("question2aValue") # Display the selected value
         ),
 
         div(
-          div(strong("Question 2b: "), p("Thinking about the overall average 
-                                         response from these participants, 
-                                         based on your judgement. What is the 
-                                         HIGHEST possible value the average 
-                                         could be? (U = upper plausible limit)")),
+          div(strong("Question 2b: "), p("What is the HIGHEST possible value their
+                                          average could be?")),
           sliderInput("question2bSlider", label = NULL, min = 0, max = 4, value = 4, step = 0.1),
           uiOutput("question2bValue"), # Display the selected value
           p(""),
@@ -691,139 +593,92 @@ ui <- fluidPage(
         ),
         div(
           div(strong("Question 2c:"), 
-              p("Now we have your highest and lowest value, we now need to split 
-                that bar in two! At which value on this scale do you think that 
-                the average of the group is equally likely to be greater or less 
-                than that value?")
+              p("What number on this scale feels like the halfway point — where 
+              it's just as likely that their average pain score could be higher or 
+                lower? See tips below for guidance")
               ),
-          #uiOutput("question1cRange"), # Show current range from 1a and 1b
           sliderInput("question2cSlider", label = NULL, min = 0, max = 4, value = 2, step = 0.1),
           uiOutput("question2cValue"), # Display the selected value
           p(""),
           div(
-            strong("Tips for Question 2c:"),
+            strong("Tips for Question 1c:"),
             tags$ul(
-              tags$li("Note that your answer doesn't have to sit in the middle! 
-              A value closer to right this means you think that then average of 
-              these 221 participants are likely to be is likely to be a higher 
-              score, which is a worse outcome"),
-              tags$li("When you have an answer have a think. Imagine you're in a 
-              game show and there is big prize for getting this question right. 
-              Do you think the average of the group of 221 patients is more 
-              likely to be in above or below that middle value? If you think yes
-              , then return to Q1c and consider increasing or reducing your 
-              value until you don't have a preference for above or below. If you 
-              answered no, continue onto Step 2, by clicking above")
+              tags$li("What we've estimated here is the median - the point where
+              there is equal probabilty that the average of those 221 patients could be above 
+              or below that value!"),
+              tags$li("magine you're on a game show, and there's a big prize for 
+              getting this right. Do you think the average pain score of the 221 
+              patients is more likely to be above or below your answer to Question 
+              1c?"),
+                tags$ul(  
+                  tags$li("If you ", strong("do"), " think it's more likely to be higher or lower, 
+                          go back to Q1c and adjust your answer — increase or decrease 
+                          it until you feel there’s a 50–50 chance it could go either way."),
+                  tags$li("If you ", strong("don't"), " have a preference for above 
+                          or below, you’re ready to move on to Step 2 — click above to continue.")
+                )
+              )
             )
-          )
         )
       ),
     
      # Step 2 ####
       nav_panel("Step 2", 
-          p("Remember the question was 'Have you had painful aching in your 
-            mouth?', and the scale was"),
-                tags$table(
-                  class = "table table-bordered table-striped",
-                  style = "background-color: #f8f9fa; color: #333;",  # Light gray background, dark text
-                  tags$thead(
-                    tags$tr(
-                      tags$th("0"),
-                      tags$th("1"),
-                      tags$th("2"),
-                      tags$th("3"),
-                      tags$th("4")
-                    )
-                  ),
-                  tags$tbody(
-                    tags$tr(
-                      tags$td(style = "background-color: #ccffff;", "never"),
-                      tags$td(style = "background-color: #ccffcc;", "hardly ever"),
-                      tags$td(style = "background-color: #ffffcc;", "occasionally"),
-                      tags$td(style = "background-color: #ffebcc;", "fairly often"),
-                      tags$td(style = "background-color: #ffcccc;", "very often")
-                    )
-                  )
-        ),
+      
+        p("In Step 1 we determined the lowest, highest and halfway point for the 
+          average pain score for the 221 patients. In Step 2 we're now going to 
+          find more halfway point questions each half of the scale."),
         div(
-          p("We're now going to split our group of 221 participant in half."),
-          div(strong("Question 2d:"), 
-              "Among the 221 participants, focus on the half who had the lowest 
-              (best) scores. Compared to the other participants with missing 
-              scores, these participants had less pain. Choose a value 
-              where you think their average score has an equal chance of being 
-              higher or lower than that value. (Remember, it doesn’t have to be 
-              exactly in the middle!)"),
-          uiOutput("question2dRange"), # Show current range from 1a and 1c
-          sliderInput("question2dSlider", label = NULL, min = 0, max = 4, value = 1, step = 0.1),
-          uiOutput("question2dValue") # Display the selected value
-        ),
-        div(
-          div(strong("Question 2e:"), 
-              "Among the 221 participants, focus on the half with the highest 
-              (worst) scores. Compared to the other participants with missing 
-              scores, these participants had more pain. Choose a value where you 
-              think their average score has an equal chance of being higher or 
-              lower than that value. (Remember, it doesn’t have to be exactly in 
-              the middle!)."),
-          uiOutput("question2eRange"), # Show current range from 1c and 1b
-          sliderInput("question2eSlider", label = NULL, min = 0, max = 4, value = 3, step = 0.1),
-          uiOutput("question2eValue"), # Display the selected value
-          div(strong("Reflection:"), "You have given your judgement about the 
-              average missing score for those 221 participants through 5 numbers. 
-              We now have a plot that is split into four segments, where it is 
-              equally likely that the average value of those 221 participants 
-              could be in each segment. It's normal for them not to be equally 
-              sized, often the middle two segments are much smaller!")
-        ),
-        
-        div(
-          div(strong("Question 2f:"), "Do you have any reasons, or rationale you 
-              want to write about your judgement above?"),
-              textAreaInput("question2fTextArea", label = NULL, placeholder = "Write your reasons here", rows=6, width="100%"),
-          p("Remember, we want to capture that uncertainty in your judgements, 
-            and we are asking your judgement to get a general sense about those 
-            patients with missing measurements, and what their results might 
-            have been. So we have one last reflection to help you with your response."),
-          strong("Tip: This rationale is optional but can be helpful for you to
-            remember why you chose these answers for the group discussion. You can also use this space to 
-            write any other comments you have about the task."),
-          br(), br(),
-          # Show summary of previous answers
-          uiOutput("question2fSummary")          
-        )
+            div(strong("Question 2d:"), 
+                      "What number on this scale feels like the point where only the 
+              lowest quarter of possible average pain scores would fall below 
+              it? In other words, 75% of the time the average would be higher 
+              than this"),
+                  uiOutput("question2dRange"), # Show current range from 1a and 1c
+                  sliderInput("question2dSlider", label = NULL, min = 0, max = 4, value = 1, step = 0.1),
+                  uiOutput("question2dValue") # Display the selected value
+                ),
+            div(
+                  div(strong("Question 2e:"), 
+                      "What number on this scale feels like the point where only the 
+              highest quarter of possible average pain scores would fall above 
+              it? In other words, 75% of the time the average would be lower 
+              than this."),
+                  uiOutput("question2eRange"), # Show current range from 1c and 1b
+                  sliderInput("question2eSlider", label = NULL, min = 0, max = 4, value = 3, step = 0.1),
+                  uiOutput("question2eValue"), # Display the selected value
+                  
+                ),
+            div(strong("Reflection:"), "You have given your judgement about the 
+              average pain score for those 221 participants through 5 numbers. 
+              We now have a plot that is built on your numbers."),
+                div(
+                  div(strong("Question 2f:"), "Do you have any reasons or thoughts you'd 
+              like to share about the numbers you chose?", em("Tip: jotting them down now could be a helpful reminder for the group discussion later.")),
+                  textAreaInput("question2fTextArea", label = NULL, placeholder = "Write your reasons here",rows=3, width="100%"),
+                  uiOutput("question2fSummary"), # Show summary of previous answers
+                  
+                )
+            
       ),
       
      # Step 3 ####
-      nav_panel("Step 3", 
-        div(
-          div("As a last step we will take a look at the
-          pain score of those other 640 patient who did give a pain score. Take 
-          a look at the barchart and the table below."),
-          br(),
-          div(strong("Question 2g:"), "Does the results of the 640 patients 
-              surprise you?"),
-          textAreaInput("question2gTextArea", label = NULL, placeholder = "Write your response here",rows=6, width="100%"),
-          br(),
-          div(strong("Bar chart")),
-          div("This bar chart shows that the majority of the 640 patient reported 
-              no pain at year 4 of the trial, and that very few have higher pain scores!"),
-          img(src="arm2_barchart_observed.png"),
-          br(),
-          div(strong("Table")),
-          div("This table shows how your previous answers about the average of 
-          the 221 patients compare  compare to the observed 640 patients. Notice 
-          how many of the 640 patients reported a score of 0 — so many, in fact, 
-          that the minimum, first quartile, and median are all 0."),
-          uiOutput("comparison2g"),
-          uiOutput("question2gSummary"),
-          br(),
-          div(strong("Note")),
-          p("Now you have seen the results of the other 640 participants, you 
-          can, if you want, to back to Step 1 and rethink your answers. Otherwise 
-            click next.")
-          
-        )
+     nav_panel("Step 3", 
+               div(
+                 div("As a last step we will take a look at the pain score of those other 640 patient who gave a pain score. Take a look at the information below."),
+                 br(),
+                 div(strong("Question 2g:"), "Does the results of the 640 patients surprise you?"),
+                 textAreaInput("question2gTextArea", label = NULL, placeholder = "Write your response here",rows=3, width="100%"),
+                 div("This bar chart shows that the majority of the 640 patient reported 
+              no pain at year 4 of the trial, and that very few have higher pain scores!
+              The average of their pain score was ", strong("0.69"), ", which is 
+              very close to 0.", strong("Reflection - "), "now you have seen the 
+              results of the other 646 patients, you can, if you want, to back 
+              to Step 1 and rethink your original answers. Otherwise click next." ),
+                 img(src="arm2_barchart_observed.png"),
+                 
+               )
+        
       )
     ),
     
@@ -869,28 +724,26 @@ ui <- fluidPage(
       ),
     ),
         hr(),
-    strong("Additional note:"),
-    p("We want to thank all the patient and public involvement contributors who 
-      helped create this website, as well as the Alan Fleming for his 
-      programming help!"),
-    p("If you want to find out more about the research consider"),
+    strong("Additional notes:"),
     tags$ul(
-      tags$li("Website of the research page",tags$a(href = "https://www.abdn.ac.uk/ace/what-we-do/research/projects-a-z/rethinking-missing-data-with-patients-365", "here" )),
-      tags$li("Contact Beatriz Goulao via:", 
+      tags$li("To find out more about the project ",tags$a(href = "https://www.abdn.ac.uk/ace/what-we-do/research/projects-a-z/rethinking-missing-data-with-patients-365", "here" )),
+      tags$li("Contact the project lead Beatriz Goulao via:", 
                 tags$a(href = "mailto:beatriz.goulao@abdn.ac.uk?subject=
                 Question%20-%20rethinking%20missing%20data%
                 20with%20patients", "email")),
+      tags$li("We want to thank all the patient and public involvement contributors who 
+      helped create this whole process and website. Find out more about some of the public contributors ", tags$a(href = "https://www.abdn.ac.uk/ace/what-we-do/ppie/", "here" )),
+      tags$li("Thank you very much to Alan Flemming for his programming help. Find him",tags$a(href = "https://github.com/alanjsfleming", "here" )),
+      
     ),
-    strong("Funding:"),
-    p("This website was created using funding from the Medical Research 
+    p(strong("Funding:"), "This website was created using funding from the Medical Research 
       Council's (MRC) Trials Methodology Research Partnership (TMRP) 
       Doctoral Training Partnership (DTP), grant number MR/W006049/1."),
-    strong("References:"),
-    p("we'd like to note a series of resources that were fundamental in the 
-    creation of this tool. "),
+    p(strong("References:"), "we'd like to note a series of resources that were fundamental in the 
+    creation of this tool."),
     tags$ul(
-      tags$li("SHELF", em("add reference details")),
-      tags$li("Mason et al. paper", em("add reference details")),
+      tags$li("The guidance from SHELF. See - ", em("Oakley J. E. and O'Hagan, A. (2019). SHELF: the Sheffield Elicitation Framework (version 4). School of Mathematics and Statistics, University of Sheffield, UK. (http://tonyohagan.co.uk/shelf)")),
+      tags$li("The work of Mason et al. who showed this is possible to do! See - ", em("Mason AJ, Gomes M, Grieve R, Ulug P, Powell JT, Carpenter J. Development of a practical approach to expert elicitation for randomised controlled trials with missing health outcomes: Application to the IMPROVE trial. Clin Trials. 2017 Aug;14(4):357–67")),
     ),
   ),
   
@@ -1202,8 +1055,8 @@ server <- function(input, output, session) {
     p(strong("Your answer: ", responses$q1b))
   })
   output$reflection1ab <- renderUI({
-    p("Based on the answer you've given, you think that the average participant 
-      response to the questionnaire ranged from", strong(responses$q1a), " and ", 
+    p("Based on the answer you've given, you think that the average pain score
+      for these 217 patients ranged from", strong(responses$q1a), " and ", 
       strong(responses$q1b), ". If this is not what you think go back to edit 
       your answer to Q1a and Q1b."
       )
@@ -1244,8 +1097,8 @@ server <- function(input, output, session) {
     p(strong("Your answer: ", responses$q2b))
   })
   output$reflection2ab <- renderUI({
-    p("Based on the answer you've given, you think that the average participant 
-      response to the questionnaire ranged from", strong(responses$q2a), " and ", 
+    p("Based on the answer you've given, you think that the average pain score
+      for these 221 patients ranged from", strong(responses$q2a), " and ", 
       strong(responses$q2b), ". If this is not what you think go back to edit 
       your answer to Q2a and Q2b."
     )
@@ -1320,13 +1173,13 @@ server <- function(input, output, session) {
   #### Server - Q1f summary ####
   output$question1fSummary <- renderUI({
     div(
-      strong("Your judgements so far:"),
+      strong("Your judgements on the average pain score so far:"),
       tags$ul(
-        tags$li("Lowest possible average: ", strong(responses$q1a)),
-        tags$li("Highest possible average: ", strong(responses$q1b)),
-        tags$li("Median value (equally likely to be above/below): ", strong(responses$q1c)),
-        tags$li("Lower half median: ", strong(responses$q1d)),
-        tags$li("Upper half median: ", strong(responses$q1e))
+        tags$li("Lowest possible value: ", strong(responses$q1a)),
+        tags$li("Lowest quarter (25% chance it is less than): ", strong(responses$q1d)),
+        tags$li("Halfway point (equally likely to be above/below): ", strong(responses$q1c)),
+        tags$li("Upper quarter (25% chance it is more than): ", strong(responses$q1e)),
+        tags$li("Highest possible value: ", strong(responses$q1b)),
       ),
       
       div(
@@ -1360,13 +1213,13 @@ server <- function(input, output, session) {
   #### Server - Q1f plot ####
   output$question1fSummary <- renderUI({
     div(
-      strong("Your judgements so far:"),
+      strong("Your judgements on the average pain score so far:"),
       tags$ul(
-        tags$li("Lowest possible average: ", strong(responses$q1a)),
-        tags$li("Highest possible average: ", strong(responses$q1b)),
-        tags$li("Median value (equally likely to be above/below): ", strong(responses$q1c)),
-        tags$li("Lower half median: ", strong(responses$q1d)),
-        tags$li("Upper half median: ", strong(responses$q1e))
+        tags$li("Lowest possible value: ", strong(responses$q1a)),
+        tags$li("Lowest quarter (25% chance it is less than): ", strong(responses$q1d)),
+        tags$li("Halfway point (equally likely to be above/below): ", strong(responses$q1c)),
+        tags$li("Upper quarter (25% chance it is more than): ", strong(responses$q1e)),
+        tags$li("Highest possible value: ", strong(responses$q1b)),
       ),
       
      div(
@@ -1701,13 +1554,13 @@ server <- function(input, output, session) {
   #### Server - Q2f summary ####
   output$question2fSummary <- renderUI({
     div(
-      strong("Your judgements so far:"),
+      strong("Your judgements on the average pain score so far:"),
       tags$ul(
-        tags$li("Lowest possible average: ", strong(responses$q2a)),
-        tags$li("Highest possible average: ", strong(responses$q2b)),
-        tags$li("Median value (equally likely to be above/below): ", strong(responses$q2c)),
-        tags$li("Lower half median: ", strong(responses$q2d)),
-        tags$li("Upper half median: ", strong(responses$q2e))
+        tags$li("Lowest possible value: ", strong(responses$q2a)),
+        tags$li("Lowest quarter (25% chance it is less than): ", strong(responses$q2d)),
+        tags$li("Halfway point (equally likely to be above/below): ", strong(responses$q2c)),
+        tags$li("Upper quarter (25% chance it is more than): ", strong(responses$q2e)),
+        tags$li("Highest possible value: ", strong(responses$q2b)),
       ),
       
       div(
@@ -1739,13 +1592,13 @@ server <- function(input, output, session) {
   #### Server - Q2f plot ####
   output$question2fSummary <- renderUI({
     div(
-      strong("Your judgements so far:"),
+      strong("Your judgements on the average pain score so far:"),
       tags$ul(
-        tags$li("Lowest possible average: ", strong(responses$q2a)),
-        tags$li("Highest possible average: ", strong(responses$q2b)),
-        tags$li("Median value (equally likely to be above/below): ", strong(responses$q2c)),
-        tags$li("Lower half median: ", strong(responses$q2d)),
-        tags$li("Upper half median: ", strong(responses$q2e))
+        tags$li("Lowest possible value: ", strong(responses$q2a)),
+        tags$li("Lowest quarter (25% chance it is less than): ", strong(responses$q2d)),
+        tags$li("Halfway point (equally likely to be above/below): ", strong(responses$q2c)),
+        tags$li("Upper quarter (25% chance it is more than): ", strong(responses$q2e)),
+        tags$li("Highest possible value: ", strong(responses$q2b)),
       ),
       
       div(
@@ -2155,9 +2008,13 @@ server <- function(input, output, session) {
 
       # Group 1 Table Data
       table_data_g1 <- data.frame(
-        "Pain Score" = c("Lowest", "Quartile 1", "Median", "Quartile 3", "Highest", "Your rationale"),
-        "Missing (217 patients)" = c(responses$q1a, responses$q1d, responses$q1c, responses$q1e, responses$q1b, "See below"),
-        "Not Missing (624 patients)" = c(responses$q1a_obs, responses$q1d_obs, responses$q1c_obs, responses$q1e_obs, responses$q1b_obs, NA)
+        "Pain Score" = c("Lowest possible value", 
+                         "Lowest quarter", 
+                         "Halfway point", 
+                         "Upper quarter", 
+                         "Highest possible value", 
+                         "Your rationale"),
+        "Missing (217 patients)" = c(responses$q1a, responses$q1d, responses$q1c, responses$q1e, responses$q1b, "See below")
       )
       grid.table(table_data_g1)
 
@@ -2165,7 +2022,7 @@ server <- function(input, output, session) {
       wrapped_text_g1 <- paste(strwrap(responses$q1f, width = 100), collapse = "\n")  # Wrap long text
       rationale_g1 <- grobTree(
         rectGrob(gp = gpar(fill = "lightgray", col = "black")),  # Rationale box
-        textGrob("Your Rationale for Group 1:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
+        textGrob("Any reasons or thoughts about the numbers you chose Group 1:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
         textGrob(wrapped_text_g1, y = 0.60, gp = gpar(fontsize = 12), just = "center")  # Rationale text (adjusted y position)
       )
       grid.arrange(rationale_g1, nrow = 1)
@@ -2174,7 +2031,7 @@ server <- function(input, output, session) {
       wrapped_text_g1_2 <- paste(strwrap(responses$q1g_text, width = 100), collapse = "\n")  # Wrap long text
       rationale_g1_2 <- grobTree(
         rectGrob(gp = gpar(fill = "lightblue", col = "black")),  # Rationale box
-        textGrob("Were you surprised for Group 1:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
+        textGrob("Any reasons or thoughts about the observed numbers for Group 1:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
         textGrob(wrapped_text_g1_2, y = 0.60, gp = gpar(fontsize = 12), just = "center")  # Rationale text (adjusted y position)
       )
       grid.arrange(rationale_g1_2, nrow = 1)
@@ -2189,9 +2046,13 @@ server <- function(input, output, session) {
 
       # Group 1 Table Data
       table_data_g2 <- data.frame(
-        "Pain Score" = c("Lowest", "Quartile 1", "Median", "Quartile 3", "Highest", "Your rationale"),
-        "Missing (220 patients)" = c(responses$q2a, responses$q2d, responses$q2c, responses$q2e, responses$q2b, "See below"),
-        "Not Missing (640 patients)" = c(responses$q2a_obs, responses$q2d_obs, responses$q2c_obs, responses$q2e_obs, responses$q2b_obs, NA)
+        "Pain Score" = c("Lowest possible value", 
+                         "Lowest quarter", 
+                         "Halfway point", 
+                         "Upper quarter", 
+                         "Highest possible value", 
+                         "Your rationale"),
+        "Missing (220 patients)" = c(responses$q2a, responses$q2d, responses$q2c, responses$q2e, responses$q2b, "See below")
       )
 
       # Display Group 2 Table
@@ -2205,7 +2066,7 @@ server <- function(input, output, session) {
       # Create Smaller Rationale Box (below the table)
       rationale_g2 <- grobTree(
         rectGrob(gp = gpar(fill = "lightgray", col = "black")),  # Rationale box
-        textGrob("Your Rationale for Group 2:", y = 0.8, gp = gpar(fontsize = 16, fontface = "bold")),  # Label for Rationale
+        textGrob("Any reasons or thoughts about the numbers you chose Group 2:", y = 0.8, gp = gpar(fontsize = 16, fontface = "bold")),  # Label for Rationale
         textGrob(wrapped_text_g2, y = 0.60, gp = gpar(fontsize = 14), just = "center")  # Rationale text (adjusted y position)
       )
 
@@ -2215,7 +2076,7 @@ server <- function(input, output, session) {
       wrapped_text_g2_2 <- paste(strwrap(responses$q2g_text, width = 100), collapse = "\n")  # Wrap long text
       rationale_g2_2 <- grobTree(
         rectGrob(gp = gpar(fill = "lightblue", col = "black")),  # Rationale box
-        textGrob("Were you surprised for Group 2:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
+        textGrob("Any reasons or thoughts about the observed numbers for Group 2:", y = 0.8, gp = gpar(fontsize = 14, fontface = "bold")),  # Label for Rationale
         textGrob(wrapped_text_g2_2, y = 0.60, gp = gpar(fontsize = 12), just = "center")  # Rationale text (adjusted y position)
       )
       grid.arrange(rationale_g2_2, nrow = 1)

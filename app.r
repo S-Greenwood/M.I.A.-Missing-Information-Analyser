@@ -356,7 +356,7 @@ ui <- fluidPage(
         ),
         div(
           div(strong("Question 1c:"), 
-              p("What number on this scale feels like the halfway point — where 
+              p("What number on this scale feels like the halfway point - where 
               it's just as likely that their average pain score could be higher or 
                 lower? See tips below for guidance")
               ),
@@ -376,10 +376,10 @@ ui <- fluidPage(
               1c?"),
               tags$ul(  
                 tags$li("If you ", strong("do"), " think it's more likely to be higher or lower, 
-                        go back to Q1c and adjust your answer — increase or decrease 
+                        go back to Q1c and adjust your answer - increase or decrease 
                         it until you feel there’s a 50–50 chance it could go either way."),
                 tags$li("If you ", strong("don't"), " have a preference for above 
-                        or below, you’re ready to move on to Step 2 — click above to continue.")
+                        or below, you’re ready to move on to Step 2 - click above to continue.")
               )
 
             )
@@ -593,7 +593,7 @@ ui <- fluidPage(
         ),
         div(
           div(strong("Question 2c:"), 
-              p("What number on this scale feels like the halfway point — where 
+              p("What number on this scale feels like the halfway point - where 
               it's just as likely that their average pain score could be higher or 
                 lower? See tips below for guidance")
               ),
@@ -612,10 +612,10 @@ ui <- fluidPage(
               1c?"),
                 tags$ul(  
                   tags$li("If you ", strong("do"), " think it's more likely to be higher or lower, 
-                          go back to Q1c and adjust your answer — increase or decrease 
+                          go back to Q1c and adjust your answer - increase or decrease 
                           it until you feel there’s a 50–50 chance it could go either way."),
                   tags$li("If you ", strong("don't"), " have a preference for above 
-                          or below, you’re ready to move on to Step 2 — click above to continue.")
+                          or below, you’re ready to move on to Step 2 - click above to continue.")
                 )
               )
             )
